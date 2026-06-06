@@ -1,8 +1,12 @@
 <script setup lang="ts">
-import { useSlots } from 'vue'
+import { ref, useSlots } from 'vue'
 import GlassCard from '@/lib/ui/GlassCard.vue'
+import { useResponsivePageSize } from '@/lib/composables/useResponsivePageSize'
 defineProps<{ title: string }>()
+const pageSize = defineModel<number>('pageSize', { default: 10 })
 const slots = useSlots()
+const bodyEl = ref<HTMLElement>()
+useResponsivePageSize(bodyEl, pageSize)
 </script>
 
 <template>
@@ -12,7 +16,7 @@ const slots = useSlots()
       <div v-if="slots.actions" class="flex shrink-0 items-center gap-2"><slot name="actions" /></div>
     </div>
     <div v-if="slots.toolbar" class="border-b border-border/60 px-4 py-3"><slot name="toolbar" /></div>
-    <div class="min-h-0 flex-1"><slot /></div>
+    <div ref="bodyEl" class="min-h-0 flex-1 overflow-y-auto"><slot /></div>
     <div v-if="slots.footer" class="border-t border-border/60 px-4 py-3"><slot name="footer" /></div>
   </GlassCard>
 </template>
