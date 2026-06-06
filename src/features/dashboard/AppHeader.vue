@@ -2,7 +2,7 @@
 import { computed } from 'vue'
 import { useRouter, RouterLink } from 'vue-router'
 import { useI18n } from 'vue-i18n'
-import { Sun, Moon, Monitor, LogOut } from 'lucide-vue-next'
+import { Languages, Sun, Moon, Monitor, LogOut } from 'lucide-vue-next'
 import { useAuthStore } from '@/stores/auth'
 import { useLabelsStore } from '@/stores/labels'
 import { useTheme, type ThemeMode } from '@/lib/theme/useTheme'
@@ -29,7 +29,7 @@ function logout() { auth.logout(); try { router.push('/login') } catch { /* no r
     <nav class="flex items-center gap-1.5">
       <RouterLink v-if="auth.isAdmin" to="/admin" class="mr-1 inline-flex h-9 items-center rounded-xl bg-brand px-3 text-sm font-semibold text-white">管理</RouterLink>
       <span class="px-1 text-sm text-ink-2">{{ name }} · {{ auth.currentUser?.employeeId }}</span>
-      <Button variant="ghost" size="icon" @click="toggleLocale">{{ locale === 'zh' ? 'EN' : '中' }}</Button>
+      <Button variant="ghost" size="sm" class="gap-1.5" @click="toggleLocale"><Languages class="size-4" /> {{ locale === 'zh' ? 'EN' : '中' }}</Button>
       <Button variant="ghost" size="icon" @click="cycleTheme"><component :is="ThemeIcon" class="size-4" /></Button>
       <Button variant="ghost" size="icon" @click="logout"><LogOut class="size-4" /></Button>
     </nav>
