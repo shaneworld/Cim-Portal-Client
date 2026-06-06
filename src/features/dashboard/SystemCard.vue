@@ -6,12 +6,15 @@ import GlassCard from '@/lib/ui/GlassCard.vue'
 import AppIcon from '@/lib/ui/AppIcon.vue'
 import StatusDot from '@/lib/ui/StatusDot.vue'
 const props = defineProps<{ link: HomeLink }>()
+const emit = defineEmits<{ blocked: [HomeLink] }>()
 const { pick } = useLocale()
 const name = computed(() => pick(props.link, 'name'))
 const statusText = computed(() => props.link.statusCode === 'ACTIVE' ? '运行中' : props.link.statusCode === 'MAINTENANCE' ? '维护中' : props.link.statusCode === 'DEPRECATED' ? '已停用' : props.link.statusCode)
+// Non-active systems warn the user before opening (maintenance/deprecated).
+function onClick(e: MouseEvent) { if (props.link.statusCode !== 'ACTIVE') { e.preventDefault(); emit('blocked', props.link) } }
 </script>
 <template>
-  <a :href="link.url" :target="link.openInNewTab ? '_blank' : '_self'" rel="noopener noreferrer" class="block">
+  <a :href="link.url" :target="link.openInNewTab ? '_blank' : '_self'" rel="noopener noreferrer" class="block" @click="onClick">
     <GlassCard class="flex items-center gap-3 p-3.5 transition hover:-translate-y-0.5">
       <span class="grid size-9 shrink-0 place-items-center rounded-xl bg-brand text-white"><AppIcon :name="link.icon" class="size-[18px]" /></span>
       <span class="min-w-0 flex-1">

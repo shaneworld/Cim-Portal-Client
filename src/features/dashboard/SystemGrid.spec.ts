@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeEach } from 'vitest'
-import { mount } from '@vue/test-utils'
+import { mount, flushPromises } from '@vue/test-utils'
 import { i18n } from '@/lib/i18n'
 import SystemGrid from './SystemGrid.vue'
 
@@ -15,5 +15,14 @@ describe('SystemGrid', () => {
     const a = w.findAll('a')
     expect(a[0].attributes('href')).toBe('https://x'); expect(a[0].attributes('target')).toBe('_blank')
     expect(w.findAll('svg').length).toBeGreaterThanOrEqual(2)
+  })
+  it('点击已停用系统弹出警告(拦截直接打开)', async () => {
+    const w = mount(SystemGrid, { props: { categories: cats }, global: { plugins: [i18n] }, attachTo: document.body })
+    await w.findAll('a')[1].trigger('click')   // old (DEPRECATED)
+    await flushPromises()
+    expect(document.body.textContent).toContain('已停用')
+    const proceed = [...document.body.querySelectorAll('button')].find((b) => /仍要打开/.test(b.textContent || ''))
+    expect(proceed).toBeTruthy()
+    w.unmount(); document.body.innerHTML = ''
   })
 })

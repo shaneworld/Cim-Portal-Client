@@ -6,7 +6,7 @@ const toast = useToastStore()
 <template>
   <div class="pointer-events-none fixed right-4 top-4 z-50 flex w-80 max-w-[calc(100vw-2rem)] flex-col gap-2">
     <TransitionGroup name="page">
-      <div v-for="t in toast.toasts" :key="t.id" class="glass pointer-events-auto flex items-start gap-2 rounded-xl p-3 text-sm">
+      <div v-for="t in toast.toasts" :key="t.id" class="pointer-events-auto flex items-start gap-2 rounded-xl border border-border bg-white p-3 text-sm shadow-lg dark:bg-[#141b2e]">
         <CheckCircle2 v-if="t.type === 'success'" class="mt-0.5 size-4 shrink-0 text-emerald-500" />
         <AlertCircle v-else class="mt-0.5 size-4 shrink-0 text-rose-500" />
         <span class="min-w-0 flex-1">{{ t.message }}</span>
