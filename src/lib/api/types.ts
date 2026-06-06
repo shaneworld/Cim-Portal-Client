@@ -1,0 +1,12 @@
+export type Locale = 'zh' | 'en'
+export type EnumCategory = 'DEPARTMENT' | 'ROLE' | 'LINK_CATEGORY' | 'LINK_STATUS'
+
+export interface MeResponse { employeeId: string; displayNameZh: string; displayNameEn: string; departmentCode: string; roleCode: string; isAdmin: boolean }
+export interface HomeLink { id: number; code: string; nameZh: string; nameEn: string; url: string; icon: string; statusCode: string; openInNewTab: boolean }
+export interface HomeCategory { categoryCode: string; categoryLabelZh: string; categoryLabelEn: string; links: HomeLink[] }
+export interface HomeResponse { categories: HomeCategory[] }
+export interface EnumValue { id: number; category: EnumCategory; code: string; labelZh: string; labelEn: string; sortOrder: number; active: boolean }
+export interface LabelEntry { zh: string; en: string; type: string }
+export type LabelMap = Record<string, LabelEntry>
+export interface ApiFieldError { field: string; message: string }
+export interface ApiErrorBody { timestamp: string; status: number; error: string; code: string; message: string; path: string; fieldErrors?: ApiFieldError[] | null }
