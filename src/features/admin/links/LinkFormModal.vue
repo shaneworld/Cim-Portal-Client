@@ -119,7 +119,7 @@ async function save() {
       <label class="flex items-center gap-2"><Switch :model-value="form.openInNewTab" @update:model-value="(v) => form.openInNewTab = v" /> <span class="text-sm text-ink-2">新标签页打开</span></label>
       <div class="border-t border-border/60 pt-3">
         <div class="mb-2 flex items-center justify-between"><b class="text-sm">访问授权</b><Button variant="ghost" size="sm" @click="addGrant"><Plus class="size-4" /> 添加授权</Button></div>
-        <p v-if="!grants.length" class="text-xs text-ink-3">尚无授权——无人可见,请至少添加一条。</p>
+        <p v-if="!grants.length" class="text-xs text-ink-3">未设置授权 = 所有人可见。如需限制访问范围,请添加授权。</p>
         <div v-for="(g, i) in grants" :key="i" class="mb-2 flex items-center gap-2">
           <Select :model-value="g.grantType" :options="grantTypeOpts" class="w-28 shrink-0" @update:model-value="(v) => { g.grantType = v as GrantType; g.grantCode = '' }" />
           <Select :model-value="g.grantCode" :options="codesFor(g.grantType)" placeholder="选择" class="flex-1" @update:model-value="(v) => g.grantCode = v" />

@@ -13,7 +13,7 @@ const current = computed(() => props.options.find((o) => o.value === props.model
       <ChevronDown class="size-4 shrink-0 text-ink-3" />
     </SelectTrigger>
     <SelectPortal>
-      <SelectContent class="anim-fade glass-strong z-[60] overflow-hidden rounded-xl border border-border p-1 shadow-xl" position="popper" :side-offset="6">
+      <SelectContent class="anim-fade z-[60] overflow-hidden rounded-xl border border-border bg-white p-1 shadow-xl dark:bg-[#141b2e]" position="popper" :side-offset="6">
         <SelectViewport>
           <SelectItem v-for="o in options" :key="o.value" :value="o.value"
             class="flex cursor-pointer items-center justify-between gap-3 rounded-lg px-3 py-1.5 text-sm outline-none data-[highlighted]:bg-[hsl(var(--primary)/0.12)]">
