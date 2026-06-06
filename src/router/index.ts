@@ -7,7 +7,15 @@ export const routes: RouteRecordRaw[] = [
   { path: '/login', name: 'login', component: () => import('@/features/auth/LoginView.vue'), meta: { public: true } },
   { path: '/account-inactive', name: 'account-inactive', component: () => import('@/features/auth/AccountInactiveView.vue'), meta: { public: true } },
   { path: '/', name: 'home', component: () => import('@/features/dashboard/HomeView.vue') },
-  { path: '/admin', name: 'admin', component: () => import('@/features/dashboard/HomeView.vue'), meta: { admin: true } },
+  {
+    path: '/admin',
+    component: () => import('@/features/admin/AdminLayout.vue'),
+    meta: { admin: true },
+    children: [
+      { path: '', redirect: '/admin/links' },
+      { path: 'links', name: 'admin-links', component: () => import('@/features/admin/links/LinksAdminView.vue') },
+    ],
+  },
 ]
 
 export function installGuards(router: Router) {
