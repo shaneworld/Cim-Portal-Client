@@ -1,12 +1,11 @@
 <script setup lang="ts">
 import { RouterLink, RouterView } from 'vue-router'
-import { ChevronLeft, Link2, ListChecks, Users } from 'lucide-vue-next'
+import { ChevronLeft, Link2, ListChecks } from 'lucide-vue-next'
 import GlassCard from '@/lib/ui/GlassCard.vue'
 import AppHeader from '@/features/dashboard/AppHeader.vue'
 const nav = [
   { to: '/admin/links', label: '链接', icon: Link2, enabled: true },
   { to: '/admin/enums', label: '枚举', icon: ListChecks, enabled: true },
-  { to: '/admin/users', label: '用户', icon: Users, enabled: false },
 ]
 </script>
 <template>

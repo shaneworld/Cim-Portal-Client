@@ -5,12 +5,12 @@ import { listLinks, deleteLink, type AdminLink } from '@/lib/api/admin'
 import { useLocale } from '@/lib/i18n/useLocale'
 import { useToastStore } from '@/stores/toast'
 import { usePagination } from '@/lib/composables/usePagination'
-import GlassCard from '@/lib/ui/GlassCard.vue'
 import Button from '@/lib/ui/Button.vue'
 import StatusDot from '@/lib/ui/StatusDot.vue'
 import Skeleton from '@/lib/ui/Skeleton.vue'
 import ConfirmDialog from '@/lib/ui/ConfirmDialog.vue'
 import Pagination from '@/lib/ui/Pagination.vue'
+import AdminPanel from '@/features/admin/AdminPanel.vue'
 import LinkFormModal from './LinkFormModal.vue'
 
 const { pick } = useLocale()
@@ -33,35 +33,39 @@ async function doDelete() {
 onMounted(load)
 </script>
 <template>
-  <div class="space-y-5">
-    <div class="flex items-center justify-between gap-3">
-      <h1 class="text-xl font-bold">链接管理</h1>
+  <AdminPanel title="链接管理">
+    <template #actions>
       <Button @click="openCreate"><Plus class="size-4" /> 新建链接</Button>
-    </div>
-    <div v-if="loading" class="space-y-2"><Skeleton v-for="n in 6" :key="n" /></div>
-    <GlassCard v-else-if="error" class="p-8 text-center">
+    </template>
+
+    <div v-if="loading" class="space-y-2 p-4"><Skeleton v-for="n in 6" :key="n" /></div>
+    <div v-else-if="error" class="p-8 text-center">
       <AlertTriangle class="mx-auto size-9 text-rose-500" /><p class="mt-2 text-rose-500">加载失败</p>
       <Button class="mx-auto mt-3" @click="load"><RotateCw class="size-4" /> 重试</Button>
-    </GlassCard>
-    <GlassCard v-else class="divide-y divide-border/60 p-0">
-      <div v-for="l in paged" :key="l.id" class="flex items-center gap-3 p-3.5">
-        <span class="min-w-0 flex-1">
-          <span class="block truncate font-semibold">{{ pick(l, 'name') }}</span>
-          <span class="block truncate text-xs text-ink-3">{{ l.code }}</span>
-        </span>
-        <span class="hidden w-24 shrink-0 text-xs text-ink-2 sm:block">{{ l.categoryCode }}</span>
-        <span class="hidden w-28 shrink-0 items-center gap-1.5 text-xs text-ink-2 sm:flex"><StatusDot :status="l.statusCode" /> {{ l.statusCode }}</span>
-        <span class="flex shrink-0 gap-1">
-          <Button variant="ghost" size="icon" :data-testid="`edit-${l.id}`" @click="openEdit(l)"><Pencil class="size-4" /></Button>
-          <Button variant="ghost" size="icon" :data-testid="`del-${l.id}`" @click="askDelete(l)"><Trash2 class="size-4 text-rose-500" /></Button>
-        </span>
+    </div>
+    <template v-else>
+      <div class="divide-y divide-border/60">
+        <div v-for="l in paged" :key="l.id" class="flex items-center gap-3 p-3.5">
+          <span class="min-w-0 flex-1">
+            <span class="block truncate font-semibold">{{ pick(l, 'name') }}</span>
+            <span class="block truncate text-xs text-ink-3">{{ l.code }}</span>
+          </span>
+          <span class="hidden w-24 shrink-0 text-xs text-ink-2 sm:block">{{ l.categoryCode }}</span>
+          <span class="hidden w-28 shrink-0 items-center gap-1.5 text-xs text-ink-2 sm:flex"><StatusDot :status="l.statusCode" /> {{ l.statusCode }}</span>
+          <span class="flex shrink-0 gap-1">
+            <Button variant="ghost" size="icon" :data-testid="`edit-${l.id}`" @click="openEdit(l)"><Pencil class="size-4" /></Button>
+            <Button variant="ghost" size="icon" :data-testid="`del-${l.id}`" @click="askDelete(l)"><Trash2 class="size-4 text-rose-500" /></Button>
+          </span>
+        </div>
       </div>
       <div v-if="!links.length" class="p-8 text-center text-ink-3">暂无链接</div>
-    </GlassCard>
+    </template>
 
-    <Pagination :page="page" :total="total" :page-size="pageSize" @update:page="page = $event" />
+    <template v-if="total > pageSize" #footer>
+      <Pagination :page="page" :total="total" :page-size="pageSize" @update:page="page = $event" />
+    </template>
+  </AdminPanel>
 
-    <LinkFormModal v-model:open="formOpen" :link="editing" @saved="load" />
-    <ConfirmDialog v-model:open="confirmOpen" title="删除链接" :message="`确认删除「${pendingDelete ? pick(pendingDelete, 'name') : ''}」?`" @confirm="doDelete" @cancel="confirmOpen = false" />
-  </div>
+  <LinkFormModal v-model:open="formOpen" :link="editing" @saved="load" />
+  <ConfirmDialog v-model:open="confirmOpen" title="删除链接" :message="`确认删除「${pendingDelete ? pick(pendingDelete, 'name') : ''}」?`" @confirm="doDelete" @cancel="confirmOpen = false" />
 </template>
