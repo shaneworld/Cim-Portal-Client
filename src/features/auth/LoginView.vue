@@ -22,8 +22,8 @@ async function pick(employeeId: string) {
 }
 </script>
 <template>
-  <div class="grid min-h-screen place-items-center p-6">
-    <GlassCard class="w-full max-w-md p-7 animate-fade-up">
+  <div class="flex min-h-screen items-center justify-center p-4 sm:p-6">
+    <GlassCard class="w-full max-w-md p-6 animate-fade-up sm:p-7">
       <div class="mb-6 flex items-center gap-3">
         <span class="grid size-11 place-items-center rounded-xl bg-brand text-xl font-extrabold text-white shadow-lg shadow-indigo-500/25">C</span>
         <div><h1 class="text-2xl font-bold leading-none">CIM 门户</h1><p class="mt-1 text-sm text-ink-2">选择身份进入</p></div>
@@ -34,7 +34,7 @@ async function pick(employeeId: string) {
           :disabled="busy !== null" @click="pick(id.employeeId)">
           <span class="grid size-9 shrink-0 place-items-center rounded-lg bg-brand text-white"><UserRound class="size-4" /></span>
           <span class="min-w-0 flex-1">
-            <span class="block font-medium">{{ id.employeeId }} · {{ id.nameZh }}</span>
+            <span class="block truncate font-medium">{{ id.employeeId }} · {{ id.nameZh }}</span>
             <span class="block truncate text-xs text-ink-3">{{ id.hint }}</span>
           </span>
           <ChevronRight class="size-4 text-ink-3 transition-transform group-hover:translate-x-0.5" />
