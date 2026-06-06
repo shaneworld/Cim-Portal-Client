@@ -56,15 +56,7 @@ onMounted(load)
           <SearchX class="mx-auto size-12 text-ink-3" /><p class="mt-3 text-ink-2">无匹配系统</p>
         </GlassCard>
         <template v-else>
-          <section>
-            <h2 class="mb-5 flex items-center gap-3">
-              <span class="h-6 w-1.5 rounded-full bg-brand"></span>
-              <span class="text-lg font-extrabold tracking-tight">所有系统</span>
-              <span class="text-[11px] font-semibold uppercase tracking-[0.18em] text-ink-3">All Systems</span>
-              <span class="h-px flex-1 bg-border"></span>
-            </h2>
-            <SystemGrid :categories="filtered" />
-          </section>
+          <SystemGrid :categories="filtered" />
           <LetterRail :available="available" :active="letter || null"
             @select="letter = (letter === $event ? '' : $event)" />
         </template>

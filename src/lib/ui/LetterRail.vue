@@ -7,7 +7,7 @@ function pick(letter: string) { emit('select', letter) }
 </script>
 
 <template>
-  <nav class="glass fixed right-2 top-1/2 z-20 hidden -translate-y-1/2 flex-col items-center gap-0.5 rounded-full px-1 py-2 shadow-lg shadow-indigo-500/10 md:flex">
+  <nav class="glass fixed right-2 top-24 z-20 hidden flex-col items-center gap-0.5 rounded-full px-1 py-2 shadow-lg shadow-indigo-500/10 md:flex">
     <button
       v-if="active"
       type="button"
