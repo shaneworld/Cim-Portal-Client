@@ -1,0 +1,61 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 222 47% 11%; --foreground: 222 47% 11%;
+    --primary: 243 75% 59%; --primary-foreground: 0 0% 100%;
+    --muted: 215 20% 96%; --muted-foreground: 215 16% 47%;
+    --border: 214 32% 88%; --input: 214 32% 88%; --ring: 243 75% 59%;
+    --ink: 222 47% 17%; --ink-2: 215 19% 35%; --ink-3: 215 16% 60%;
+    --accent: #4f46e5; --accent-2: #2563eb;
+    --go: 142 71% 38%; --caution: 32 95% 44%; --stop: 0 72% 51%;
+    --glass-bg: rgba(255,255,255,.55); --glass-strong: rgba(255,255,255,.72);
+    --glass-bd: rgba(255,255,255,.75); --glass-sh: 0 10px 34px -12px rgba(30,41,80,.20);
+    --r: 18px;
+  }
+  .dark {
+    --foreground: 213 31% 91%; --muted: 217 33% 16%; --muted-foreground: 215 20% 65%;
+    --border: 217 33% 22%; --input: 217 33% 22%;
+    --ink: 213 31% 91%; --ink-2: 215 20% 72%; --ink-3: 215 16% 55%;
+    --glass-bg: rgba(255,255,255,.06); --glass-strong: rgba(255,255,255,.10);
+    --glass-bd: rgba(255,255,255,.14); --glass-sh: 0 14px 40px -14px rgba(0,0,0,.6);
+  }
+  body { color: hsl(var(--ink)); min-height: 100vh;
+    background:
+      radial-gradient(42% 50% at 8% 4%, rgba(99,102,241,.42), transparent 60%),
+      radial-gradient(40% 45% at 96% 8%, rgba(34,211,238,.34), transparent 60%),
+      radial-gradient(50% 55% at 70% 100%, rgba(168,85,247,.30), transparent 60%),
+      linear-gradient(160deg, #eaf0fb, #eef2f8);
+    background-attachment: fixed; }
+  .dark body {
+    background:
+      radial-gradient(42% 50% at 8% 4%, rgba(79,70,229,.30), transparent 60%),
+      radial-gradient(40% 45% at 96% 8%, rgba(8,145,178,.24), transparent 60%),
+      radial-gradient(50% 55% at 70% 100%, rgba(124,58,237,.22), transparent 60%),
+      linear-gradient(160deg, #0b1020, #0a0f1e);
+    background-attachment: fixed; }
+}
+
+@layer components {
+  .glass { background: var(--glass-bg); -webkit-backdrop-filter: blur(18px); backdrop-filter: blur(18px);
+    border: 1px solid var(--glass-bd); box-shadow: var(--glass-sh); border-radius: var(--r); }
+  .glass-strong { background: var(--glass-strong); -webkit-backdrop-filter: blur(18px); backdrop-filter: blur(18px);
+    border: 1px solid var(--glass-bd); }
+  .text-ink-2 { color: hsl(var(--ink-2)); } .text-ink-3 { color: hsl(var(--ink-3)); }
+  .bg-brand { background-image: linear-gradient(135deg, var(--accent), var(--accent-2)); }
+  .animate-fade-up { animation: fade-up .4s cubic-bezier(.2,.7,.2,1) both; }
+  .anim-fade[data-state="open"] { animation: fade-in .16s ease; }
+  .anim-fade[data-state="closed"] { animation: fade-out .16s ease; }
+}
+
+@keyframes fade-up { from { opacity:0; transform: translateY(10px); } to { opacity:1; transform:none; } }
+@keyframes fade-in { from { opacity:0; } to { opacity:1; } }
+@keyframes fade-out { to { opacity:0; } }
+@keyframes shimmer { 100% { transform: translateX(100%); } }
+@keyframes pulse-dot { 0%{box-shadow:0 0 0 0 rgba(22,163,74,.45)} 70%{box-shadow:0 0 0 7px rgba(22,163,74,0)} 100%{box-shadow:0 0 0 0 rgba(22,163,74,0)} }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration:.001ms !important; transition-duration:.001ms !important; }
+}
