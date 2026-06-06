@@ -48,8 +48,14 @@ onMounted(load)
           <SearchX class="mx-auto size-12 text-ink-3" /><p class="mt-3 text-ink-2">无匹配系统</p>
         </GlassCard>
         <template v-else>
-          <DomainHighlights v-if="!query" :categories="categories" />
-          <SystemGrid :categories="filtered" />
+          <section v-if="!query">
+            <h2 class="mb-3 px-1 text-base font-bold">系统分类 <span class="text-sm font-normal text-ink-3">Categories</span></h2>
+            <DomainHighlights :categories="categories" />
+          </section>
+          <section>
+            <h2 class="mb-3 px-1 text-base font-bold">所有系统 <span class="text-sm font-normal text-ink-3">All Systems</span></h2>
+            <SystemGrid :categories="filtered" />
+          </section>
         </template>
       </template>
     </div>
