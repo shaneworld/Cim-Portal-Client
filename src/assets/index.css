@@ -11,7 +11,7 @@
     --ink: 222 47% 17%; --ink-2: 215 19% 35%; --ink-3: 215 16% 60%;
     --accent: #4f46e5; --accent-2: #2563eb;
     --go: 142 71% 38%; --caution: 32 95% 44%; --stop: 0 72% 51%;
-    --glass-bg: rgba(255,255,255,.55); --glass-strong: rgba(255,255,255,.72);
+    --glass-bg: rgba(255,255,255,.66); --glass-strong: rgba(255,255,255,.80);
     --glass-bd: rgba(255,255,255,.75); --glass-sh: 0 10px 34px -12px rgba(30,41,80,.20);
     --r: 18px;
   }
@@ -22,26 +22,30 @@
     --glass-bg: rgba(255,255,255,.06); --glass-strong: rgba(255,255,255,.10);
     --glass-bd: rgba(255,255,255,.14); --glass-sh: 0 14px 40px -14px rgba(0,0,0,.6);
   }
-  body { color: hsl(var(--ink)); min-height: 100vh;
+  body { color: hsl(var(--ink)); min-height: 100vh; background: #eef2f8; }
+  /* Ambient gradient on a fixed, GPU-composited layer — avoids per-scroll repaint
+     that `background-attachment: fixed` causes. */
+  body::before { content: ""; position: fixed; inset: 0; z-index: -1; pointer-events: none;
     background:
       radial-gradient(42% 50% at 8% 4%, rgba(99,102,241,.42), transparent 60%),
       radial-gradient(40% 45% at 96% 8%, rgba(34,211,238,.34), transparent 60%),
       radial-gradient(50% 55% at 70% 100%, rgba(168,85,247,.30), transparent 60%),
-      linear-gradient(160deg, #eaf0fb, #eef2f8);
-    background-attachment: fixed; }
-  .dark body {
+      linear-gradient(160deg, #eaf0fb, #eef2f8); }
+  .dark body { background: #0a0f1e; }
+  .dark body::before {
     background:
       radial-gradient(42% 50% at 8% 4%, rgba(79,70,229,.30), transparent 60%),
       radial-gradient(40% 45% at 96% 8%, rgba(8,145,178,.24), transparent 60%),
       radial-gradient(50% 55% at 70% 100%, rgba(124,58,237,.22), transparent 60%),
-      linear-gradient(160deg, #0b1020, #0a0f1e);
-    background-attachment: fixed; }
+      linear-gradient(160deg, #0b1020, #0a0f1e); }
 }
 
 @layer components {
-  .glass { background: var(--glass-bg); -webkit-backdrop-filter: blur(18px); backdrop-filter: blur(18px);
+  /* No backdrop-filter: blurring a smooth gradient is visually ~identical but
+     re-blurs every glass element on each scroll frame (~69 cards) → scroll jank. */
+  .glass { background: var(--glass-bg);
     border: 1px solid var(--glass-bd); box-shadow: var(--glass-sh); border-radius: var(--r); }
-  .glass-strong { background: var(--glass-strong); -webkit-backdrop-filter: blur(18px); backdrop-filter: blur(18px);
+  .glass-strong { background: var(--glass-strong);
     border: 1px solid var(--glass-bd); }
   .text-ink-2 { color: hsl(var(--ink-2)); } .text-ink-3 { color: hsl(var(--ink-3)); }
   .bg-brand { background-image: linear-gradient(135deg, var(--accent), var(--accent-2)); }
