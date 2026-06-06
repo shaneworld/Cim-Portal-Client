@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import { Plus, Pencil, Trash2, AlertTriangle, RotateCw } from 'lucide-vue-next'
 import { listEnumValues, deleteEnumValue } from '@/lib/api/admin'
 import type { EnumValue, EnumCategory } from '@/lib/api/types'
@@ -24,6 +24,7 @@ const toast = useToastStore()
 const active = ref<EnumCategory>('DEPARTMENT')
 const values = ref<EnumValue[]>([])
 const { page, paged, total, pageSize, reset } = usePagination(values, 10)
+const fillerCount = computed(() => (total.value > pageSize ? pageSize - paged.value.length : 0))
 const loading = ref(true)
 const error = ref(false)
 const formOpen = ref(false)
@@ -110,7 +111,7 @@ onMounted(load)
     </div>
     <template v-else>
       <div class="divide-y divide-border/60">
-        <div v-for="v in paged" :key="v.id" class="flex items-center gap-3 p-3.5">
+        <div v-for="v in paged" :key="v.id" class="flex h-16 items-center gap-3 px-3.5">
           <span class="w-32 shrink-0 truncate font-mono text-xs text-ink-2">{{ v.code }}</span>
           <span class="min-w-0 flex-1 truncate text-sm">
             {{ v.labelZh }} <span class="text-ink-3">/ {{ v.labelEn }}</span>
@@ -123,6 +124,7 @@ onMounted(load)
           </span>
         </div>
       </div>
+      <div v-if="fillerCount" :style="{ height: fillerCount * 64 + 'px' }" aria-hidden="true"></div>
       <div v-if="!values.length" class="p-8 text-center text-ink-3">该分类暂无枚举值</div>
     </template>
 

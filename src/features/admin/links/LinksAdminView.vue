@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import { Plus, Pencil, Trash2, AlertTriangle, RotateCw } from 'lucide-vue-next'
 import { listLinks, deleteLink, type AdminLink } from '@/lib/api/admin'
 import { useLocale } from '@/lib/i18n/useLocale'
@@ -17,6 +17,7 @@ const { pick } = useLocale()
 const toast = useToastStore()
 const links = ref<AdminLink[]>([]); const loading = ref(true); const error = ref(false)
 const { page, paged, total, pageSize } = usePagination(links, 10)
+const fillerCount = computed(() => (total.value > pageSize ? pageSize - paged.value.length : 0))
 const formOpen = ref(false); const editing = ref<AdminLink | null>(null)
 const confirmOpen = ref(false); const pendingDelete = ref<AdminLink | null>(null)
 
@@ -45,7 +46,7 @@ onMounted(load)
     </div>
     <template v-else>
       <div class="divide-y divide-border/60">
-        <div v-for="l in paged" :key="l.id" class="flex items-center gap-3 p-3.5">
+        <div v-for="l in paged" :key="l.id" class="flex h-16 items-center gap-3 px-3.5">
           <span class="min-w-0 flex-1">
             <span class="block truncate font-semibold">{{ pick(l, 'name') }}</span>
             <span class="block truncate text-xs text-ink-3">{{ l.code }}</span>
@@ -58,6 +59,7 @@ onMounted(load)
           </span>
         </div>
       </div>
+      <div v-if="fillerCount" :style="{ height: fillerCount * 64 + 'px' }" aria-hidden="true"></div>
       <div v-if="!links.length" class="p-8 text-center text-ink-3">暂无链接</div>
     </template>
 
