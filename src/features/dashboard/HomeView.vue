@@ -4,8 +4,6 @@ import { Inbox, AlertTriangle, RotateCw, SearchX } from 'lucide-vue-next'
 import type { HomeCategory } from '@/lib/api/types'
 import { getHome } from '@/lib/api/portal'
 import { useLocale } from '@/lib/i18n/useLocale'
-import { initialFor, availableInitials } from '@/lib/i18n/initial'
-import LetterRail from '@/lib/ui/LetterRail.vue'
 import GlassCard from '@/lib/ui/GlassCard.vue'
 import Button from '@/lib/ui/Button.vue'
 import Skeleton from '@/lib/ui/Skeleton.vue'
@@ -14,21 +12,14 @@ import HeroPanel from './HeroPanel.vue'
 import SystemGrid from './SystemGrid.vue'
 import GlobalSearch from './GlobalSearch.vue'
 
-const { pick, locale } = useLocale()
+const { pick } = useLocale()
 const categories = ref<HomeCategory[]>([])
-const loading = ref(true); const error = ref(false); const query = ref(''); const letter = ref('')
+const loading = ref(true); const error = ref(false); const query = ref('')
 
-const searchFiltered = computed(() => {
+const filtered = computed(() => {
   const q = query.value.trim().toLowerCase(); if (!q) return categories.value
   return categories.value.map((c) => ({ ...c, links: c.links.filter((l) =>
     pick(l, 'name').toLowerCase().includes(q) || l.code.toLowerCase().includes(q) || pick(c, 'categoryLabel').toLowerCase().includes(q)) })).filter((c) => c.links.length > 0)
-})
-const available = computed(() =>
-  availableInitials(searchFiltered.value.flatMap((c) => c.links).map((l) => pick(l, 'name')), locale.value as 'zh' | 'en'))
-const filtered = computed(() => {
-  if (!letter.value) return searchFiltered.value
-  return searchFiltered.value.map((c) => ({ ...c, links: c.links.filter((l) =>
-    initialFor(pick(l, 'name'), locale.value as 'zh' | 'en') === letter.value) })).filter((c) => c.links.length > 0)
 })
 const resultCount = computed(() => filtered.value.reduce((n, c) => n + c.links.length, 0))
 const noMatch = computed(() => !loading.value && !error.value && categories.value.length > 0 && filtered.value.length === 0)
@@ -37,7 +28,7 @@ onMounted(load)
 </script>
 <template>
   <div class="min-h-screen p-4 sm:p-6">
-    <div class="mx-auto max-w-[1600px] space-y-8 md:pr-12">
+    <div class="mx-auto max-w-[1600px] space-y-8">
       <AppHeader />
       <template v-if="loading">
         <div class="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4"><Skeleton v-for="n in 8" :key="n" /></div>
@@ -55,11 +46,7 @@ onMounted(load)
         <GlassCard v-else-if="noMatch" class="mx-auto mt-4 max-w-md p-10 text-center">
           <SearchX class="mx-auto size-12 text-ink-3" /><p class="mt-3 text-ink-2">无匹配系统</p>
         </GlassCard>
-        <template v-else>
-          <SystemGrid :categories="filtered" />
-          <LetterRail :available="available" :active="letter || null"
-            @select="letter = (letter === $event ? '' : $event)" />
-        </template>
+        <SystemGrid v-else :categories="filtered" />
       </template>
     </div>
   </div>
