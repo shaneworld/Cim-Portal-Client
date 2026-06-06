@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed, onMounted } from 'vue'
+import { ref, onMounted } from 'vue'
 import { Plus, Pencil, Trash2, AlertTriangle, RotateCw } from 'lucide-vue-next'
 import { listLinks, deleteLink, type AdminLink } from '@/lib/api/admin'
 import { useLocale } from '@/lib/i18n/useLocale'
@@ -16,8 +16,8 @@ import LinkFormModal from './LinkFormModal.vue'
 const { pick } = useLocale()
 const toast = useToastStore()
 const links = ref<AdminLink[]>([]); const loading = ref(true); const error = ref(false)
-const { page, paged, total, pageSize } = usePagination(links, 10)
-const fillerCount = computed(() => (total.value > pageSize.value ? pageSize.value - paged.value.length : 0))
+const rowsPerPage = ref(10)
+const { page, paged, total, pageSize } = usePagination(links, rowsPerPage)
 const formOpen = ref(false); const editing = ref<AdminLink | null>(null)
 const confirmOpen = ref(false); const pendingDelete = ref<AdminLink | null>(null)
 
@@ -34,7 +34,7 @@ async function doDelete() {
 onMounted(load)
 </script>
 <template>
-  <AdminPanel title="链接管理">
+  <AdminPanel title="链接管理" v-model:page-size="rowsPerPage">
     <template #actions>
       <Button @click="openCreate"><Plus class="size-4" /> 新建链接</Button>
     </template>
@@ -59,7 +59,6 @@ onMounted(load)
           </span>
         </div>
       </div>
-      <div v-if="fillerCount" :style="{ height: fillerCount * 64 + 'px' }" aria-hidden="true"></div>
       <div v-if="!links.length" class="p-8 text-center text-ink-3">暂无链接</div>
     </template>
 

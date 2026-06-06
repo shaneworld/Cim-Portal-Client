@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed, onMounted } from 'vue'
+import { ref, onMounted } from 'vue'
 import { Plus, Pencil, Trash2, AlertTriangle, RotateCw } from 'lucide-vue-next'
 import { listEnumValues, deleteEnumValue } from '@/lib/api/admin'
 import type { EnumValue, EnumCategory } from '@/lib/api/types'
@@ -23,8 +23,8 @@ const CATEGORIES: { code: EnumCategory; label: string }[] = [
 const toast = useToastStore()
 const active = ref<EnumCategory>('DEPARTMENT')
 const values = ref<EnumValue[]>([])
-const { page, paged, total, pageSize, reset } = usePagination(values, 10)
-const fillerCount = computed(() => (total.value > pageSize.value ? pageSize.value - paged.value.length : 0))
+const rowsPerPage = ref(10)
+const { page, paged, total, pageSize, reset } = usePagination(values, rowsPerPage)
 const loading = ref(true)
 const error = ref(false)
 const formOpen = ref(false)
@@ -85,7 +85,7 @@ onMounted(load)
 </script>
 
 <template>
-  <AdminPanel title="枚举管理">
+  <AdminPanel title="枚举管理" v-model:page-size="rowsPerPage">
     <template #actions>
       <Button @click="openCreate"><Plus class="size-4" /> 新建</Button>
     </template>
@@ -124,7 +124,6 @@ onMounted(load)
           </span>
         </div>
       </div>
-      <div v-if="fillerCount" :style="{ height: fillerCount * 64 + 'px' }" aria-hidden="true"></div>
       <div v-if="!values.length" class="p-8 text-center text-ink-3">该分类暂无枚举值</div>
     </template>
 

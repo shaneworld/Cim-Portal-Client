@@ -9,10 +9,10 @@ const nav = [
 ]
 </script>
 <template>
-  <div class="min-h-screen p-4 sm:p-6">
-    <div class="mx-auto max-w-[1600px] space-y-4">
+  <div class="flex h-[100dvh] flex-col p-4 sm:p-6">
+    <div class="mx-auto flex min-h-0 w-full max-w-[1600px] flex-1 flex-col gap-4">
       <AppHeader />
-      <div class="flex flex-col gap-4 md:flex-row md:items-stretch">
+      <div class="flex min-h-0 flex-1 flex-col gap-4 md:flex-row">
       <GlassCard class="shrink-0 p-3 md:w-56">
         <RouterLink to="/" class="mb-3 flex items-center gap-1.5 px-2 text-sm text-ink-2 hover:text-[hsl(var(--ink))]"><ChevronLeft class="size-4" /> 返回门户</RouterLink>
         <nav class="flex gap-1 overflow-x-auto md:flex-col">
@@ -26,7 +26,7 @@ const nav = [
           </template>
         </nav>
       </GlassCard>
-      <main class="min-w-0 flex-1"><RouterView /></main>
+      <main class="min-h-0 min-w-0 flex-1"><RouterView /></main>
       </div>
     </div>
   </div>
