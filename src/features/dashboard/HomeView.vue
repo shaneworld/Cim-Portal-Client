@@ -9,7 +9,6 @@ import Button from '@/lib/ui/Button.vue'
 import Skeleton from '@/lib/ui/Skeleton.vue'
 import AppHeader from './AppHeader.vue'
 import HeroPanel from './HeroPanel.vue'
-import DomainHighlights from './DomainHighlights.vue'
 import SystemGrid from './SystemGrid.vue'
 import GlobalSearch from './GlobalSearch.vue'
 
@@ -48,15 +47,6 @@ onMounted(load)
           <SearchX class="mx-auto size-12 text-ink-3" /><p class="mt-3 text-ink-2">无匹配系统</p>
         </GlassCard>
         <template v-else>
-          <section v-if="!query">
-            <h2 class="mb-5 flex items-center gap-3">
-              <span class="h-6 w-1.5 rounded-full bg-brand"></span>
-              <span class="text-lg font-extrabold tracking-tight">系统分类</span>
-              <span class="text-[11px] font-semibold uppercase tracking-[0.18em] text-ink-3">Categories</span>
-              <span class="h-px flex-1 bg-border"></span>
-            </h2>
-            <DomainHighlights :categories="categories" />
-          </section>
           <section>
             <h2 class="mb-5 flex items-center gap-3">
               <span class="h-6 w-1.5 rounded-full bg-brand"></span>

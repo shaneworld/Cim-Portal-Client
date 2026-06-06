@@ -28,7 +28,7 @@
   - `searchFiltered`:现有搜索过滤结果(按 query)。
   - `available` = `availableInitials(searchFiltered 的所有链接名(按 locale pick), locale)`。
   - `filtered`(最终用于网格)= 在 `searchFiltered` 基础上,若 `letter` 非空,仅保留 `initialFor(pick(link,'name'), locale) === letter` 的链接;空类别移除。
-  - `letter` 非空时**隐藏 DomainHighlights**(与搜索一致:`v-if="!query && !letter"`);`所有系统` 网格始终显示 `filtered`。
+  - `所有系统` 网格始终显示 `filtered`(首页已移除「系统分类 / Categories」DomainHighlights 区块,仅保留 SystemGrid;故无需隐藏分类卡)。
   - `LetterRail` 接 `:available` / `:active="letter"`,`@select="letter = (letter === $event ? '' : $event)"`(toggle);清除 emit `''`。
   - 无匹配(搜索+字母后为空)→ 复用既有「无匹配系统」状态。
   - locale 切换时 `initialFor` 结果随之变化(computed 自动重算)。
