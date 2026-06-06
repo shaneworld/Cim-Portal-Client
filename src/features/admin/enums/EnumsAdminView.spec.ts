@@ -40,4 +40,16 @@ describe('EnumsAdminView', () => {
     w.unmount()
     document.body.innerHTML = ''
   })
+  it('分页 + 切分类回第 1 页', async () => {
+    const dept = Array.from({ length: 12 }, (_, i) => ({ id: i + 1, category: 'DEPARTMENT', code: `D${i + 1}`, labelZh: `部门${i + 1}`, labelEn: `D${i + 1}`, sortOrder: i, active: true }))
+    server.use(http.get(`${BASE}/api/admin/enums/DEPARTMENT`, () => HttpResponse.json(dept)))
+    server.use(http.get(`${BASE}/api/admin/enums/ROLE`, () => HttpResponse.json([{ id: 99, category: 'ROLE', code: 'OP', labelZh: '操作', labelEn: 'Op', sortOrder: 1, active: true }])))
+    const w = mount(EnumsAdminView, { global: { plugins: [i18n] } }); await flushPromises()
+    expect(w.findAll('[data-testid^="enum-del-"]').length).toBe(10)
+    await w.get('[data-testid="page-next"]').trigger('click'); await flushPromises()
+    expect(w.findAll('[data-testid^="enum-del-"]').length).toBe(2)
+    const role = [...w.findAll('button')].find((b) => b.text().includes('角色'))!
+    await role.trigger('click'); await flushPromises()
+    expect(w.text()).toContain('操作'); expect(w.find('[data-testid="page-next"]').exists()).toBe(false)
+  })
 })

@@ -10,6 +10,8 @@ import Badge from '@/lib/ui/Badge.vue'
 import Skeleton from '@/lib/ui/Skeleton.vue'
 import ConfirmDialog from '@/lib/ui/ConfirmDialog.vue'
 import EnumFormModal from './EnumFormModal.vue'
+import { usePagination } from '@/lib/composables/usePagination'
+import Pagination from '@/lib/ui/Pagination.vue'
 
 const CATEGORIES: { code: EnumCategory; label: string }[] = [
   { code: 'DEPARTMENT', label: '部门' },
@@ -21,6 +23,7 @@ const CATEGORIES: { code: EnumCategory; label: string }[] = [
 const toast = useToastStore()
 const active = ref<EnumCategory>('DEPARTMENT')
 const values = ref<EnumValue[]>([])
+const { page, paged, total, pageSize, reset } = usePagination(values, 10)
 const loading = ref(true)
 const error = ref(false)
 const formOpen = ref(false)
@@ -43,6 +46,7 @@ async function load() {
 function switchTo(c: EnumCategory) {
   if (c !== active.value) {
     active.value = c
+    reset()
     load()
   }
 }
@@ -108,7 +112,7 @@ onMounted(load)
     </GlassCard>
 
     <GlassCard v-else class="divide-y divide-border/60 p-0">
-      <div v-for="v in values" :key="v.id" class="flex items-center gap-3 p-3.5">
+      <div v-for="v in paged" :key="v.id" class="flex items-center gap-3 p-3.5">
         <span class="w-32 shrink-0 truncate font-mono text-xs text-ink-2">{{ v.code }}</span>
         <span class="min-w-0 flex-1 truncate text-sm">
           {{ v.labelZh }} <span class="text-ink-3">/ {{ v.labelEn }}</span>
@@ -126,6 +130,8 @@ onMounted(load)
       </div>
       <div v-if="!values.length" class="p-8 text-center text-ink-3">该分类暂无枚举值</div>
     </GlassCard>
+
+    <Pagination :page="page" :total="total" :page-size="pageSize" @update:page="page = $event" />
 
     <EnumFormModal v-model:open="formOpen" :category="active" :value="editing" @saved="load" />
 
