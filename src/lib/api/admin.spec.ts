@@ -2,7 +2,7 @@ import { describe, it, expect, beforeEach } from 'vitest'
 import { http, HttpResponse } from 'msw'
 import { server } from '@/test/msw'
 import { configureClient } from '@/lib/api/client'
-import { listLinks, getLink, createLink, updateLink, deleteLink, replaceGrants } from './admin'
+import { listLinks, getLink, createLink, updateLink, deleteLink, replaceGrants, listEnumValues, createEnumValue, updateEnumValue, deleteEnumValue } from './admin'
 
 const BASE = 'http://localhost:8080'
 beforeEach(() => configureClient({ baseUrl: BASE, getToken: () => 't', getLocale: () => 'zh', onUnauthorized: () => {} }))
@@ -33,5 +33,18 @@ describe('admin api', () => {
     server.use(http.put(`${BASE}/api/admin/links/9/grants`, async ({ request }) => { body = await request.json(); return HttpResponse.json([{ id: 1, linkId: 9, grantType: 'DEPARTMENT', grantCode: 'FAB1-PROD' }]) }))
     const r = await replaceGrants(9, [{ grantType: 'DEPARTMENT', grantCode: 'FAB1-PROD' }])
     expect(body.grants[0].grantCode).toBe('FAB1-PROD'); expect(r[0].grantType).toBe('DEPARTMENT')
+  })
+  it('enum CRUD 命中 /api/admin/enums/{category}[/id]', async () => {
+    server.use(http.get(`${BASE}/api/admin/enums/DEPARTMENT`, () => HttpResponse.json([{ id: 1, category: 'DEPARTMENT', code: 'IT', labelZh: '信息', labelEn: 'IT', sortOrder: 10, active: true }])))
+    let postBody: any, putBody: any, del = false
+    server.use(http.post(`${BASE}/api/admin/enums/ROLE`, async ({ request }) => { postBody = await request.json(); return HttpResponse.json({ id: 5, category: 'ROLE', ...postBody }) }))
+    server.use(http.put(`${BASE}/api/admin/enums/ROLE/5`, async ({ request }) => { putBody = await request.json(); return HttpResponse.json({ id: 5, category: 'ROLE', ...putBody }) }))
+    server.use(http.delete(`${BASE}/api/admin/enums/ROLE/5`, () => { del = true; return new HttpResponse(null, { status: 204 }) }))
+    expect((await listEnumValues('DEPARTMENT'))[0].code).toBe('IT')
+    const c = await createEnumValue('ROLE', { code: 'OP', labelZh: '操作', labelEn: 'Op', sortOrder: 10, active: true })
+    expect(c.id).toBe(5); expect(postBody.code).toBe('OP')
+    await updateEnumValue('ROLE', 5, { code: 'OP', labelZh: '操作员', labelEn: 'Operator', sortOrder: 10, active: false })
+    expect(putBody.active).toBe(false)
+    await deleteEnumValue('ROLE', 5); expect(del).toBe(true)
   })
 })
