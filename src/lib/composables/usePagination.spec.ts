@@ -24,4 +24,15 @@ describe('usePagination', () => {
     const { page, reset } = usePagination(items, 10)
     page.value = 3; reset(); expect(page.value).toBe(1)
   })
+  it('接受 ref pageSize:改 ref 重算并回夹', async () => {
+    const items = ref(Array.from({ length: 30 }, (_, i) => i + 1))
+    const size = ref(5)
+    const { page, paged, totalPages } = usePagination(items, size)
+    expect(paged.value.length).toBe(5); expect(totalPages.value).toBe(6)
+    page.value = 6
+    size.value = 20
+    await nextTick()
+    expect(totalPages.value).toBe(2); expect(page.value).toBe(2)
+    expect(paged.value.length).toBe(10)
+  })
 })

@@ -17,7 +17,7 @@ const { pick } = useLocale()
 const toast = useToastStore()
 const links = ref<AdminLink[]>([]); const loading = ref(true); const error = ref(false)
 const { page, paged, total, pageSize } = usePagination(links, 10)
-const fillerCount = computed(() => (total.value > pageSize ? pageSize - paged.value.length : 0))
+const fillerCount = computed(() => (total.value > pageSize.value ? pageSize.value - paged.value.length : 0))
 const formOpen = ref(false); const editing = ref<AdminLink | null>(null)
 const confirmOpen = ref(false); const pendingDelete = ref<AdminLink | null>(null)
 
