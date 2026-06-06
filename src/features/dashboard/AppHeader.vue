@@ -2,7 +2,7 @@
 import { computed } from 'vue'
 import { useRouter, RouterLink } from 'vue-router'
 import { useI18n } from 'vue-i18n'
-import { Languages, Sun, Moon, Monitor, LogOut } from 'lucide-vue-next'
+import { Languages, Sun, Moon, Monitor, LogOut, UserRound } from 'lucide-vue-next'
 import { useAuthStore } from '@/stores/auth'
 import { useLocaleStore } from '@/stores/locale'
 import { useTheme, type ThemeMode } from '@/lib/theme/useTheme'
@@ -28,7 +28,10 @@ function logout() { auth.logout(); try { router.push('/login') } catch { /* no r
     </div>
     <nav class="flex min-w-0 items-center gap-1.5">
       <RouterLink v-if="auth.isAdmin" to="/admin" class="mr-1 inline-flex h-9 shrink-0 items-center rounded-xl bg-brand px-3 text-sm font-semibold text-white">管理</RouterLink>
-      <span class="hidden max-w-[40vw] truncate px-1 text-sm text-ink-2 sm:inline">{{ name }} · {{ auth.currentUser?.employeeId }}</span>
+      <span class="hidden max-w-[40vw] shrink items-center gap-1.5 rounded-full glass-strong py-1 pl-1 pr-3 sm:flex">
+        <span class="grid size-7 shrink-0 place-items-center rounded-full bg-brand text-white"><UserRound class="size-4" /></span>
+        <span class="truncate text-sm text-ink-2">{{ name }} · {{ auth.currentUser?.employeeId }}</span>
+      </span>
       <Button variant="ghost" size="sm" class="shrink-0 gap-1.5" @click="toggleLocale"><Languages class="size-4" /> {{ locale === 'zh' ? 'EN' : '中' }}</Button>
       <Button variant="ghost" size="icon" class="shrink-0" @click="cycleTheme"><component :is="ThemeIcon" class="size-4" /></Button>
       <Button variant="ghost" size="icon" class="shrink-0" @click="logout"><LogOut class="size-4" /></Button>

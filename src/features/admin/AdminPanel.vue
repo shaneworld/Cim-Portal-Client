@@ -12,7 +12,7 @@ const slots = useSlots()
       <div v-if="slots.actions" class="flex shrink-0 items-center gap-2"><slot name="actions" /></div>
     </div>
     <div v-if="slots.toolbar" class="border-b border-border/60 px-4 py-3"><slot name="toolbar" /></div>
-    <div class="min-h-0 flex-1"><slot /></div>
+    <div class="min-h-0 flex-1 overflow-y-auto"><slot /></div>
     <div v-if="slots.footer" class="border-t border-border/60 px-4 py-3"><slot name="footer" /></div>
   </GlassCard>
 </template>

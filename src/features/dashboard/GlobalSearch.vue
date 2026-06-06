@@ -12,7 +12,7 @@ const emit = defineEmits<{ 'update:query': [string] }>()
       <input
         :value="query"
         type="text"
-        placeholder="搜索系统、文档…"
+        placeholder="搜索系统"
         class="h-10 w-full rounded-xl border border-input glass-strong px-3 pr-24 text-sm outline-none focus-visible:ring-2 focus-visible:ring-ring"
         @input="emit('update:query', ($event.target as HTMLInputElement).value)"
         @keyup.enter="emit('update:query', query)"

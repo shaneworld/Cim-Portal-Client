@@ -38,7 +38,7 @@ const stats = computed(() => [
     <div class="grid grid-cols-3 gap-3">
       <div v-for="s in stats" :key="s.label" class="glass-strong flex flex-col items-center justify-center rounded-xl p-3 text-center">
         <span class="text-3xl font-extrabold tabular-nums">{{ s.value }}</span>
-        <span class="mt-1 text-[11px] text-ink-3">{{ s.label }}</span>
+        <span class="mt-1.5 text-sm font-medium text-ink-2">{{ s.label }}</span>
       </div>
     </div>
   </GlassCard>

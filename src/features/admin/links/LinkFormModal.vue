@@ -3,6 +3,7 @@ import { reactive, ref, watch } from 'vue'
 import { Trash2, Plus } from 'lucide-vue-next'
 import Modal from '@/lib/ui/Modal.vue'
 import Input from '@/lib/ui/Input.vue'
+import NumberInput from '@/lib/ui/NumberInput.vue'
 import Button from '@/lib/ui/Button.vue'
 import Select from '@/lib/ui/Select.vue'
 import Switch from '@/lib/ui/Switch.vue'
@@ -91,7 +92,7 @@ async function save() {
           <Input data-testid="f-code" :model-value="form.code" :disabled="!!link" placeholder="mes-wip" @update:model-value="(v) => form.code = v" />
           <span v-if="fieldErrors.code" class="mt-1 block text-xs text-rose-500">{{ fieldErrors.code }}</span></label>
         <label class="block"><span class="mb-1 block text-xs font-medium text-ink-2">排序 Sort</span>
-          <Input data-testid="f-sortOrder" type="number" :model-value="String(form.sortOrder)" @update:model-value="(v) => form.sortOrder = Number(v)" /></label>
+          <NumberInput data-testid="f-sortOrder" :model-value="form.sortOrder" @update:model-value="(v) => form.sortOrder = v" /></label>
         <label class="block"><span class="mb-1 block text-xs font-medium text-ink-2">中文名</span>
           <Input data-testid="f-nameZh" :model-value="form.nameZh" @update:model-value="(v) => form.nameZh = v" />
           <span v-if="fieldErrors.nameZh" class="mt-1 block text-xs text-rose-500">{{ fieldErrors.nameZh }}</span></label>
@@ -118,7 +119,7 @@ async function save() {
       </div>
       <label class="flex items-center gap-2"><Switch :model-value="form.openInNewTab" @update:model-value="(v) => form.openInNewTab = v" /> <span class="text-sm text-ink-2">新标签页打开</span></label>
       <div class="border-t border-border/60 pt-3">
-        <div class="mb-2 flex items-center justify-between"><b class="text-sm">访问授权</b><Button variant="ghost" size="sm" @click="addGrant"><Plus class="size-4" /> 添加授权</Button></div>
+        <div class="mb-2 flex items-center justify-between"><b class="text-sm">访问授权</b><button type="button" class="flex items-center gap-1 text-sm font-medium text-[hsl(var(--primary))] transition hover:opacity-80" @click="addGrant"><Plus class="size-4" /> 添加授权</button></div>
         <p v-if="!grants.length" class="text-xs text-ink-3">未设置授权 = 所有人可见。如需限制访问范围,请添加授权。</p>
         <div v-for="(g, i) in grants" :key="i" class="mb-2 flex items-center gap-2">
           <Select :model-value="g.grantType" :options="grantTypeOpts" class="w-28 shrink-0" @update:model-value="(v) => { g.grantType = v as GrantType; g.grantCode = '' }" />

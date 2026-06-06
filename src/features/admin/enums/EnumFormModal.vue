@@ -2,6 +2,7 @@
 import { reactive, ref, watch } from 'vue'
 import Modal from '@/lib/ui/Modal.vue'
 import Input from '@/lib/ui/Input.vue'
+import NumberInput from '@/lib/ui/NumberInput.vue'
 import Switch from '@/lib/ui/Switch.vue'
 import Button from '@/lib/ui/Button.vue'
 import { createEnumValue, updateEnumValue, type EnumValueInput } from '@/lib/api/admin'
@@ -62,7 +63,7 @@ async function save() {
       </div>
       <div class="grid grid-cols-1 gap-3 sm:grid-cols-2">
         <label class="block"><span class="mb-1 block text-xs font-medium text-ink-2">排序 Sort</span>
-          <Input data-testid="e-sort" type="number" :model-value="String(form.sortOrder)" @update:model-value="(v) => form.sortOrder = Number(v)" /></label>
+          <NumberInput data-testid="e-sort" :model-value="form.sortOrder" @update:model-value="(v) => form.sortOrder = v" /></label>
         <label class="flex items-end gap-2 pb-1"><Switch :model-value="form.active" @update:model-value="(v) => form.active = v" /> <span class="text-sm text-ink-2">启用</span></label>
       </div>
     </div>
