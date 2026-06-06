@@ -9,12 +9,12 @@ const emit = defineEmits<{ 'update:query': [string] }>()
 <template>
   <div class="flex items-center gap-2">
     <div class="relative w-full max-w-md">
-      <Search class="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-ink-3" />
+      <Search class="pointer-events-none absolute left-3.5 top-1/2 size-4 -translate-y-1/2 text-ink-3" />
       <input
         :value="query"
         type="text"
         placeholder="搜索系统、文档…"
-        class="h-10 w-full rounded-xl border border-input glass-strong pl-10 pr-24 text-sm outline-none focus-visible:ring-2 focus-visible:ring-ring"
+        class="h-10 w-full rounded-xl border border-input glass-strong pl-12 pr-24 text-sm outline-none focus-visible:ring-2 focus-visible:ring-ring"
         @input="emit('update:query', ($event.target as HTMLInputElement).value)"
         @keyup.enter="emit('update:query', query)"
       />
