@@ -30,7 +30,7 @@ describe('HomeView', () => {
     expect(w.text()).toContain('欧阳操作')
     expect(w.text()).toContain('制造执行')
     expect(w.text()).toContain('在制品管理')
-    expect(w.text()).toContain('SSO')
+    expect(w.text()).toContain('39100')
     await w.get('input').setValue('在制品')
     expect(w.text()).toContain('在制品管理'); expect(w.text()).not.toContain('设备效率')
   })

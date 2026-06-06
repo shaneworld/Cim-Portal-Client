@@ -11,7 +11,7 @@ import AppHeader from './AppHeader.vue'
 import HeroPanel from './HeroPanel.vue'
 import DomainHighlights from './DomainHighlights.vue'
 import SystemGrid from './SystemGrid.vue'
-import TrustStrip from './TrustStrip.vue'
+import SupportBar from './SupportBar.vue'
 import GlobalSearch from './GlobalSearch.vue'
 
 const { pick } = useLocale()
@@ -40,7 +40,7 @@ onMounted(load)
         <Button class="mx-auto mt-4" @click="load"><RotateCw class="size-4" /> 重试</Button>
       </GlassCard>
       <template v-else>
-        <HeroPanel />
+        <HeroPanel :categories="categories" />
         <GlobalSearch v-model:query="query" :result-count="resultCount" />
         <GlassCard v-if="categories.length === 0" class="mx-auto mt-4 max-w-md p-10 text-center">
           <Inbox class="mx-auto size-12 text-ink-3" /><p class="mt-3 text-ink-2">暂无可访问的系统</p>
@@ -52,7 +52,7 @@ onMounted(load)
           <DomainHighlights v-if="!query" :categories="categories" />
           <SystemGrid :categories="filtered" />
         </template>
-        <TrustStrip />
+        <SupportBar />
       </template>
     </div>
   </div>
