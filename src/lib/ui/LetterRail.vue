@@ -7,12 +7,12 @@ function pick(letter: string) { emit('select', letter) }
 </script>
 
 <template>
-  <nav class="fixed right-1 top-1/2 z-20 hidden -translate-y-1/2 flex-col items-center gap-0.5 md:flex">
+  <nav class="glass fixed right-2 top-1/2 z-20 hidden -translate-y-1/2 flex-col items-center gap-0.5 rounded-full px-1 py-2 shadow-lg shadow-indigo-500/10 md:flex">
     <button
       v-if="active"
       type="button"
       data-testid="rail-clear"
-      class="mb-1 grid size-5 place-items-center rounded-full text-ink-3 hover:text-[hsl(var(--ink))]"
+      class="mb-1 grid size-5 place-items-center rounded-full bg-[hsl(var(--primary)/0.12)] text-[hsl(var(--primary))] hover:bg-[hsl(var(--primary)/0.2)]"
       @click="emit('select', '')"
     >
       <X class="size-3.5" />
@@ -23,12 +23,12 @@ function pick(letter: string) { emit('select', letter) }
       type="button"
       :data-letter="l"
       :disabled="!available.has(l)"
-      class="grid size-5 place-items-center rounded-md text-[11px] font-semibold leading-none transition"
+      class="grid size-5 place-items-center rounded-md text-[11px] leading-none transition"
       :class="active === l
-        ? 'bg-brand text-white shadow'
+        ? 'bg-brand font-bold text-white shadow'
         : available.has(l)
-          ? 'text-ink-2 hover:bg-[hsl(var(--primary)/0.12)] hover:text-[hsl(var(--primary))]'
-          : 'cursor-default text-ink-3/40'"
+          ? 'font-bold text-[hsl(var(--primary))] hover:bg-[hsl(var(--primary)/0.15)]'
+          : 'cursor-default font-medium text-ink-3/30'"
       @click="available.has(l) && pick(l)"
     >
       {{ l }}
