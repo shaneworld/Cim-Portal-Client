@@ -13,6 +13,7 @@ export const routes: RouteRecordRaw[] = [
     children: [
       { path: '', redirect: '/admin/links' },
       { path: 'links', name: 'admin-links', component: () => import('@/features/admin/links/LinksAdminView.vue') },
+      { path: 'enums', name: 'admin-enums', component: () => import('@/features/admin/enums/EnumsAdminView.vue') },
     ],
   },
 ]

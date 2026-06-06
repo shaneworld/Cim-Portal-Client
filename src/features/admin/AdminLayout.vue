@@ -5,7 +5,7 @@ import GlassCard from '@/lib/ui/GlassCard.vue'
 import AppHeader from '@/features/dashboard/AppHeader.vue'
 const nav = [
   { to: '/admin/links', label: '链接', icon: Link2, enabled: true },
-  { to: '/admin/enums', label: '枚举', icon: ListChecks, enabled: false },
+  { to: '/admin/enums', label: '枚举', icon: ListChecks, enabled: true },
   { to: '/admin/users', label: '用户', icon: Users, enabled: false },
 ]
 </script>
