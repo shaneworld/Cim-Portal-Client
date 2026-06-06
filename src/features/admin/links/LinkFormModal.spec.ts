@@ -31,4 +31,16 @@ describe('LinkFormModal', () => {
     expect(created).toBe(true); expect(grantsPut).toBe(true)
     w.unmount(); document.body.innerHTML = ''
   })
+  it('edit: 从详情加载真实授权,保存整组提交(不清空)', async () => {
+    const listLink = { id: 1, code: 'mes-wip', nameZh: '在制品', nameEn: 'WIP', url: 'u', icon: 'factory', categoryCode: 'MES', statusCode: 'ACTIVE', sortOrder: 1, openInNewTab: true, grants: [] }
+    server.use(http.get(`${BASE}/api/admin/links/1`, () => HttpResponse.json({ ...listLink, grants: [{ id: 7, linkId: 1, grantType: 'DEPARTMENT', grantCode: 'FAB1-PROD' }] })))
+    server.use(http.put(`${BASE}/api/admin/links/1`, () => HttpResponse.json({ ...listLink, grants: [] })))
+    let grantBody: any
+    server.use(http.put(`${BASE}/api/admin/links/1/grants`, async ({ request }) => { grantBody = await request.json(); return HttpResponse.json([]) }))
+    const w = mount(LinkFormModal, { props: { open: true, link: listLink as never }, global: { plugins: [i18n] }, attachTo: document.body }); await flushPromises()
+    const save = [...document.body.querySelectorAll('button')].find((b) => /保存/.test(b.textContent || ''))!
+    save.click(); await flushPromises()
+    expect(grantBody.grants).toEqual([{ grantType: 'DEPARTMENT', grantCode: 'FAB1-PROD' }])
+    w.unmount(); document.body.innerHTML = ''
+  })
 })

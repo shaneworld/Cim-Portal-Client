@@ -8,7 +8,7 @@ import Select from '@/lib/ui/Select.vue'
 import Switch from '@/lib/ui/Switch.vue'
 import AppIcon from '@/lib/ui/AppIcon.vue'
 import { listEnum } from '@/lib/api/enums'
-import { createLink, updateLink, replaceGrants, type AdminLink, type LinkInput, type GrantInput, type GrantType } from '@/lib/api/admin'
+import { createLink, updateLink, replaceGrants, getLink, type AdminLink, type LinkInput, type GrantInput, type GrantType } from '@/lib/api/admin'
 import { ApiError } from '@/lib/api/client'
 import { useToastStore } from '@/stores/toast'
 import { useLocale } from '@/lib/i18n/useLocale'
@@ -40,11 +40,14 @@ async function loadEnums() {
     if (!form.statusCode && statusOpts.value[0]) form.statusCode = statusOpts.value[0].value
   }
 }
-function populate() {
+async function populate() {
   fieldErrors.value = {}
   if (props.link) {
     Object.assign(form, { code: props.link.code, nameZh: props.link.nameZh, nameEn: props.link.nameEn, url: props.link.url, icon: props.link.icon, categoryCode: props.link.categoryCode, statusCode: props.link.statusCode, sortOrder: props.link.sortOrder, openInNewTab: props.link.openInNewTab })
     grants.value = props.link.grants.map((g) => ({ grantType: g.grantType, grantCode: g.grantCode }))
+    // The list endpoint returns grants:[]; fetch the detail to load the real grants
+    // (otherwise saving would replace them with an empty set and wipe access).
+    try { const full = await getLink(props.link.id); grants.value = full.grants.map((g) => ({ grantType: g.grantType, grantCode: g.grantCode })) } catch { /* keep seeded grants */ }
   } else {
     Object.assign(form, { code: '', nameZh: '', nameEn: '', url: '', icon: 'factory', categoryCode: '', statusCode: '', sortOrder: 100, openInNewTab: true })
     grants.value = []

@@ -14,9 +14,9 @@ beforeEach(() => { setActivePinia(createPinia()); i18n.global.locale.value = 'zh
   server.use(http.get(`${BASE}/api/admin/links`, () => HttpResponse.json(LINKS)))
 })
 describe('LinksAdminView', () => {
-  it('渲染链接行(名称/分类/授权数)', async () => {
+  it('渲染链接行(名称/代码/分类)', async () => {
     const w = mount(LinksAdminView, { global: { plugins: [i18n] } }); await flushPromises()
-    expect(w.text()).toContain('在制品管理'); expect(w.text()).toContain('MES'); expect(w.text()).toContain('1')
+    expect(w.text()).toContain('在制品管理'); expect(w.text()).toContain('mes-wip'); expect(w.text()).toContain('MES')
   })
   it('删除走确认 → 调 DELETE', async () => {
     let deleted = false

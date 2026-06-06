@@ -48,7 +48,6 @@ onMounted(load)
         </span>
         <span class="hidden w-24 shrink-0 text-xs text-ink-2 sm:block">{{ l.categoryCode }}</span>
         <span class="hidden w-28 shrink-0 items-center gap-1.5 text-xs text-ink-2 sm:flex"><StatusDot :status="l.statusCode" /> {{ l.statusCode }}</span>
-        <span class="w-16 shrink-0 text-center text-xs text-ink-3">{{ l.grants.length }} 授权</span>
         <span class="flex shrink-0 gap-1">
           <Button variant="ghost" size="icon" :data-testid="`edit-${l.id}`" @click="openEdit(l)"><Pencil class="size-4" /></Button>
           <Button variant="ghost" size="icon" :data-testid="`del-${l.id}`" @click="askDelete(l)"><Trash2 class="size-4 text-rose-500" /></Button>
