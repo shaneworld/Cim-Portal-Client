@@ -49,11 +49,21 @@ onMounted(load)
         </GlassCard>
         <template v-else>
           <section v-if="!query">
-            <h2 class="mb-3 px-1 text-base font-bold">系统分类 <span class="text-sm font-normal text-ink-3">Categories</span></h2>
+            <h2 class="mb-4 flex items-center gap-3">
+              <span class="h-6 w-1.5 rounded-full bg-brand"></span>
+              <span class="text-lg font-extrabold tracking-tight">系统分类</span>
+              <span class="text-[11px] font-semibold uppercase tracking-[0.18em] text-ink-3">Categories</span>
+              <span class="h-px flex-1 bg-border"></span>
+            </h2>
             <DomainHighlights :categories="categories" />
           </section>
           <section>
-            <h2 class="mb-3 px-1 text-base font-bold">所有系统 <span class="text-sm font-normal text-ink-3">All Systems</span></h2>
+            <h2 class="mb-4 flex items-center gap-3">
+              <span class="h-6 w-1.5 rounded-full bg-brand"></span>
+              <span class="text-lg font-extrabold tracking-tight">所有系统</span>
+              <span class="text-[11px] font-semibold uppercase tracking-[0.18em] text-ink-3">All Systems</span>
+              <span class="h-px flex-1 bg-border"></span>
+            </h2>
             <SystemGrid :categories="filtered" />
           </section>
         </template>
