@@ -4,7 +4,7 @@ import { i18n } from '@/lib/i18n'
 import { createAppRouter } from '@/router'
 import { configureClient } from '@/lib/api/client'
 import { useAuthStore } from '@/stores/auth'
-import { useLabelsStore } from '@/stores/labels'
+import { useLocaleStore } from '@/stores/locale'
 import { useTheme } from '@/lib/theme/useTheme'
 
 export function bootstrap(app: App) {
@@ -17,6 +17,6 @@ export function bootstrap(app: App) {
     onUnauthorized: () => { useAuthStore().clear() }
   })
   useTheme().init()
-  useLabelsStore().initLocale()
+  useLocaleStore().initLocale()
   app.use(createAppRouter())
 }

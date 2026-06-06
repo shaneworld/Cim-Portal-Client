@@ -1,7 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import type { Router, RouteRecordRaw } from 'vue-router'
 import { useAuthStore } from '@/stores/auth'
-import { useLabelsStore } from '@/stores/labels'
 
 export const routes: RouteRecordRaw[] = [
   { path: '/login', name: 'login', component: () => import('@/features/auth/LoginView.vue'), meta: { public: true } },
@@ -26,8 +25,6 @@ export function installGuards(router: Router) {
     if (!auth.currentUser) {
       try { await auth.hydrateUser() } catch { auth.clear(); return { path: '/login' } }
     }
-    const labels = useLabelsStore()
-    if (!labels.loaded) { try { await labels.hydrate() } catch { /* non-fatal */ } }
     if (to.meta.admin && !auth.isAdmin) return { path: '/' }
     return true
   })

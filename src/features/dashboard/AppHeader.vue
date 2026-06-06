@@ -4,19 +4,19 @@ import { useRouter, RouterLink } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import { Languages, Sun, Moon, Monitor, LogOut } from 'lucide-vue-next'
 import { useAuthStore } from '@/stores/auth'
-import { useLabelsStore } from '@/stores/labels'
+import { useLocaleStore } from '@/stores/locale'
 import { useTheme, type ThemeMode } from '@/lib/theme/useTheme'
 import GlassCard from '@/lib/ui/GlassCard.vue'
 import Button from '@/lib/ui/Button.vue'
 
 const router = useRouter()
 const auth = useAuthStore()
-const labels = useLabelsStore()
+const localeStore = useLocaleStore()
 const { locale } = useI18n({ useScope: 'global' })
 const { mode, setMode } = useTheme()
 const name = computed(() => (locale.value === 'zh' ? auth.currentUser?.displayNameZh : auth.currentUser?.displayNameEn) ?? '')
 const ThemeIcon = computed(() => (mode.value === 'light' ? Sun : mode.value === 'dark' ? Moon : Monitor))
-function toggleLocale() { labels.setLocale(locale.value === 'zh' ? 'en' : 'zh') }
+function toggleLocale() { localeStore.setLocale(locale.value === 'zh' ? 'en' : 'zh') }
 function cycleTheme() { const o: ThemeMode[] = ['light', 'dark', 'system']; setMode(o[(o.indexOf(mode.value) + 1) % o.length]) }
 function logout() { auth.logout(); try { router.push('/login') } catch { /* no router in tests */ } }
 </script>
