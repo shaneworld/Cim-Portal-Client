@@ -36,9 +36,9 @@ const stats = computed(() => [
       <p class="mt-2.5 font-mono text-sm tabular-nums text-ink-3">{{ time }} · {{ weekday }}</p>
     </div>
     <div class="grid grid-cols-3 gap-3">
-      <div v-for="s in stats" :key="s.label" class="glass-strong flex flex-col items-center justify-center rounded-xl p-3 text-center">
-        <span class="text-3xl font-extrabold tabular-nums">{{ s.value }}</span>
-        <span class="mt-1 text-[11px] text-ink-3">{{ s.label }}</span>
+      <div v-for="s in stats" :key="s.label" class="glass-strong flex flex-col items-center justify-center rounded-xl border-t-2 border-t-[hsl(var(--primary)/0.6)] p-4 text-center">
+        <span class="text-brand text-4xl font-extrabold tabular-nums">{{ s.value }}</span>
+        <span class="mt-2 text-sm font-semibold text-ink-2">{{ s.label }}</span>
       </div>
     </div>
   </GlassCard>

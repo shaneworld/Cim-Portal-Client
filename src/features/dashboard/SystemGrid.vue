@@ -8,7 +8,7 @@ const { pick } = useLocale()
 <template>
   <div class="space-y-6">
     <section v-for="c in categories" :key="c.categoryCode">
-      <h3 class="mb-3 flex items-center gap-2 text-sm font-bold">
+      <h3 class="mb-4 flex items-center gap-2 text-sm font-bold">
         <span class="h-4 w-1 rounded bg-brand"></span>{{ pick(c, 'categoryLabel') }}
         <span class="font-mono text-[10px] uppercase tracking-widest text-ink-3">{{ c.categoryCode }}</span>
       </h3>
