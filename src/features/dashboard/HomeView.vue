@@ -36,8 +36,8 @@ async function load() { loading.value = true; error.value = false; try { categor
 onMounted(load)
 </script>
 <template>
-  <div class="min-h-screen p-4 pb-24 sm:p-6 sm:pb-24">
-    <div class="mx-auto max-w-7xl space-y-8">
+  <div class="min-h-screen p-4 sm:p-6">
+    <div class="mx-auto max-w-[1600px] space-y-8 md:pr-12">
       <AppHeader />
       <template v-if="loading">
         <div class="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4"><Skeleton v-for="n in 8" :key="n" /></div>

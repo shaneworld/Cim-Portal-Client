@@ -12,9 +12,9 @@ const { pick } = useLocale()
         <span class="h-6 w-1.5 rounded-full bg-brand"></span>
         <span class="text-lg font-extrabold tracking-tight">{{ pick(c, 'categoryLabel') }}</span>
         <span class="text-[11px] font-semibold uppercase tracking-[0.18em] text-ink-3">{{ c.categoryCode }}</span>
-        <span class="h-px flex-1 bg-border md:mr-12"></span>
+        <span class="h-px flex-1 bg-border"></span>
       </h3>
-      <div class="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+      <div class="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5">
         <SystemCard v-for="l in c.links" :key="l.id" :link="l" />
       </div>
     </section>
