@@ -20,11 +20,13 @@ describe('LinkFormModal', () => {
     server.use(http.post(`${BASE}/api/admin/links`, () => { created = true; return HttpResponse.json({ id: 50, code: 'n', nameZh: '名', nameEn: 'N', url: 'https://x', icon: 'factory', categoryCode: 'MES', statusCode: 'ACTIVE', sortOrder: 100, openInNewTab: true, grants: [] }) }))
     server.use(http.put(`${BASE}/api/admin/links/50/grants`, () => { grantsPut = true; return HttpResponse.json([]) }))
     const w = mount(LinkFormModal, { props: { open: true, link: null }, global: { plugins: [i18n] }, attachTo: document.body }); await flushPromises()
-    await w.find('[data-testid="f-code"]').setValue('n')
-    await w.find('[data-testid="f-nameZh"]').setValue('名')
-    await w.find('[data-testid="f-nameEn"]').setValue('N')
-    await w.find('[data-testid="f-url"]').setValue('https://x')
-    const save = [...document.querySelectorAll('button')].find((b) => /保存/.test(b.textContent || ''))!
+    const setVal = (testid: string, val: string) => {
+      const el = document.body.querySelector(`[data-testid="${testid}"]`) as HTMLInputElement
+      el.value = val; el.dispatchEvent(new Event('input', { bubbles: true }))
+    }
+    setVal('f-code', 'n'); setVal('f-nameZh', '名'); setVal('f-nameEn', 'N'); setVal('f-url', 'https://x')
+    await flushPromises()
+    const save = [...document.body.querySelectorAll('button')].find((b) => /保存/.test(b.textContent || ''))!
     save.click(); await flushPromises()
     expect(created).toBe(true); expect(grantsPut).toBe(true)
     w.unmount(); document.body.innerHTML = ''
