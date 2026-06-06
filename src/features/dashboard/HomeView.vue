@@ -11,7 +11,6 @@ import AppHeader from './AppHeader.vue'
 import HeroPanel from './HeroPanel.vue'
 import DomainHighlights from './DomainHighlights.vue'
 import SystemGrid from './SystemGrid.vue'
-import SupportBar from './SupportBar.vue'
 import GlobalSearch from './GlobalSearch.vue'
 
 const { pick } = useLocale()
@@ -29,7 +28,7 @@ async function load() { loading.value = true; error.value = false; try { categor
 onMounted(load)
 </script>
 <template>
-  <div class="min-h-screen p-4 sm:p-6">
+  <div class="min-h-screen p-4 pb-24 sm:p-6 sm:pb-24">
     <div class="mx-auto max-w-7xl space-y-8">
       <AppHeader />
       <template v-if="loading">
@@ -52,7 +51,6 @@ onMounted(load)
           <DomainHighlights v-if="!query" :categories="categories" />
           <SystemGrid :categories="filtered" />
         </template>
-        <SupportBar />
       </template>
     </div>
   </div>

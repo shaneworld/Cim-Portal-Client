@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { Boxes, Layers, CheckCircle2 } from 'lucide-vue-next'
 import type { HomeCategory } from '@/lib/api/types'
 import { useAuthStore } from '@/stores/auth'
 import { useClock } from '@/lib/composables/useClock'
@@ -16,9 +15,9 @@ const name = computed(() => (locale.value === 'zh' ? auth.currentUser?.displayNa
 const greeting = computed(() => { const h = new Date().getHours(); return h < 6 ? '凌晨好' : h < 12 ? '早上好' : h < 18 ? '下午好' : '晚上好' })
 const links = computed(() => props.categories.flatMap((c) => c.links))
 const stats = computed(() => [
-  { label: '系统', value: links.value.length, icon: Boxes },
-  { label: '类别', value: props.categories.length, icon: Layers },
-  { label: '在线', value: links.value.filter((l) => l.statusCode === 'ACTIVE').length, icon: CheckCircle2 },
+  { label: '系统', value: links.value.length },
+  { label: '类别', value: props.categories.length },
+  { label: '在线', value: links.value.filter((l) => l.statusCode === 'ACTIVE').length },
 ])
 </script>
 
@@ -29,18 +28,17 @@ const stats = computed(() => [
         <span class="size-1.5 rounded-full bg-emerald-500" style="animation: pulse-dot 1.8s infinite"></span>
         <span class="text-[10.5px] font-semibold uppercase tracking-wide text-emerald-600 dark:text-emerald-400">在线 · LIVE</span>
       </div>
-      <h2 class="mt-2 text-xl font-bold">{{ greeting }}<template v-if="name">,{{ name }}</template></h2>
-      <p class="mt-1 text-sm text-ink-2">
+      <h2 class="mt-4 text-xl font-bold">{{ greeting }}<template v-if="name">,{{ name }}</template></h2>
+      <p class="mt-2.5 text-sm text-ink-2">
         {{ auth.currentUser?.departmentCode }} · {{ auth.currentUser?.roleCode }}
         <span class="text-ink-3"> · 工号 {{ auth.currentUser?.employeeId }}</span>
       </p>
-      <p class="mt-1 font-mono text-sm tabular-nums text-ink-3">{{ time }} · {{ weekday }}</p>
+      <p class="mt-2.5 font-mono text-sm tabular-nums text-ink-3">{{ time }} · {{ weekday }}</p>
     </div>
     <div class="grid grid-cols-3 gap-3">
       <div v-for="s in stats" :key="s.label" class="glass-strong flex flex-col items-center justify-center rounded-xl p-3 text-center">
-        <component :is="s.icon" class="mb-1 size-4 text-[hsl(var(--primary))]" />
-        <span class="text-2xl font-extrabold tabular-nums">{{ s.value }}</span>
-        <span class="text-[11px] text-ink-3">{{ s.label }}</span>
+        <span class="text-3xl font-extrabold tabular-nums">{{ s.value }}</span>
+        <span class="mt-1 text-[11px] text-ink-3">{{ s.label }}</span>
       </div>
     </div>
   </GlassCard>
