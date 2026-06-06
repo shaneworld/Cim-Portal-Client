@@ -14,7 +14,7 @@ export const DEV_IDENTITIES: DevIdentity[] = [
 ]
 export function createDevAuth(): AuthProvider {
   return { async login(employeeId?: string) {
-    const r = await request<{ token: string }>('POST', '/dev/token', { employeeId })
-    return r.token
+    const r = await request<{ access_token: string }>('GET', `/dev/token?employeeId=${encodeURIComponent(employeeId ?? '')}`)
+    return r.access_token
   } }
 }

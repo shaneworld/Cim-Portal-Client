@@ -11,10 +11,10 @@ describe('devAuth', () => {
   it('lists dev identities including ADMIN1', () => {
     expect(DEV_IDENTITIES.some((i) => i.employeeId === 'ADMIN1')).toBe(true)
   })
-  it('login posts the employeeId to /dev/token and returns the token', async () => {
-    server.use(http.post(`${BASE}/dev/token`, async ({ request }) => {
-      expect((await request.json() as any).employeeId).toBe('OP1')
-      return HttpResponse.json({ token: 'jwt-op1' })
+  it('login GETs /dev/token?employeeId and returns the access_token', async () => {
+    server.use(http.get(`${BASE}/dev/token`, ({ request }) => {
+      expect(new URL(request.url).searchParams.get('employeeId')).toBe('OP1')
+      return HttpResponse.json({ access_token: 'jwt-op1', token_type: 'Bearer' })
     }))
     expect(await createDevAuth().login('OP1')).toBe('jwt-op1')
   })

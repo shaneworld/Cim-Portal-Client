@@ -10,7 +10,7 @@ describe('auth store', () => {
   beforeEach(() => { setActivePinia(createPinia()); localStorage.clear(); configureClient({ baseUrl: BASE, getToken: () => null, getLocale: () => 'zh', onUnauthorized: () => {} }) })
   it('login stores token + hydrates user; isAdmin reflects me', async () => {
     server.use(
-      http.post(`${BASE}/dev/token`, () => HttpResponse.json({ token: 'jwt-admin' })),
+      http.get(`${BASE}/dev/token`, () => HttpResponse.json({ access_token: 'jwt-admin', token_type: 'Bearer' })),
       http.get(`${BASE}/api/portal/me`, () => HttpResponse.json({ employeeId: 'ADMIN1', displayNameZh: '亚当', displayNameEn: 'Adam', departmentCode: 'IT', roleCode: 'PORTAL_ADMIN', isAdmin: true })),
     )
     const a = useAuthStore()
