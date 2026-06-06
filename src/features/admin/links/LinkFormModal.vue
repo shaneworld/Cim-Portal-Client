@@ -19,7 +19,6 @@ const toast = useToastStore()
 const { pick } = useLocale()
 
 const ICON_KEYS = ['factory','line-chart','gauge','wrench','boxes','file-text','trending-up','activity','package','book','archive']
-const iconOptions = ICON_KEYS.map((k) => ({ value: k, label: k }))
 type Opt = { value: string; label: string }
 const catOpts = ref<Opt[]>([]); const statusOpts = ref<Opt[]>([]); const deptOpts = ref<Opt[]>([]); const roleOpts = ref<Opt[]>([])
 const grantTypeOpts: Opt[] = [{ value: 'DEPARTMENT', label: '部门' }, { value: 'ROLE', label: '角色' }]
@@ -103,16 +102,19 @@ async function save() {
       <label class="block"><span class="mb-1 block text-xs font-medium text-ink-2">URL</span>
         <Input data-testid="f-url" :model-value="form.url" placeholder="https://..." @update:model-value="(v) => form.url = v" />
         <span v-if="fieldErrors.url" class="mt-1 block text-xs text-rose-500">{{ fieldErrors.url }}</span></label>
-      <div class="grid grid-cols-1 gap-3 sm:grid-cols-3">
+      <div class="grid grid-cols-1 gap-3 sm:grid-cols-2">
         <label class="block"><span class="mb-1 block text-xs font-medium text-ink-2">分类</span>
           <Select :model-value="form.categoryCode" :options="catOpts" placeholder="分类" @update:model-value="(v) => form.categoryCode = v" /></label>
         <label class="block"><span class="mb-1 block text-xs font-medium text-ink-2">状态</span>
           <Select :model-value="form.statusCode" :options="statusOpts" placeholder="状态" @update:model-value="(v) => form.statusCode = v" /></label>
-        <label class="block"><span class="mb-1 block text-xs font-medium text-ink-2">图标</span>
-          <div class="flex items-center gap-2">
-            <span class="grid size-9 shrink-0 place-items-center rounded-lg bg-brand text-white"><AppIcon :name="form.icon" class="size-4" /></span>
-            <Select :model-value="form.icon" :options="iconOptions" class="flex-1" @update:model-value="(v) => form.icon = v" />
-          </div></label>
+      </div>
+      <div><span class="mb-1.5 block text-xs font-medium text-ink-2">图标</span>
+        <div class="flex flex-wrap gap-1.5">
+          <button v-for="ic in ICON_KEYS" :key="ic" type="button" :title="ic"
+            class="grid size-9 place-items-center rounded-lg border transition"
+            :class="form.icon === ic ? 'border-transparent bg-brand text-white shadow' : 'border-border text-ink-2 hover:bg-[hsl(var(--primary)/0.1)]'"
+            @click="form.icon = ic"><AppIcon :name="ic" class="size-4" /></button>
+        </div>
       </div>
       <label class="flex items-center gap-2"><Switch :model-value="form.openInNewTab" @update:model-value="(v) => form.openInNewTab = v" /> <span class="text-sm text-ink-2">新标签页打开</span></label>
       <div class="border-t border-border/60 pt-3">
@@ -121,7 +123,7 @@ async function save() {
         <div v-for="(g, i) in grants" :key="i" class="mb-2 flex items-center gap-2">
           <Select :model-value="g.grantType" :options="grantTypeOpts" class="w-28 shrink-0" @update:model-value="(v) => { g.grantType = v as GrantType; g.grantCode = '' }" />
           <Select :model-value="g.grantCode" :options="codesFor(g.grantType)" placeholder="选择" class="flex-1" @update:model-value="(v) => g.grantCode = v" />
-          <Button variant="ghost" size="icon" @click="removeGrant(i)"><Trash2 class="size-4 text-rose-500" /></Button>
+          <button type="button" class="grid size-10 shrink-0 place-items-center rounded-xl text-rose-500 transition hover:bg-rose-500/10" @click="removeGrant(i)"><Trash2 class="size-4" /></button>
         </div>
       </div>
     </div>

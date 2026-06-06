@@ -16,7 +16,7 @@ const slots = useSlots()
         >
           <div
             data-testid="modal-content"
-            class="anim-fade glass-strong w-full max-w-lg rounded-2xl border border-border p-5 shadow-2xl max-h-[85vh] overflow-y-auto"
+            class="anim-fade w-full max-w-lg rounded-2xl border border-border bg-white p-5 shadow-2xl max-h-[85vh] overflow-y-auto dark:bg-[#141b2e]"
           >
             <DialogTitle v-if="title" class="mb-4 text-lg font-bold">{{ title }}</DialogTitle>
             <slot />
