@@ -28,4 +28,12 @@ describe('LinksAdminView', () => {
     expect(deleted).toBe(true)
     w.unmount(); document.body.innerHTML = ''
   })
+  it('超过一页时分页:默认显示 10 行,翻到第 2 页显示其余', async () => {
+    const many = Array.from({ length: 12 }, (_, i) => ({ id: i + 1, code: `c${i + 1}`, nameZh: `名${i + 1}`, nameEn: `N${i + 1}`, url: 'u', icon: 'factory', categoryCode: 'MES', statusCode: 'ACTIVE', sortOrder: i, openInNewTab: true, grants: [] }))
+    server.use(http.get(`${BASE}/api/admin/links`, () => HttpResponse.json(many)))
+    const w = mount(LinksAdminView, { global: { plugins: [i18n] } }); await flushPromises()
+    expect(w.findAll('[data-testid^="del-"]').length).toBe(10)
+    await w.get('[data-testid="page-next"]').trigger('click'); await flushPromises()
+    expect(w.findAll('[data-testid^="del-"]').length).toBe(2)
+  })
 })

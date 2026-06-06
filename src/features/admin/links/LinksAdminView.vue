@@ -4,16 +4,19 @@ import { Plus, Pencil, Trash2, AlertTriangle, RotateCw } from 'lucide-vue-next'
 import { listLinks, deleteLink, type AdminLink } from '@/lib/api/admin'
 import { useLocale } from '@/lib/i18n/useLocale'
 import { useToastStore } from '@/stores/toast'
+import { usePagination } from '@/lib/composables/usePagination'
 import GlassCard from '@/lib/ui/GlassCard.vue'
 import Button from '@/lib/ui/Button.vue'
 import StatusDot from '@/lib/ui/StatusDot.vue'
 import Skeleton from '@/lib/ui/Skeleton.vue'
 import ConfirmDialog from '@/lib/ui/ConfirmDialog.vue'
+import Pagination from '@/lib/ui/Pagination.vue'
 import LinkFormModal from './LinkFormModal.vue'
 
 const { pick } = useLocale()
 const toast = useToastStore()
 const links = ref<AdminLink[]>([]); const loading = ref(true); const error = ref(false)
+const { page, paged, total, pageSize } = usePagination(links, 10)
 const formOpen = ref(false); const editing = ref<AdminLink | null>(null)
 const confirmOpen = ref(false); const pendingDelete = ref<AdminLink | null>(null)
 
@@ -41,7 +44,7 @@ onMounted(load)
       <Button class="mx-auto mt-3" @click="load"><RotateCw class="size-4" /> 重试</Button>
     </GlassCard>
     <GlassCard v-else class="divide-y divide-border/60 p-0">
-      <div v-for="l in links" :key="l.id" class="flex items-center gap-3 p-3.5">
+      <div v-for="l in paged" :key="l.id" class="flex items-center gap-3 p-3.5">
         <span class="min-w-0 flex-1">
           <span class="block truncate font-semibold">{{ pick(l, 'name') }}</span>
           <span class="block truncate text-xs text-ink-3">{{ l.code }}</span>
@@ -55,6 +58,8 @@ onMounted(load)
       </div>
       <div v-if="!links.length" class="p-8 text-center text-ink-3">暂无链接</div>
     </GlassCard>
+
+    <Pagination :page="page" :total="total" :page-size="pageSize" @update:page="page = $event" />
 
     <LinkFormModal v-model:open="formOpen" :link="editing" @saved="load" />
     <ConfirmDialog v-model:open="confirmOpen" title="删除链接" :message="`确认删除「${pendingDelete ? pick(pendingDelete, 'name') : ''}」?`" @confirm="doDelete" @cancel="confirmOpen = false" />
