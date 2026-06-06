@@ -38,4 +38,17 @@ describe('HomeView', () => {
     const w = mountHome(); await flushPromises()
     expect(w.text()).toContain('暂无可访问的系统')
   })
+  it('选字母按首字母过滤;清除恢复', async () => {
+    server.use(http.get(`${BASE}/api/portal/home`, () => HttpResponse.json({ categories: [
+      { categoryCode: 'MES', categoryLabelZh: '制造执行', categoryLabelEn: 'MES', links: [
+        { id: 1, code: 'mes-wip', nameZh: '在制品管理', nameEn: 'WIP', url: 'x', icon: 'factory', statusCode: 'ACTIVE', openInNewTab: true },
+        { id: 2, code: 'mes-oee', nameZh: '设备综合效率', nameEn: 'OEE', url: 'x', icon: 'gauge', statusCode: 'ACTIVE', openInNewTab: true },
+      ] } ] })))
+    const w = mountHome(); await flushPromises()
+    await w.get('button[data-letter="S"]').trigger('click')   // zh: 设备→S, 在制品→Z
+    expect(w.text()).toContain('设备综合效率')
+    expect(w.text()).not.toContain('在制品管理')
+    await w.get('[data-testid="rail-clear"]').trigger('click')
+    expect(w.text()).toContain('在制品管理')
+  })
 })

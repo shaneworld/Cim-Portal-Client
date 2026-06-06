@@ -4,6 +4,8 @@ import { Inbox, AlertTriangle, RotateCw, SearchX } from 'lucide-vue-next'
 import type { HomeCategory } from '@/lib/api/types'
 import { getHome } from '@/lib/api/portal'
 import { useLocale } from '@/lib/i18n/useLocale'
+import { initialFor, availableInitials } from '@/lib/i18n/initial'
+import LetterRail from '@/lib/ui/LetterRail.vue'
 import GlassCard from '@/lib/ui/GlassCard.vue'
 import Button from '@/lib/ui/Button.vue'
 import Skeleton from '@/lib/ui/Skeleton.vue'
@@ -12,14 +14,21 @@ import HeroPanel from './HeroPanel.vue'
 import SystemGrid from './SystemGrid.vue'
 import GlobalSearch from './GlobalSearch.vue'
 
-const { pick } = useLocale()
+const { pick, locale } = useLocale()
 const categories = ref<HomeCategory[]>([])
-const loading = ref(true); const error = ref(false); const query = ref('')
+const loading = ref(true); const error = ref(false); const query = ref(''); const letter = ref('')
 
-const filtered = computed(() => {
+const searchFiltered = computed(() => {
   const q = query.value.trim().toLowerCase(); if (!q) return categories.value
   return categories.value.map((c) => ({ ...c, links: c.links.filter((l) =>
     pick(l, 'name').toLowerCase().includes(q) || l.code.toLowerCase().includes(q) || pick(c, 'categoryLabel').toLowerCase().includes(q)) })).filter((c) => c.links.length > 0)
+})
+const available = computed(() =>
+  availableInitials(searchFiltered.value.flatMap((c) => c.links).map((l) => pick(l, 'name')), locale.value as 'zh' | 'en'))
+const filtered = computed(() => {
+  if (!letter.value) return searchFiltered.value
+  return searchFiltered.value.map((c) => ({ ...c, links: c.links.filter((l) =>
+    initialFor(pick(l, 'name'), locale.value as 'zh' | 'en') === letter.value) })).filter((c) => c.links.length > 0)
 })
 const resultCount = computed(() => filtered.value.reduce((n, c) => n + c.links.length, 0))
 const noMatch = computed(() => !loading.value && !error.value && categories.value.length > 0 && filtered.value.length === 0)
@@ -56,6 +65,8 @@ onMounted(load)
             </h2>
             <SystemGrid :categories="filtered" />
           </section>
+          <LetterRail :available="available" :active="letter || null"
+            @select="letter = (letter === $event ? '' : $event)" />
         </template>
       </template>
     </div>
