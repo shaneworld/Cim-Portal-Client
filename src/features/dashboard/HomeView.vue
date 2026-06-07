@@ -12,7 +12,7 @@ import HeroPanel from './HeroPanel.vue'
 import SystemGrid from './SystemGrid.vue'
 import GlobalSearch from './GlobalSearch.vue'
 
-const { pick } = useLocale()
+const { pick, t } = useLocale()
 const categories = ref<HomeCategory[]>([])
 const loading = ref(true); const error = ref(false); const query = ref('')
 
@@ -34,17 +34,17 @@ onMounted(load)
         <div class="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4"><Skeleton v-for="n in 8" :key="n" /></div>
       </template>
       <GlassCard v-else-if="error" class="mx-auto mt-6 max-w-md p-8 text-center">
-        <AlertTriangle class="mx-auto size-10 text-rose-500" /><p class="mt-3 font-medium text-rose-500">加载失败</p>
-        <Button class="mx-auto mt-4" @click="load"><RotateCw class="size-4" /> 重试</Button>
+        <AlertTriangle class="mx-auto size-10 text-rose-500" /><p class="mt-3 font-medium text-rose-500">{{ t('dashboard.error') }}</p>
+        <Button class="mx-auto mt-4" @click="load"><RotateCw class="size-4" /> {{ t('common.retry') }}</Button>
       </GlassCard>
       <template v-else>
         <HeroPanel :categories="categories" />
         <GlobalSearch v-model:query="query" :result-count="resultCount" />
         <GlassCard v-if="categories.length === 0" class="mx-auto mt-4 max-w-md p-10 text-center">
-          <Inbox class="mx-auto size-12 text-ink-3" /><p class="mt-3 text-ink-2">暂无可访问的系统</p>
+          <Inbox class="mx-auto size-12 text-ink-3" /><p class="mt-3 text-ink-2">{{ t('dashboard.empty') }}</p>
         </GlassCard>
         <GlassCard v-else-if="noMatch" class="mx-auto mt-4 max-w-md p-10 text-center">
-          <SearchX class="mx-auto size-12 text-ink-3" /><p class="mt-3 text-ink-2">无匹配系统</p>
+          <SearchX class="mx-auto size-12 text-ink-3" /><p class="mt-3 text-ink-2">{{ t('dashboard.noMatch') }}</p>
         </GlassCard>
         <SystemGrid v-else :categories="filtered" />
       </template>

@@ -8,9 +8,9 @@ import StatusDot from '@/lib/ui/StatusDot.vue'
 import { LINK_STATUS } from '@/constants'
 const props = defineProps<{ link: HomeLink }>()
 const emit = defineEmits<{ blocked: [HomeLink] }>()
-const { pick } = useLocale()
+const { pick, t } = useLocale()
 const name = computed(() => pick(props.link, 'name'))
-const statusText = computed(() => props.link.statusCode === LINK_STATUS.ACTIVE ? '运行中' : props.link.statusCode === LINK_STATUS.MAINTENANCE ? '维护中' : props.link.statusCode === LINK_STATUS.DEPRECATED ? '已停用' : props.link.statusCode)
+const statusText = computed(() => props.link.statusCode === LINK_STATUS.ACTIVE ? t('dashboard.status.active') : props.link.statusCode === LINK_STATUS.MAINTENANCE ? t('dashboard.status.maintenance') : props.link.statusCode === LINK_STATUS.DEPRECATED ? t('dashboard.status.deprecated') : props.link.statusCode)
 // Non-active systems warn the user before opening (maintenance/deprecated).
 function onClick(e: MouseEvent) { if (props.link.statusCode !== LINK_STATUS.ACTIVE) { e.preventDefault(); emit('blocked', props.link) } }
 </script>

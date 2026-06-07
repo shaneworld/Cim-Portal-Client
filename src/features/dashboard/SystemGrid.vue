@@ -6,7 +6,7 @@ import SystemCard from './SystemCard.vue'
 import ConfirmDialog from '@/lib/ui/ConfirmDialog.vue'
 import { LINK_STATUS } from '@/constants'
 defineProps<{ categories: HomeCategory[] }>()
-const { pick } = useLocale()
+const { pick, t } = useLocale()
 
 const pending = ref<HomeLink | null>(null)
 const dlgOpen = ref(false)
@@ -14,8 +14,8 @@ const dlg = computed(() => {
   const l = pending.value
   if (!l) return { title: '', message: '' }
   const name = pick(l, 'name')
-  if (l.statusCode === LINK_STATUS.MAINTENANCE) return { title: '系统维护中', message: `「${name}」正在维护,可能暂时无法正常使用。仍要打开吗?` }
-  return { title: '系统已停用', message: `「${name}」已停用(旧版),建议改用替代系统。仍要打开吗?` }
+  if (l.statusCode === LINK_STATUS.MAINTENANCE) return { title: t('dashboard.maintenanceDlg.title'), message: t('dashboard.maintenanceDlg.message', { name }) }
+  return { title: t('dashboard.deprecatedDlg.title'), message: t('dashboard.deprecatedDlg.message', { name }) }
 })
 function onBlocked(l: HomeLink) { pending.value = l; dlgOpen.value = true }
 function proceed() { const l = pending.value; dlgOpen.value = false; if (l) window.open(l.url, l.openInNewTab ? '_blank' : '_self', 'noopener') }

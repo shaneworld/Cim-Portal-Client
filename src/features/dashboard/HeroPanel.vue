@@ -1,24 +1,24 @@
 <script setup lang="ts">
 import { computed } from 'vue'
-import { useI18n } from 'vue-i18n'
 import type { HomeCategory } from '@/lib/api/types'
 import { useAuthStore } from '@/stores/auth'
+import { useLocale } from '@/lib/i18n/useLocale'
 import { useClock } from '@/lib/composables/useClock'
 import GlassCard from '@/lib/ui/GlassCard.vue'
 import { LINK_STATUS } from '@/constants'
 
 const props = defineProps<{ categories: HomeCategory[] }>()
-const { locale } = useI18n({ useScope: 'global' })
+const { locale, pick, t } = useLocale()
 const auth = useAuthStore()
 const { time, weekday } = useClock()
 
 const name = computed(() => (locale.value === 'zh' ? auth.currentUser?.displayNameZh : auth.currentUser?.displayNameEn) ?? '')
-const greeting = computed(() => { const h = new Date().getHours(); return h < 6 ? '凌晨好' : h < 12 ? '早上好' : h < 18 ? '下午好' : '晚上好' })
+const greeting = computed(() => { const h = new Date().getHours(); return h < 6 ? t('dashboard.greeting.dawn') : h < 12 ? t('dashboard.greeting.morning') : h < 18 ? t('dashboard.greeting.afternoon') : t('dashboard.greeting.evening') })
 const links = computed(() => props.categories.flatMap((c) => c.links))
 const stats = computed(() => [
-  { label: '系统', value: links.value.length },
-  { label: '类别', value: props.categories.length },
-  { label: '在线', value: links.value.filter((l) => l.statusCode === LINK_STATUS.ACTIVE).length },
+  { label: t('dashboard.stats.systems'), value: links.value.length },
+  { label: t('dashboard.stats.categories'), value: props.categories.length },
+  { label: t('dashboard.stats.online'), value: links.value.filter((l) => l.statusCode === LINK_STATUS.ACTIVE).length },
 ])
 </script>
 

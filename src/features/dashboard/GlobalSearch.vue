@@ -1,9 +1,11 @@
 <script setup lang="ts">
 import { Search, X } from 'lucide-vue-next'
 import Button from '@/lib/ui/Button.vue'
+import { useLocale } from '@/lib/i18n/useLocale'
 
 defineProps<{ query: string; resultCount?: number }>()
 const emit = defineEmits<{ 'update:query': [string] }>()
+const { t } = useLocale()
 </script>
 
 <template>
@@ -12,12 +14,12 @@ const emit = defineEmits<{ 'update:query': [string] }>()
       <input
         :value="query"
         type="text"
-        placeholder="搜索系统"
+        :placeholder="t('dashboard.searchPlaceholder')"
         class="h-10 w-full rounded-xl border border-input glass-strong px-3 pr-24 text-sm outline-none focus-visible:ring-2 focus-visible:ring-ring"
         @input="emit('update:query', ($event.target as HTMLInputElement).value)"
         @keyup.enter="emit('update:query', query)"
       />
-      <span v-if="query" class="absolute right-10 top-1/2 -translate-y-1/2 text-xs text-ink-3">找到 {{ resultCount ?? 0 }} 个</span>
+      <span v-if="query" class="absolute right-10 top-1/2 -translate-y-1/2 text-xs text-ink-3">{{ t('dashboard.search.found', { n: resultCount ?? 0 }) }}</span>
       <button
         v-if="query"
         type="button"
@@ -28,6 +30,6 @@ const emit = defineEmits<{ 'update:query': [string] }>()
         <X class="size-4" />
       </button>
     </div>
-    <Button variant="primary" class="shrink-0 gap-1.5" @click="emit('update:query', query)"><Search class="size-4" /> 搜索</Button>
+    <Button variant="primary" class="shrink-0 gap-1.5" @click="emit('update:query', query)"><Search class="size-4" /> {{ t('common.search') }}</Button>
   </div>
 </template>

@@ -26,4 +26,18 @@ export default {
   header: {
     admin: 'Admin',
   },
+  dashboard: {
+    greeting: { dawn: 'Good early morning', morning: 'Good morning', afternoon: 'Good afternoon', evening: 'Good evening' },
+    stats: { systems: 'Systems', categories: 'Categories', online: 'Online' },
+    searchPlaceholder: 'Search systems',
+    search: { found: '{n} found' },
+    status: { active: 'Active', maintenance: 'Maintenance', deprecated: 'Deprecated' },
+    empty: 'No accessible systems',
+    error: 'Failed to load',
+    noMatch: 'No matching systems',
+    maintenanceDlg: { title: 'System under maintenance', message: '"{name}" is under maintenance and may be temporarily unavailable. Open anyway?' },
+    deprecatedDlg: { title: 'System deprecated', message: '"{name}" has been deprecated (legacy). Consider switching to an alternative. Open anyway?' },
+    support: { line: 'Issues? Call', call: 'Call {phone} if you run into problems' },
+    weekday: { sun: 'Sun', mon: 'Mon', tue: 'Tue', wed: 'Wed', thu: 'Thu', fri: 'Fri', sat: 'Sat' },
+  },
 }

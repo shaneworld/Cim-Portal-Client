@@ -26,4 +26,18 @@ export default {
   header: {
     admin: '管理',
   },
+  dashboard: {
+    greeting: { dawn: '凌晨好', morning: '早上好', afternoon: '下午好', evening: '晚上好' },
+    stats: { systems: '系统', categories: '类别', online: '在线' },
+    searchPlaceholder: '搜索系统',
+    search: { found: '找到 {n} 个' },
+    status: { active: '运行中', maintenance: '维护中', deprecated: '已停用' },
+    empty: '暂无可访问的系统',
+    error: '加载失败',
+    noMatch: '无匹配系统',
+    maintenanceDlg: { title: '系统维护中', message: '「{name}」正在维护,可能暂时无法正常使用。仍要打开吗?' },
+    deprecatedDlg: { title: '系统已停用', message: '「{name}」已停用(旧版),建议改用替代系统。仍要打开吗?' },
+    support: { line: '遇到问题请拨打', call: 'Call {phone} if you run into problems' },
+    weekday: { sun: '周日', mon: '周一', tue: '周二', wed: '周三', thu: '周四', fri: '周五', sat: '周六' },
+  },
 }
