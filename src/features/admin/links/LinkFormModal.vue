@@ -123,9 +123,16 @@ async function save() {
       <label class="block"><span class="mb-1 block text-xs font-medium text-ink-2">{{ t('admin.linkForm.urlLabel') }}</span>
         <Input data-testid="f-url" :model-value="form.url" placeholder="https://..." @update:model-value="(v) => form.url = v" />
         <span v-if="fieldErrors.url" class="mt-1 block text-xs text-rose-500">{{ fieldErrors.url }}</span></label>
-      <!-- environment select -->
-      <label class="block" data-testid="f-environment-wrap"><span class="mb-1 block text-xs font-medium text-ink-2">{{ t('admin.linkForm.environmentLabel') }}</span>
-        <Select :model-value="form.environment" :options="envOpts" @update:model-value="(v) => form.environment = v" /></label>
+      <!-- environment + open-in-new-tab (paired link-behavior row) -->
+      <div class="grid grid-cols-1 gap-3 sm:grid-cols-2">
+        <label class="block" data-testid="f-environment-wrap"><span class="mb-1 block text-xs font-medium text-ink-2">{{ t('admin.linkForm.environmentLabel') }}</span>
+          <Select :model-value="form.environment" :options="envOpts" @update:model-value="(v) => form.environment = v" /></label>
+        <div class="block"><span class="mb-1 block text-xs font-medium text-ink-2">{{ t('admin.linkForm.openInNewTab') }}</span>
+          <label class="flex h-10 cursor-pointer items-center gap-2 rounded-xl border border-input glass-strong px-3">
+            <Switch :model-value="form.openInNewTab" @update:model-value="(v) => form.openInNewTab = v" />
+            <span class="text-sm text-ink-2">{{ form.openInNewTab ? t('common.enabled') : t('common.disabled') }}</span>
+          </label></div>
+      </div>
       <div class="grid grid-cols-1 gap-3 sm:grid-cols-2">
         <label class="block"><span class="mb-1 block text-xs font-medium text-ink-2">{{ t('admin.linkForm.categoryLabel') }}</span>
           <Select :model-value="form.categoryCode" :options="catOpts" :placeholder="t('admin.linkForm.categoryLabel')" @update:model-value="(v) => form.categoryCode = v" /></label>
@@ -140,7 +147,6 @@ async function save() {
             @click="form.icon = ic"><AppIcon :name="ic" class="size-4" /></button>
         </div>
       </div>
-      <label class="flex items-center gap-2"><Switch :model-value="form.openInNewTab" @update:model-value="(v) => form.openInNewTab = v" /> <span class="text-sm text-ink-2">{{ t('admin.linkForm.openInNewTab') }}</span></label>
       <div class="border-t border-border/60 pt-3">
         <div class="mb-2 flex items-center justify-between"><b class="text-sm">{{ t('admin.linkForm.grants') }}</b><button type="button" class="flex items-center gap-1 text-sm font-medium text-[hsl(var(--primary))] transition hover:opacity-80" @click="addGrant"><Plus class="size-4" /> {{ t('admin.linkForm.addGrant') }}</button></div>
         <p v-if="!grants.length" class="text-xs text-ink-3">{{ t('admin.linkForm.grantsHint') }}</p>
