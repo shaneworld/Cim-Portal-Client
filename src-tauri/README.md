@@ -27,7 +27,12 @@ git tag v0.1.0 && git push origin v0.1.0   # 触发出包
 `icons/` 由占位源图 `icon-src.png`(纯色品牌占位)经 `npx tauri icon icon-src.png` 生成。
 换品牌图:替换 `icon-src.png`(1024×1024 PNG)后重跑该命令(P3c)。
 
+## 鉴权(P3b)
+
+桌面 WebView 源 `tauri://localhost`(Win:`http://tauri.localhost`)跨域调用后端;后端已配置 CORS(`app.cors.allowed-origins`)放行该源。沿用既有 JWT Bearer 流:登录经 `GET {VITE_API_BASE_URL}/dev/token?employeeId=` 取 token 存 `localStorage`,后续 `Authorization: Bearer`。
+**`/dev/token` 仅 dev profile** → 桌面登录目前仅对 **dev** 后端可用;uat/prod 桌面鉴权需真实 OIDC(后续阶段)。
+
 ## 范围
 
-P3a:脚手架 + 内嵌 SPA + 可配置后端 + CI 出包。
-后续:P3b 桌面鉴权/SSO + 后端对 `tauri://localhost` 的 CORS;P3c 托盘/自动更新/深链/品牌图标/签名公证。
+P3a:脚手架 + 内嵌 SPA + 可配置后端 + CI 出包。**P3b DONE**:后端 CORS 放行桌面源,既有 token 鉴权跨域可用。
+后续:真实 OIDC/SSO(web + 桌面);P3c 托盘/自动更新/深链/品牌图标/签名公证。
