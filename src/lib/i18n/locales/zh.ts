@@ -114,5 +114,9 @@ export default {
     deprecatedDlg: { title: '系统已停用', message: '「{name}」已停用(旧版),建议改用替代系统。仍要打开吗?' },
     support: { line: '遇到问题请拨打', call: 'Call {phone} if you run into problems' },
     weekday: { sun: '周日', mon: '周一', tue: '周二', wed: '周三', thu: '周四', fri: '周五', sat: '周六' },
+    liveBadge: '在线 · LIVE',
+    employeeId: '工号',
+    proceedOpen: '仍要打开',
+    namePunct: ',',
   },
 }

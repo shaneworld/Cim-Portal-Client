@@ -27,12 +27,12 @@ const stats = computed(() => [
     <div>
       <div class="flex items-center gap-2">
         <span class="size-1.5 rounded-full bg-emerald-500" style="animation: pulse-dot 1.8s infinite"></span>
-        <span class="text-[10.5px] font-semibold uppercase tracking-wide text-emerald-600 dark:text-emerald-400">在线 · LIVE</span>
+        <span class="text-[10.5px] font-semibold uppercase tracking-wide text-emerald-600 dark:text-emerald-400">{{ t('dashboard.liveBadge') }}</span>
       </div>
-      <h2 class="mt-4 text-xl font-bold">{{ greeting }}<template v-if="name">,{{ name }}</template></h2>
+      <h2 class="mt-4 text-xl font-bold">{{ greeting }}<template v-if="name">{{ t('dashboard.namePunct') }}{{ name }}</template></h2>
       <p class="mt-2.5 text-sm text-ink-2">
         {{ auth.currentUser?.departmentCode }} · {{ auth.currentUser?.roleCode }}
-        <span class="text-ink-3"> · 工号 {{ auth.currentUser?.employeeId }}</span>
+        <span class="text-ink-3"> · {{ t('dashboard.employeeId') }} {{ auth.currentUser?.employeeId }}</span>
       </p>
       <p class="mt-2.5 font-mono text-sm tabular-nums text-ink-3">{{ time }} · {{ weekday }}</p>
     </div>

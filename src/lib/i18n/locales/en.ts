@@ -114,5 +114,9 @@ export default {
     deprecatedDlg: { title: 'System deprecated', message: '"{name}" has been deprecated (legacy). Consider switching to an alternative. Open anyway?' },
     support: { line: 'Issues? Call', call: 'Call {phone} if you run into problems' },
     weekday: { sun: 'Sun', mon: 'Mon', tue: 'Tue', wed: 'Wed', thu: 'Thu', fri: 'Fri', sat: 'Sat' },
+    liveBadge: 'Online · LIVE',
+    employeeId: 'ID',
+    proceedOpen: 'Open anyway',
+    namePunct: ', ',
   },
 }

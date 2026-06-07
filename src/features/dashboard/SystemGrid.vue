@@ -33,6 +33,6 @@ function proceed() { const l = pending.value; dlgOpen.value = false; if (l) wind
         <SystemCard v-for="l in c.links" :key="l.id" :link="l" @blocked="onBlocked" />
       </div>
     </section>
-    <ConfirmDialog v-model:open="dlgOpen" :title="dlg.title" :message="dlg.message" confirm-label="仍要打开" tone="primary" @confirm="proceed" @cancel="dlgOpen = false" />
+    <ConfirmDialog v-model:open="dlgOpen" :title="dlg.title" :message="dlg.message" :confirm-label="t('dashboard.proceedOpen')" tone="primary" @confirm="proceed" @cancel="dlgOpen = false" />
   </div>
 </template>
