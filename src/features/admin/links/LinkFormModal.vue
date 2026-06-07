@@ -8,6 +8,7 @@ import Button from '@/lib/ui/Button.vue'
 import Select from '@/lib/ui/Select.vue'
 import Switch from '@/lib/ui/Switch.vue'
 import AppIcon from '@/lib/ui/AppIcon.vue'
+import { ICON_KEYS } from '@/lib/ui/iconMap'
 import { listEnum } from '@/lib/api/enums'
 import { createLink, updateLink, replaceGrants, getLink, type AdminLink, type LinkInput, type GrantInput, type GrantType } from '@/lib/api/admin'
 import { ApiError } from '@/lib/api/client'
@@ -20,7 +21,6 @@ const emit = defineEmits<{ 'update:open': [boolean]; saved: [] }>()
 const toast = useToastStore()
 const { pick, t } = useLocale()
 
-const ICON_KEYS = ['factory','line-chart','gauge','wrench','boxes','file-text','trending-up','activity','package','book','archive']
 type Opt = { value: string; label: string }
 const catOpts = ref<Opt[]>([]); const statusOpts = ref<Opt[]>([]); const deptOpts = ref<Opt[]>([]); const roleOpts = ref<Opt[]>([])
 const grantTypeOpts: Opt[] = [{ value: GRANT_TYPES.DEPARTMENT, label: t('admin.enums.categories.department') }, { value: GRANT_TYPES.ROLE, label: t('admin.enums.categories.role') }]
@@ -140,9 +140,9 @@ async function save() {
           <NumberInput data-testid="f-sortOrder" :model-value="form.sortOrder" @update:model-value="(v) => form.sortOrder = v" /></label>
       </div>
       <div><span class="mb-1.5 block text-xs font-medium text-ink-2">{{ t('admin.linkForm.iconLabel') }}</span>
-        <div class="flex flex-wrap gap-1.5">
+        <div class="grid grid-cols-6 gap-1.5 sm:grid-cols-8">
           <button v-for="ic in ICON_KEYS" :key="ic" type="button" :title="ic"
-            class="grid size-9 place-items-center rounded-lg border transition"
+            class="grid aspect-square w-full place-items-center rounded-lg border transition"
             :class="form.icon === ic ? 'border-transparent bg-brand text-white shadow' : 'border-border text-ink-2 hover:bg-[hsl(var(--primary)/0.1)]'"
             @click="form.icon = ic"><AppIcon :name="ic" class="size-4" /></button>
         </div>
