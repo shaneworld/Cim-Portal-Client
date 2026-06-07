@@ -5,7 +5,7 @@ import { listLinks, deleteLink, type AdminLink } from '@/lib/api/admin'
 import { useLocale } from '@/lib/i18n/useLocale'
 import { useToastStore } from '@/stores/toast'
 import { usePagination } from '@/lib/composables/usePagination'
-import { DEFAULT_PAGE_SIZE } from '@/constants'
+import { DEFAULT_PAGE_SIZE, LINK_ENVS } from '@/constants'
 import Button from '@/lib/ui/Button.vue'
 import StatusDot from '@/lib/ui/StatusDot.vue'
 import Skeleton from '@/lib/ui/Skeleton.vue'
@@ -49,7 +49,7 @@ onMounted(load)
       <div class="divide-y divide-border/60">
         <div v-for="l in paged" :key="l.id" class="flex h-16 items-center gap-3 px-3.5">
           <span class="min-w-0 flex-1">
-            <span class="block truncate font-semibold">{{ pick(l, 'name') }}</span>
+            <span class="block truncate font-semibold">{{ pick(l, 'name') }}<span v-if="l.environment" :class="['ml-1.5 rounded px-1.5 py-0.5 text-[10px] font-bold', LINK_ENVS[l.environment].badge]">{{ l.environment }}</span></span>
           </span>
           <span class="hidden w-24 shrink-0 text-xs text-ink-2 sm:block">{{ l.categoryCode }}</span>
           <span class="hidden w-28 shrink-0 items-center gap-1.5 text-xs text-ink-2 sm:flex"><StatusDot :status="l.statusCode" /> {{ l.statusCode }}</span>

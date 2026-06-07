@@ -8,8 +8,9 @@ const cats = [{ categoryCode: 'MES', categoryLabelZh: '制造执行', categoryLa
   { id: 2, nameZh: '旧门户', nameEn: 'Legacy', url: 'https://y', icon: 'archive', statusCode: 'DEPRECATED', openInNewTab: false },
 ] }] as any
 
-const catsEnv = [{ categoryCode: 'MES', categoryLabelZh: '制造执行', categoryLabelEn: 'MES', links: [
-  { id: 3, nameZh: '环境系统', nameEn: 'EnvSys', urlDev: 'https://dev', urlUat: 'https://uat', urlRelease: 'https://rel', icon: 'factory', statusCode: 'ACTIVE', openInNewTab: true },
+const catsWithEnv = [{ categoryCode: 'MES', categoryLabelZh: '制造执行', categoryLabelEn: 'MES', links: [
+  { id: 3, nameZh: '开发系统', nameEn: 'DevSys', url: 'https://dev', icon: 'factory', statusCode: 'ACTIVE', openInNewTab: true, environment: 'DEV' },
+  { id: 4, nameZh: '生产系统', nameEn: 'ProdSys', url: 'https://rel', icon: 'gauge', statusCode: 'ACTIVE', openInNewTab: true },
 ] }] as any
 
 describe('SystemGrid', () => {
@@ -21,17 +22,19 @@ describe('SystemGrid', () => {
     expect(a[0].attributes('href')).toBe('https://x'); expect(a[0].attributes('target')).toBe('_blank')
     expect(w.findAll('svg').length).toBeGreaterThanOrEqual(2)
   })
-  it('env-aware link renders 3 colored buttons (DEV/UAT/RELEASE)', () => {
-    const w = mount(SystemGrid, { props: { categories: catsEnv }, global: { plugins: [i18n] } })
-    const links = w.findAll('a')
-    const hrefs = links.map((a) => a.attributes('href'))
-    expect(hrefs).toContain('https://dev')
-    expect(hrefs).toContain('https://uat')
-    expect(hrefs).toContain('https://rel')
-    const texts = links.map((a) => a.text())
-    expect(texts).toContain('DEV')
-    expect(texts).toContain('UAT')
-    expect(texts).toContain('RELEASE')
+  it('link with environment renders colored badge; link without environment has no badge', () => {
+    const w = mount(SystemGrid, { props: { categories: catsWithEnv }, global: { plugins: [i18n] } })
+    const badges = w.findAll('span.rounded.px-1\\.5')
+    // DEV badge present with correct text
+    expect(badges.some((b) => b.text() === 'DEV')).toBe(true)
+    // ProdSys has no environment → no badge for that card
+    const cards = w.findAll('a')
+    const devCard = cards.find((a) => a.text().includes('开发系统'))!
+    expect(devCard.text()).toContain('DEV')
+    const prodCard = cards.find((a) => a.text().includes('生产系统'))!
+    expect(prodCard.text()).not.toContain('DEV')
+    expect(prodCard.text()).not.toContain('UAT')
+    expect(prodCard.text()).not.toContain('RELEASE')
   })
   it('点击已停用系统弹出警告(拦截直接打开)', async () => {
     const w = mount(SystemGrid, { props: { categories: cats }, global: { plugins: [i18n] }, attachTo: document.body })

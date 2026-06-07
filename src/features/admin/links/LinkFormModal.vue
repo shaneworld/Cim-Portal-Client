@@ -25,11 +25,18 @@ type Opt = { value: string; label: string }
 const catOpts = ref<Opt[]>([]); const statusOpts = ref<Opt[]>([]); const deptOpts = ref<Opt[]>([]); const roleOpts = ref<Opt[]>([])
 const grantTypeOpts: Opt[] = [{ value: GRANT_TYPES.DEPARTMENT, label: t('admin.enums.categories.department') }, { value: GRANT_TYPES.ROLE, label: t('admin.enums.categories.role') }]
 
-const envAware = ref(false)
+const ENV_NONE = '__none__'
+const envOpts: Opt[] = [
+  { value: ENV_NONE, label: t('common.none') },
+  { value: 'DEV', label: 'DEV' },
+  { value: 'UAT', label: 'UAT' },
+  { value: 'RELEASE', label: 'RELEASE' },
+]
+
 const form = reactive<{
   nameZh: string; nameEn: string; icon: string; categoryCode: string; statusCode: string; sortOrder: number; openInNewTab: boolean
-  url: string; urlDev: string; urlUat: string; urlRelease: string
-}>({ nameZh: '', nameEn: '', icon: 'factory', categoryCode: '', statusCode: '', sortOrder: 100, openInNewTab: true, url: '', urlDev: '', urlUat: '', urlRelease: '' })
+  url: string; environment: string
+}>({ nameZh: '', nameEn: '', icon: 'factory', categoryCode: '', statusCode: '', sortOrder: 100, openInNewTab: true, url: '', environment: ENV_NONE })
 const grants = ref<GrantInput[]>([])
 const fieldErrors = ref<Record<string, string>>({})
 const saving = ref(false)
@@ -48,10 +55,10 @@ async function loadEnums() {
 async function populate() {
   fieldErrors.value = {}
   if (props.link) {
-    envAware.value = !!props.link.urlDev
     Object.assign(form, {
       nameZh: props.link.nameZh, nameEn: props.link.nameEn,
-      url: props.link.url ?? '', urlDev: props.link.urlDev ?? '', urlUat: props.link.urlUat ?? '', urlRelease: props.link.urlRelease ?? '',
+      url: props.link.url ?? '',
+      environment: props.link.environment ?? ENV_NONE,
       icon: props.link.icon, categoryCode: props.link.categoryCode, statusCode: props.link.statusCode, sortOrder: props.link.sortOrder, openInNewTab: props.link.openInNewTab,
     })
     grants.value = props.link.grants.map((g) => ({ grantType: g.grantType, grantCode: g.grantCode }))
@@ -59,8 +66,7 @@ async function populate() {
     // (otherwise saving would replace them with an empty set and wipe access).
     try { const full = await getLink(props.link.id); grants.value = full.grants.map((g) => ({ grantType: g.grantType, grantCode: g.grantCode })) } catch { /* keep seeded grants */ }
   } else {
-    envAware.value = false
-    Object.assign(form, { nameZh: '', nameEn: '', icon: 'factory', categoryCode: '', statusCode: '', sortOrder: 100, openInNewTab: true, url: '', urlDev: '', urlUat: '', urlRelease: '' })
+    Object.assign(form, { nameZh: '', nameEn: '', icon: 'factory', categoryCode: '', statusCode: '', sortOrder: 100, openInNewTab: true, url: '', environment: ENV_NONE })
     grants.value = []
   }
 }
@@ -72,13 +78,7 @@ function validate(): boolean {
   const e: Record<string, string> = {}
   if (!form.nameZh.trim()) e.nameZh = t('common.required')
   if (!form.nameEn.trim()) e.nameEn = t('common.required')
-  if (envAware.value) {
-    if (!form.urlDev.trim()) e.urlDev = t('common.required')
-    if (!form.urlUat.trim()) e.urlUat = t('common.required')
-    if (!form.urlRelease.trim()) e.urlRelease = t('common.required')
-  } else {
-    if (!form.url.trim()) e.url = t('common.required')
-  }
+  if (!form.url.trim()) e.url = t('common.required')
   if (!form.categoryCode) e.categoryCode = t('common.mustSelect')
   if (!form.statusCode) e.statusCode = t('common.mustSelect')
   if (!form.icon) e.icon = t('common.mustSelect')
@@ -89,10 +89,13 @@ async function save() {
   if (!validate()) return
   saving.value = true
   try {
-    const base = { nameZh: form.nameZh, nameEn: form.nameEn, icon: form.icon, categoryCode: form.categoryCode, statusCode: form.statusCode, sortOrder: Number(form.sortOrder), openInNewTab: form.openInNewTab }
-    const input: LinkInput = envAware.value
-      ? { ...base, urlDev: form.urlDev, urlUat: form.urlUat, urlRelease: form.urlRelease }
-      : { ...base, url: form.url }
+    const input: LinkInput = {
+      nameZh: form.nameZh, nameEn: form.nameEn, icon: form.icon,
+      categoryCode: form.categoryCode, statusCode: form.statusCode,
+      sortOrder: Number(form.sortOrder), openInNewTab: form.openInNewTab,
+      url: form.url,
+      ...(form.environment && form.environment !== ENV_NONE ? { environment: form.environment as 'DEV' | 'UAT' | 'RELEASE' } : {}),
+    }
     const saved = props.link ? await updateLink(props.link.id, input) : await createLink(input)
     await replaceGrants(saved.id, grants.value.filter((g) => g.grantCode))
     toast.push({ type: 'success', message: props.link ? t('common.updated') : t('common.created') })
@@ -116,24 +119,13 @@ async function save() {
           <Input data-testid="f-nameEn" :model-value="form.nameEn" @update:model-value="(v) => form.nameEn = v" />
           <span v-if="fieldErrors.nameEn" class="mt-1 block text-xs text-rose-500">{{ fieldErrors.nameEn }}</span></label>
       </div>
-      <!-- env-aware toggle -->
-      <label class="flex items-center gap-2"><Switch data-testid="f-envAware" :model-value="envAware" @update:model-value="(v) => envAware = v" /> <span class="text-sm text-ink-2">{{ t('admin.linkForm.envAware') }}</span></label>
-      <!-- single URL (plain) -->
-      <label v-if="!envAware" class="block"><span class="mb-1 block text-xs font-medium text-ink-2">{{ t('admin.linkForm.urlLabel') }}</span>
+      <!-- single URL -->
+      <label class="block"><span class="mb-1 block text-xs font-medium text-ink-2">{{ t('admin.linkForm.urlLabel') }}</span>
         <Input data-testid="f-url" :model-value="form.url" placeholder="https://..." @update:model-value="(v) => form.url = v" />
         <span v-if="fieldErrors.url" class="mt-1 block text-xs text-rose-500">{{ fieldErrors.url }}</span></label>
-      <!-- three env URLs (env-aware) -->
-      <template v-else>
-        <label class="block"><span class="mb-1 block text-xs font-medium text-ink-2">{{ t('admin.linkForm.urlDevLabel') }}</span>
-          <Input data-testid="f-urlDev" :model-value="form.urlDev" placeholder="https://dev.example.com" @update:model-value="(v) => form.urlDev = v" />
-          <span v-if="fieldErrors.urlDev" class="mt-1 block text-xs text-rose-500">{{ fieldErrors.urlDev }}</span></label>
-        <label class="block"><span class="mb-1 block text-xs font-medium text-ink-2">{{ t('admin.linkForm.urlUatLabel') }}</span>
-          <Input data-testid="f-urlUat" :model-value="form.urlUat" placeholder="https://uat.example.com" @update:model-value="(v) => form.urlUat = v" />
-          <span v-if="fieldErrors.urlUat" class="mt-1 block text-xs text-rose-500">{{ fieldErrors.urlUat }}</span></label>
-        <label class="block"><span class="mb-1 block text-xs font-medium text-ink-2">{{ t('admin.linkForm.urlReleaseLabel') }}</span>
-          <Input data-testid="f-urlRelease" :model-value="form.urlRelease" placeholder="https://release.example.com" @update:model-value="(v) => form.urlRelease = v" />
-          <span v-if="fieldErrors.urlRelease" class="mt-1 block text-xs text-rose-500">{{ fieldErrors.urlRelease }}</span></label>
-      </template>
+      <!-- environment select -->
+      <label class="block" data-testid="f-environment-wrap"><span class="mb-1 block text-xs font-medium text-ink-2">{{ t('admin.linkForm.environmentLabel') }}</span>
+        <Select :model-value="form.environment" :options="envOpts" @update:model-value="(v) => form.environment = v" /></label>
       <div class="grid grid-cols-1 gap-3 sm:grid-cols-2">
         <label class="block"><span class="mb-1 block text-xs font-medium text-ink-2">{{ t('admin.linkForm.categoryLabel') }}</span>
           <Select :model-value="form.categoryCode" :options="catOpts" :placeholder="t('admin.linkForm.categoryLabel')" @update:model-value="(v) => form.categoryCode = v" /></label>

@@ -16,17 +16,17 @@ describe('admin api', () => {
     server.use(http.get(`${BASE}/api/admin/links/1`, () => HttpResponse.json({ id: 1, nameZh: '甲', nameEn: 'A', url: 'u', icon: 'factory', categoryCode: 'MES', statusCode: 'ACTIVE', sortOrder: 1, openInNewTab: true, grants: [{ id: 7, linkId: 1, grantType: 'DEPARTMENT', grantCode: 'FAB1-PROD' }] })))
     const r = await getLink(1); expect(r.grants[0].grantCode).toBe('FAB1-PROD')
   })
-  it('createLink POST (plain url)', async () => {
+  it('createLink POST (plain url, no environment)', async () => {
     let body: any
     server.use(http.post(`${BASE}/api/admin/links`, async ({ request }) => { body = await request.json(); return HttpResponse.json({ id: 9, ...body, grants: [] }) }))
     const r = await createLink({ nameZh: '乙', nameEn: 'X', url: 'u', icon: 'book', categoryCode: 'MES', statusCode: 'ACTIVE', sortOrder: 5, openInNewTab: false })
-    expect(r.id).toBe(9); expect(body.url).toBe('u')
+    expect(r.id).toBe(9); expect(body.url).toBe('u'); expect(body.environment).toBeUndefined()
   })
-  it('createLink POST (env-aware urls)', async () => {
+  it('createLink POST with environment', async () => {
     let body: any
     server.use(http.post(`${BASE}/api/admin/links`, async ({ request }) => { body = await request.json(); return HttpResponse.json({ id: 10, ...body, grants: [] }) }))
-    const r = await createLink({ nameZh: '丙', nameEn: 'Y', urlDev: 'https://dev', urlUat: 'https://uat', urlRelease: 'https://rel', icon: 'book', categoryCode: 'MES', statusCode: 'ACTIVE', sortOrder: 5, openInNewTab: false })
-    expect(r.id).toBe(10); expect(body.urlDev).toBe('https://dev'); expect(body.url).toBeUndefined()
+    const r = await createLink({ nameZh: '丙', nameEn: 'Y', url: 'https://uat.example.com', environment: 'UAT', icon: 'book', categoryCode: 'MES', statusCode: 'ACTIVE', sortOrder: 5, openInNewTab: false })
+    expect(r.id).toBe(10); expect(body.url).toBe('https://uat.example.com'); expect(body.environment).toBe('UAT')
   })
   it('updateLink PUT /{id} and deleteLink DELETE /{id}', async () => {
     server.use(http.put(`${BASE}/api/admin/links/9`, () => HttpResponse.json({ id: 9, nameZh: '乙', nameEn: 'X', url: 'u', icon: 'book', categoryCode: 'MES', statusCode: 'ACTIVE', sortOrder: 5, openInNewTab: false, grants: [] })))
