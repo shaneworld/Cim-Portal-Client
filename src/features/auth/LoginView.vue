@@ -6,6 +6,7 @@ import { DEV_IDENTITIES } from '@/lib/auth'
 import { useAuthStore } from '@/stores/auth'
 import { ApiError } from '@/lib/api/client'
 import GlassCard from '@/lib/ui/GlassCard.vue'
+import BrandMark from '@/lib/ui/BrandMark.vue'
 import { useLocale } from '@/lib/i18n/useLocale'
 
 const router = useRouter()
@@ -27,7 +28,7 @@ async function pick(employeeId: string) {
   <div class="flex min-h-screen items-center justify-center p-4 sm:p-6">
     <GlassCard class="w-full max-w-md p-6 animate-fade-up sm:p-7">
       <div class="mb-6 flex items-center gap-3">
-        <span class="grid size-11 place-items-center rounded-xl bg-brand text-xl font-extrabold text-white shadow-lg shadow-indigo-500/25">C</span>
+        <span class="grid size-11 place-items-center rounded-xl bg-brand text-white shadow-lg shadow-indigo-500/25"><BrandMark class="size-7" /></span>
         <div><h1 class="text-2xl font-bold leading-none">{{ t('auth.login.title') }}</h1><p class="mt-1 text-sm text-ink-2">{{ t('auth.login.subtitle') }}</p></div>
       </div>
       <div class="space-y-2">

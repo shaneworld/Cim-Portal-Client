@@ -8,6 +8,7 @@ import { useTheme, type ThemeMode } from '@/lib/theme/useTheme'
 import { useLocale } from '@/lib/i18n/useLocale'
 import GlassCard from '@/lib/ui/GlassCard.vue'
 import Button from '@/lib/ui/Button.vue'
+import BrandMark from '@/lib/ui/BrandMark.vue'
 
 const router = useRouter()
 const auth = useAuthStore()
@@ -23,7 +24,7 @@ function logout() { auth.logout(); try { router.push('/login') } catch { /* no r
 <template>
   <GlassCard class="flex items-center justify-between gap-2 p-3 sm:p-4">
     <div class="flex shrink-0 items-center gap-2.5">
-      <span class="grid size-8 shrink-0 place-items-center rounded-lg bg-brand font-extrabold text-white shadow-lg shadow-indigo-500/25">C</span>
+      <span class="grid size-8 shrink-0 place-items-center rounded-lg bg-brand text-white shadow-lg shadow-indigo-500/25"><BrandMark class="size-5" /></span>
       <b class="whitespace-nowrap text-lg">{{ t('brand.title') }}</b>
     </div>
     <nav class="flex min-w-0 items-center gap-1.5">
