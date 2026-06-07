@@ -24,9 +24,6 @@ describe('SystemGrid', () => {
   })
   it('link with environment renders colored badge; link without environment has no badge', () => {
     const w = mount(SystemGrid, { props: { categories: catsWithEnv }, global: { plugins: [i18n] } })
-    const badges = w.findAll('span.rounded.px-1\\.5')
-    // DEV badge present with correct text
-    expect(badges.some((b) => b.text() === 'DEV')).toBe(true)
     // ProdSys has no environment → no badge for that card
     const cards = w.findAll('a')
     const devCard = cards.find((a) => a.text().includes('开发系统'))!

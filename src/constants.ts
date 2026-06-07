@@ -19,9 +19,9 @@ export const LINK_STATUS = { ACTIVE: 'ACTIVE', MAINTENANCE: 'MAINTENANCE', DEPRE
 // 授权类型码
 export const GRANT_TYPES = { DEPARTMENT: 'DEPARTMENT', ROLE: 'ROLE' } as const
 
-// 链接环境徽章样式映射(label/样式驱动 UI)
+// 链接环境徽章样式映射(badge = 色调+描边;dot = 圆点实色)
 export const LINK_ENVS = {
-  DEV: { label: 'DEV', badge: 'bg-slate-500/15 text-slate-600 dark:text-slate-300' },
-  UAT: { label: 'UAT', badge: 'bg-amber-500/15 text-amber-600 dark:text-amber-300' },
-  RELEASE: { label: 'RELEASE', badge: 'bg-emerald-500/15 text-emerald-600 dark:text-emerald-300' },
+  DEV: { label: 'DEV', badge: 'bg-slate-500/10 text-slate-600 ring-slate-500/20 dark:text-slate-300', dot: 'bg-slate-500 dark:bg-slate-400' },
+  UAT: { label: 'UAT', badge: 'bg-amber-500/10 text-amber-600 ring-amber-500/25 dark:text-amber-300', dot: 'bg-amber-500' },
+  RELEASE: { label: 'RELEASE', badge: 'bg-emerald-500/10 text-emerald-600 ring-emerald-500/25 dark:text-emerald-300', dot: 'bg-emerald-500' },
 } as const

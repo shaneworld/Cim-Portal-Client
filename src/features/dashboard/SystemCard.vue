@@ -22,8 +22,13 @@ function onClick(e: MouseEvent) { if (props.link.statusCode !== LINK_STATUS.ACTI
         <span class="block truncate text-sm font-semibold">{{ name }}</span>
         <span class="mt-0.5 flex items-center gap-1.5 text-[11px] text-ink-2">
           <StatusDot :status="link.statusCode" /> {{ statusText }}
-          <span v-if="link.environment" :class="['rounded px-1.5 py-0.5 text-[10px] font-bold leading-none', LINK_ENVS[link.environment].badge]">{{ link.environment }}</span>
         </span>
+      </span>
+      <span
+        v-if="link.environment"
+        :class="['inline-flex shrink-0 items-center gap-1.5 rounded-full px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wide ring-1 ring-inset', LINK_ENVS[link.environment].badge]"
+      >
+        <span :class="['size-1.5 rounded-full', LINK_ENVS[link.environment].dot]"></span>{{ link.environment }}
       </span>
     </GlassCard>
   </a>
