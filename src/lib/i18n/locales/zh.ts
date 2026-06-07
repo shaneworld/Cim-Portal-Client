@@ -43,7 +43,7 @@ export default {
       new: '新建链接',
       empty: '暂无链接',
       deleteTitle: '删除链接',
-      deleteMessage: '确认删除「{name}」?',
+      deleteMessage: '确认删除「{name}」？',
     },
     linkForm: {
       createTitle: '新建链接',
@@ -67,7 +67,7 @@ export default {
       new: '新建',
       empty: '该分类暂无枚举值',
       deleteTitle: '删除枚举值',
-      deleteMessage: '确认删除「{code}」?删除可能影响仍在使用该 code 的链接/授权。',
+      deleteMessage: '确认删除「{code}」？删除可能影响仍在使用该 code 的链接/授权。',
       categories: {
         department: '部门',
         role: '角色',
@@ -100,7 +100,7 @@ export default {
   },
   updater: {
     title: '更新可用',
-    found: '发现新版本 {version}，是否现在更新?',
+    found: '发现新版本 {version}，是否现在更新？',
   },
   dashboard: {
     greeting: { dawn: '凌晨好', morning: '早上好', afternoon: '下午好', evening: '晚上好' },
@@ -111,8 +111,8 @@ export default {
     empty: '暂无可访问的系统',
     error: '加载失败',
     noMatch: '无匹配系统',
-    maintenanceDlg: { title: '系统维护中', message: '「{name}」正在维护，可能暂时无法正常使用。仍要打开吗?' },
-    deprecatedDlg: { title: '系统已停用', message: '「{name}」已停用(旧版)，建议改用替代系统。仍要打开吗?' },
+    maintenanceDlg: { title: '系统维护中', message: '「{name}」正在维护，可能暂时无法正常使用。仍要打开吗？' },
+    deprecatedDlg: { title: '系统已停用', message: '「{name}」已停用(旧版)，建议改用替代系统。仍要打开吗？' },
     support: { line: '遇到问题请拨打', call: 'Call {phone} if you run into problems' },
     weekday: { sun: '周日', mon: '周一', tue: '周二', wed: '周三', thu: '周四', fri: '周五', sat: '周六' },
     liveBadge: '在线 · LIVE',
