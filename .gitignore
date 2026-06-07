@@ -1,15 +1,17 @@
 node_modules/
 dist/
 .superpowers/
-config/application*.yml
 
-# Tauri
-src-tauri/target/
-src-tauri/gen/
+# env
 .env
 .env.*
 !.env.example
-!.env.desktop
 
-# updater signing private keys — never commit
-*.key
+# editor / OS
+.idea/
+*.iml
+.vscode/
+.DS_Store
+
+# logs
+*.log

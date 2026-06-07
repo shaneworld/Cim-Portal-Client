@@ -98,10 +98,6 @@ export default {
       message: '您的账号已停用或未在系统中配置，请联系管理员。',
     },
   },
-  updater: {
-    title: '更新可用',
-    found: '发现新版本 {version}，是否现在更新？',
-  },
   dashboard: {
     greeting: { dawn: '凌晨好', morning: '早上好', afternoon: '下午好', evening: '晚上好' },
     stats: { systems: '系统', categories: '类别', online: '在线' },

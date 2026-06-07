@@ -1,5 +1,5 @@
 {
-  "name": "cim-portal-frontend",
+  "name": "cim-portal-client",
   "private": true,
   "type": "module",
   "scripts": {
@@ -7,12 +7,7 @@
     "build": "vue-tsc --noEmit && vite build",
     "typecheck": "vue-tsc --noEmit",
     "test": "vitest run",
-    "verify": "vue-tsc --noEmit && vitest run && vite build",
-    "tauri": "tauri",
-    "tauri:dev": "tauri dev",
-    "tauri:build": "tauri build",
-    "dev:desktop": "vite --mode desktop",
-    "build:desktop": "vue-tsc --noEmit && vite build --mode desktop"
+    "verify": "vue-tsc --noEmit && vitest run && vite build"
   },
   "dependencies": {
     "lucide-vue-next": "^0.460.0",
@@ -22,14 +17,7 @@
     "vue-i18n": "^10.0.5",
     "vue-router": "^4.5.0"
   },
-  "optionalDependencies": {
-    "@tauri-apps/api": "^2.11.0",
-    "@tauri-apps/plugin-dialog": "^2.7.1",
-    "@tauri-apps/plugin-process": "^2.3.1",
-    "@tauri-apps/plugin-updater": "^2.10.1"
-  },
   "devDependencies": {
-    "@tauri-apps/cli": "^2.11.2",
     "@vitejs/plugin-vue": "^5.2.1",
     "@vue/test-utils": "^2.4.6",
     "autoprefixer": "^10.4.20",

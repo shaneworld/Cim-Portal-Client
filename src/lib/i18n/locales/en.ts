@@ -98,10 +98,6 @@ export default {
       message: 'Your account is inactive or not provisioned in the system. Please contact your administrator.',
     },
   },
-  updater: {
-    title: 'Update Available',
-    found: 'Version {version} is available. Update now?',
-  },
   dashboard: {
     greeting: { dawn: 'Good early morning', morning: 'Good morning', afternoon: 'Good afternoon', evening: 'Good evening' },
     stats: { systems: 'Systems', categories: 'Categories', online: 'Online' },
