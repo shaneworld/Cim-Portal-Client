@@ -110,8 +110,6 @@ async function save() {
   <Modal :open="open" :title="link ? t('admin.linkForm.editTitle') : t('admin.linkForm.createTitle')" @update:open="(v) => emit('update:open', v)">
     <div class="space-y-3">
       <div class="grid grid-cols-1 gap-3 sm:grid-cols-2">
-        <label class="block"><span class="mb-1 block text-xs font-medium text-ink-2">{{ t('admin.linkForm.sortLabel') }}</span>
-          <NumberInput data-testid="f-sortOrder" :model-value="form.sortOrder" @update:model-value="(v) => form.sortOrder = v" /></label>
         <label class="block"><span class="mb-1 block text-xs font-medium text-ink-2">{{ t('admin.linkForm.nameZhLabel') }}</span>
           <Input data-testid="f-nameZh" :model-value="form.nameZh" @update:model-value="(v) => form.nameZh = v" />
           <span v-if="fieldErrors.nameZh" class="mt-1 block text-xs text-rose-500">{{ fieldErrors.nameZh }}</span></label>
@@ -133,11 +131,13 @@ async function save() {
             <span class="text-sm text-ink-2">{{ form.openInNewTab ? t('common.enabled') : t('common.disabled') }}</span>
           </label></div>
       </div>
-      <div class="grid grid-cols-1 gap-3 sm:grid-cols-2">
+      <div class="grid grid-cols-1 gap-3 sm:grid-cols-3">
         <label class="block"><span class="mb-1 block text-xs font-medium text-ink-2">{{ t('admin.linkForm.categoryLabel') }}</span>
           <Select :model-value="form.categoryCode" :options="catOpts" :placeholder="t('admin.linkForm.categoryLabel')" @update:model-value="(v) => form.categoryCode = v" /></label>
         <label class="block"><span class="mb-1 block text-xs font-medium text-ink-2">{{ t('admin.linkForm.statusLabel') }}</span>
           <Select :model-value="form.statusCode" :options="statusOpts" :placeholder="t('admin.linkForm.statusLabel')" @update:model-value="(v) => form.statusCode = v" /></label>
+        <label class="block"><span class="mb-1 block text-xs font-medium text-ink-2">{{ t('admin.linkForm.sortLabel') }}</span>
+          <NumberInput data-testid="f-sortOrder" :model-value="form.sortOrder" @update:model-value="(v) => form.sortOrder = v" /></label>
       </div>
       <div><span class="mb-1.5 block text-xs font-medium text-ink-2">{{ t('admin.linkForm.iconLabel') }}</span>
         <div class="flex flex-wrap gap-1.5">
