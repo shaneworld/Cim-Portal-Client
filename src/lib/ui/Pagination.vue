@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { ChevronLeft, ChevronRight } from 'lucide-vue-next'
+import { useLocale } from '@/lib/i18n/useLocale'
 const props = defineProps<{ page: number; total: number; pageSize: number }>()
 const emit = defineEmits<{ 'update:page': [number] }>()
 const totalPages = computed(() => Math.max(1, Math.ceil(props.total / props.pageSize)))
@@ -18,6 +19,7 @@ const pages = computed<number[]>(() => {
   return out
 })
 function go(p: number) { if (p >= 1 && p <= totalPages.value && p !== props.page) emit('update:page', p) }
+const { t } = useLocale()
 </script>
 <template>
   <div v-if="total > pageSize" class="flex items-center justify-center gap-1.5 pt-1 text-sm">
@@ -34,6 +36,6 @@ function go(p: number) { if (p >= 1 && p <= totalPages.value && p !== props.page
     <button type="button" data-testid="page-next" :disabled="page >= totalPages"
       class="grid size-9 place-items-center rounded-lg glass-strong text-ink-2 transition hover:text-[hsl(var(--ink))] disabled:opacity-40"
       @click="go(page + 1)"><ChevronRight class="size-4" /></button>
-    <span class="ml-2 text-xs text-ink-3">共 {{ total }} 条</span>
+    <span class="ml-2 text-xs text-ink-3">{{ t('ui.pagination.total', { n: total }) }}</span>
   </div>
 </template>

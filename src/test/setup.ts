@@ -1,5 +1,9 @@
 import { afterAll, afterEach, beforeAll } from 'vitest'
+import { config } from '@vue/test-utils'
 import { server } from './msw'
+import { i18n } from '@/lib/i18n'
+
+config.global.plugins = [i18n]
 
 function makeLocalStorage() {
   const store: Record<string, string> = {}

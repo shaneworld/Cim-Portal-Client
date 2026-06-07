@@ -17,4 +17,13 @@ export default {
     saveFailed: '保存失败',
     required: '必填',
   },
+  ui: {
+    pagination: { total: '共 {n} 条' },
+    numberInput: { increase: '增加', decrease: '减少' },
+    select: { placeholder: '请选择' },
+    confirm: { title: '确认' },
+  },
+  header: {
+    admin: '管理',
+  },
 }

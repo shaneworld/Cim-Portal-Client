@@ -17,4 +17,13 @@ export default {
     saveFailed: 'Save failed',
     required: 'Required',
   },
+  ui: {
+    pagination: { total: '{n} items total' },
+    numberInput: { increase: 'Increase', decrease: 'Decrease' },
+    select: { placeholder: 'Please select' },
+    confirm: { title: 'Confirm' },
+  },
+  header: {
+    admin: 'Admin',
+  },
 }
