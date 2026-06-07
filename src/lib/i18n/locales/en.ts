@@ -1,0 +1,20 @@
+export default {
+  brand: { title: 'CIM Portal' },
+  common: {
+    save: 'Save',
+    cancel: 'Cancel',
+    delete: 'Delete',
+    edit: 'Edit',
+    create: 'New',
+    retry: 'Retry',
+    loading: 'Loading',
+    search: 'Search',
+    enabled: 'Enabled',
+    disabled: 'Disabled',
+    deleted: 'Deleted',
+    deleteFailed: 'Delete failed',
+    saved: 'Saved',
+    saveFailed: 'Save failed',
+    required: 'Required',
+  },
+}

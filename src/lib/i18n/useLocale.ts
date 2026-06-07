@@ -9,6 +9,6 @@ export function pick<T extends Record<string, any>>(obj: T, key: string): string
 }
 
 export function useLocale() {
-  const { locale } = useI18n({ useScope: 'global' })
-  return { locale, pick }
+  const { t, locale } = useI18n({ useScope: 'global' })
+  return { locale, pick, t }
 }

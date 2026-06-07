@@ -1,0 +1,20 @@
+export default {
+  brand: { title: 'CIM 门户' },
+  common: {
+    save: '保存',
+    cancel: '取消',
+    delete: '删除',
+    edit: '编辑',
+    create: '新建',
+    retry: '重试',
+    loading: '加载中',
+    search: '搜索',
+    enabled: '启用',
+    disabled: '停用',
+    deleted: '已删除',
+    deleteFailed: '删除失败',
+    saved: '已保存',
+    saveFailed: '保存失败',
+    required: '必填',
+  },
+}
