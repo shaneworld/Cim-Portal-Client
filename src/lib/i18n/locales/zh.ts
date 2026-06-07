@@ -59,7 +59,7 @@ export default {
       openInNewTab: '新标签页打开',
       grants: '访问授权',
       addGrant: '添加授权',
-      grantsHint: '未设置授权 = 所有人可见。如需限制访问范围,请添加授权。',
+      grantsHint: '未设置授权 = 所有人可见。如需限制访问范围，请添加授权。',
       grantSelect: '选择',
     },
     enums: {
@@ -95,12 +95,12 @@ export default {
     },
     inactive: {
       title: '账号无法访问门户',
-      message: '您的账号已停用或未在系统中配置,请联系管理员。',
+      message: '您的账号已停用或未在系统中配置，请联系管理员。',
     },
   },
   updater: {
     title: '更新可用',
-    found: '发现新版本 {version},是否现在更新?',
+    found: '发现新版本 {version}，是否现在更新?',
   },
   dashboard: {
     greeting: { dawn: '凌晨好', morning: '早上好', afternoon: '下午好', evening: '晚上好' },
@@ -111,13 +111,13 @@ export default {
     empty: '暂无可访问的系统',
     error: '加载失败',
     noMatch: '无匹配系统',
-    maintenanceDlg: { title: '系统维护中', message: '「{name}」正在维护,可能暂时无法正常使用。仍要打开吗?' },
-    deprecatedDlg: { title: '系统已停用', message: '「{name}」已停用(旧版),建议改用替代系统。仍要打开吗?' },
+    maintenanceDlg: { title: '系统维护中', message: '「{name}」正在维护，可能暂时无法正常使用。仍要打开吗?' },
+    deprecatedDlg: { title: '系统已停用', message: '「{name}」已停用(旧版)，建议改用替代系统。仍要打开吗?' },
     support: { line: '遇到问题请拨打', call: 'Call {phone} if you run into problems' },
     weekday: { sun: '周日', mon: '周一', tue: '周二', wed: '周三', thu: '周四', fri: '周五', sat: '周六' },
     liveBadge: '在线 · LIVE',
     employeeId: '工号',
     proceedOpen: '仍要打开',
-    namePunct: ',',
+    namePunct: '，',
   },
 }
