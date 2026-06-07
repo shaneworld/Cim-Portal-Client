@@ -4,6 +4,7 @@ import { useLocale } from '@/lib/i18n/useLocale'
 import type { HomeCategory, HomeLink } from '@/lib/api/types'
 import SystemCard from './SystemCard.vue'
 import ConfirmDialog from '@/lib/ui/ConfirmDialog.vue'
+import { LINK_STATUS } from '@/constants'
 defineProps<{ categories: HomeCategory[] }>()
 const { pick } = useLocale()
 
@@ -13,7 +14,7 @@ const dlg = computed(() => {
   const l = pending.value
   if (!l) return { title: '', message: '' }
   const name = pick(l, 'name')
-  if (l.statusCode === 'MAINTENANCE') return { title: '系统维护中', message: `「${name}」正在维护,可能暂时无法正常使用。仍要打开吗?` }
+  if (l.statusCode === LINK_STATUS.MAINTENANCE) return { title: '系统维护中', message: `「${name}」正在维护,可能暂时无法正常使用。仍要打开吗?` }
   return { title: '系统已停用', message: `「${name}」已停用(旧版),建议改用替代系统。仍要打开吗?` }
 })
 function onBlocked(l: HomeLink) { pending.value = l; dlgOpen.value = true }

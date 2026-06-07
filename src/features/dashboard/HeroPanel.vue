@@ -5,6 +5,7 @@ import type { HomeCategory } from '@/lib/api/types'
 import { useAuthStore } from '@/stores/auth'
 import { useClock } from '@/lib/composables/useClock'
 import GlassCard from '@/lib/ui/GlassCard.vue'
+import { LINK_STATUS } from '@/constants'
 
 const props = defineProps<{ categories: HomeCategory[] }>()
 const { locale } = useI18n({ useScope: 'global' })
@@ -17,7 +18,7 @@ const links = computed(() => props.categories.flatMap((c) => c.links))
 const stats = computed(() => [
   { label: '系统', value: links.value.length },
   { label: '类别', value: props.categories.length },
-  { label: '在线', value: links.value.filter((l) => l.statusCode === 'ACTIVE').length },
+  { label: '在线', value: links.value.filter((l) => l.statusCode === LINK_STATUS.ACTIVE).length },
 ])
 </script>
 
