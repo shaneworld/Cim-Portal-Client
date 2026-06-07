@@ -9,6 +9,7 @@ src-tauri/gen/
 .env
 .env.*
 !.env.example
+!.env.desktop
 
 # updater signing private keys — never commit
 *.key
