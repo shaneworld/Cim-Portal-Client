@@ -41,7 +41,7 @@
       "endpoints": [
         "https://github.com/shaneworld/Cim-Portal-Client/releases/latest/download/latest.json"
       ],
-      "pubkey": "REPLACE_WITH_TAURI_SIGNER_PUBKEY"
+      "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IEFEMjE5NTk1Mzk3M0ZCMDEKUldRQiszTTVsWlVoclZ0SzJ5YnhkekFGR0dkQUQ4ckpNUjFLbzFZVTRKQ0kzbGpXb1R1OVc2VW8K"
     }
   }
 }
