@@ -1,6 +1,6 @@
 {
   "$schema": "https://schema.tauri.app/config/2",
-  "productName": "CIM Portal",
+  "productName": "AP1 IT CIM Portal",
   "version": "0.1.0",
   "identifier": "com.cimportal.portal",
   "build": {
@@ -12,7 +12,7 @@
   "app": {
     "windows": [
       {
-        "title": "CIM 门户",
+        "title": "AP1 IT CIM 门户",
         "width": 1280,
         "height": 832,
         "minWidth": 960,

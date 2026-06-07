@@ -1,5 +1,5 @@
 export default {
-  brand: { title: 'CIM 门户' },
+  brand: { title: 'AP1 IT CIM 门户' },
   common: {
     save: '保存',
     cancel: '取消',
@@ -87,7 +87,7 @@ export default {
   },
   auth: {
     login: {
-      title: 'CIM 门户',
+      title: 'AP1 IT CIM 门户',
       subtitle: '选择身份进入',
       failed: '登录失败',
       footer: 'SSO 安全登录 · 仅授权人员',

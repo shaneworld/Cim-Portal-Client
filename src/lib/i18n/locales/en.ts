@@ -1,5 +1,5 @@
 export default {
-  brand: { title: 'CIM Portal' },
+  brand: { title: 'AP1 IT CIM Portal' },
   common: {
     save: 'Save',
     cancel: 'Cancel',
@@ -87,7 +87,7 @@ export default {
   },
   auth: {
     login: {
-      title: 'CIM Portal',
+      title: 'AP1 IT CIM Portal',
       subtitle: 'Select identity to continue',
       failed: 'Login failed',
       footer: 'SSO secure login · authorized personnel only',

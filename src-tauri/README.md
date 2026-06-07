@@ -1,4 +1,4 @@
-# CIM Portal — 桌面应用 (Tauri 2)
+# AP1 IT CIM Portal — 桌面应用 (Tauri 2)
 
 把既有 Vue SPA 封装为 Windows / Linux / macOS 桌面应用。WebView 本地加载构建后的 `../dist`,API 客户端经 **`VITE_API_BASE_URL`**(构建时注入)指向后端。
 

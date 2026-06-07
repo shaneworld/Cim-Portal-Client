@@ -14,8 +14,8 @@ describe('i18n catalogs', () => {
   })
   it('按 locale 解析', () => {
     i18n.global.locale.value = 'en'
-    expect(i18n.global.t('brand.title')).toBe('CIM Portal')
+    expect(i18n.global.t('brand.title')).toBe('AP1 IT CIM Portal')
     i18n.global.locale.value = 'zh'
-    expect(i18n.global.t('brand.title')).toBe('CIM 门户')
+    expect(i18n.global.t('brand.title')).toBe('AP1 IT CIM 门户')
   })
 })
