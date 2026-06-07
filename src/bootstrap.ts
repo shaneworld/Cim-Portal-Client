@@ -11,7 +11,7 @@ export function bootstrap(app: App) {
   app.use(createPinia())
   app.use(i18n)
   configureClient({
-    baseUrl: '',
+    baseUrl: import.meta.env.VITE_API_BASE_URL ?? '',
     getToken: () => useAuthStore().token,
     getLocale: () => i18n.global.locale.value,
     onUnauthorized: () => { useAuthStore().clear() }
