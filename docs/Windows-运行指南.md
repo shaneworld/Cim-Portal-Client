@@ -139,3 +139,60 @@ npm run verify
 | 端口被占用(8080/5173/3306) | `netstat -ano | findstr :8080` 查 PID,`taskkill /PID <PID> /F` 释放,或修改对应端口 |
 | 前端能打开但接口 401/跨域 | 确认后端已在 `8080` 运行;开发模式走 Vite 代理通常无需 CORS |
 | `JAVA_HOME` 指向了 JDK 8/17 | 必须为 **JDK 21**;重设 `JAVA_HOME` 后重开终端 |
+
+---
+
+## 7. 切换到 Oracle 数据库
+
+后端已内置 Oracle 支持(`ojdbc11` 驱动 + `flyway-database-oracle` + `db/migration/oracle` 下的 V1–V4 迁移),并提供 **`oracle-dev`** profile:它等于 `dev`(dev-jwt 登录、`/dev/token`、自动种子)**叠加** `oracle-db`(把数据源与 Flyway 目录覆盖为 Oracle)。即:在 Oracle 上获得与本地 `dev` 完全一致的调试体验(无需配置 SSO/OIDC)。
+
+> 仅用于本地/调试。真实 UAT/生产的 Oracle + 单点登录请用 `uat`/`prod` profile(OIDC)。
+
+### 7.1 连接到你的 Oracle
+
+设置环境变量指向你的 Oracle,用 `oracle-dev` profile 启动后端:
+
+PowerShell:
+```powershell
+cd cim-portal-server\backend
+$env:SPRING_PROFILES_ACTIVE = "oracle-dev"
+$env:DB_URL      = "jdbc:oracle:thin:@//<主机>:1521/<服务名>"   # 例:jdbc:oracle:thin:@//localhost:1521/XEPDB1
+$env:DB_USER     = "cim_portal"
+$env:DB_PASSWORD = "你的密码"
+java -jar target\portal.jar
+```
+
+- URL 用 **EZConnect** 格式 `jdbc:oracle:thin:@//主机:端口/服务名`;若用 SID:`jdbc:oracle:thin:@主机:端口:SID`。
+- 不设环境变量时的默认值:`jdbc:oracle:thin:@//localhost:1521/XEPDB1`,账号/密码 `cim_portal/cim_portal`。
+- `ojdbc11` 驱动已内置,无需手动安装。
+- 该 Oracle 账号需有建表权限(`CREATE TABLE/SEQUENCE` 等);Flyway 会在该用户 schema 下建表。
+
+### 7.2 导入全部测试数据(自动,无需手工 SQL)
+
+**首次**用 `oracle-dev` 启动、且目标 schema 为空时,会自动完成两件事:
+
+1. **Flyway** 执行 `db/migration/oracle` 的 V1–V4,建好所有表(`enum_value` / `link` / `link_access_grant` / `user_info`)。
+2. **DevDataSeeder** 插入全部测试数据:**12 条枚举、4 个用户(ADMIN1/OP1/ENG1/QA1)、7 条链接(含「SPC 分析」DEV/UAT/RELEASE 三套环境)、4 条授权**。
+
+也就是说:把后端指向**空的** Oracle 库并启动一次,表结构与测试数据就全部导入好了。
+
+验证(SQL\*Plus / SQL Developer,以 `cim_portal` 账号连接):
+```sql
+SELECT COUNT(*) FROM link;        -- 期望 7
+SELECT COUNT(*) FROM enum_value;  -- 期望 12
+SELECT COUNT(*) FROM user_info;   -- 期望 4
+SELECT name_zh, environment FROM link ORDER BY sort_order;
+```
+
+### 7.3 重新导入 / 重置数据
+
+种子只在表为空时执行(`if count == 0`)。需要重新导入时,清空数据后重启即可重新种入:
+```sql
+DELETE FROM link_access_grant; DELETE FROM link; DELETE FROM enum_value; DELETE FROM user_info; COMMIT;
+```
+若想连表结构一起重建:删除该 schema 下所有对象(含 `flyway_schema_history` 表),重启后端 → Flyway 重新建表 + 种子重新导入。
+
+### 7.4 登录与前端
+
+`oracle-dev` 仍是 **dev-jwt** 模式:前端登录页直接「选择身份」(如 `ADMIN1`)即可,与 MariaDB 的 `dev` 完全一致。**前端无需任何改动**,照常 `npm run dev`(经 Vite 代理访问 `http://localhost:8080`)。
+
