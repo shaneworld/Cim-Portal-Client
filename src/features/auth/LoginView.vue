@@ -6,9 +6,11 @@ import { DEV_IDENTITIES } from '@/lib/auth'
 import { useAuthStore } from '@/stores/auth'
 import { ApiError } from '@/lib/api/client'
 import GlassCard from '@/lib/ui/GlassCard.vue'
+import { useLocale } from '@/lib/i18n/useLocale'
 
 const router = useRouter()
 const auth = useAuthStore()
+const { t } = useLocale()
 const busy = ref<string | null>(null)
 const error = ref('')
 
@@ -17,7 +19,7 @@ async function pick(employeeId: string) {
   try { await auth.login(employeeId); router.push('/') }
   catch (e) {
     if (e instanceof ApiError && (e.code === 'USER_INACTIVE' || e.code === 'USER_NOT_PROVISIONED')) router.push('/account-inactive')
-    else { error.value = e instanceof Error ? e.message : '登录失败'; auth.clear() }
+    else { error.value = e instanceof Error ? e.message : t('auth.login.failed'); auth.clear() }
   } finally { busy.value = null }
 }
 </script>
@@ -26,7 +28,7 @@ async function pick(employeeId: string) {
     <GlassCard class="w-full max-w-md p-6 animate-fade-up sm:p-7">
       <div class="mb-6 flex items-center gap-3">
         <span class="grid size-11 place-items-center rounded-xl bg-brand text-xl font-extrabold text-white shadow-lg shadow-indigo-500/25">C</span>
-        <div><h1 class="text-2xl font-bold leading-none">CIM 门户</h1><p class="mt-1 text-sm text-ink-2">选择身份进入</p></div>
+        <div><h1 class="text-2xl font-bold leading-none">{{ t('auth.login.title') }}</h1><p class="mt-1 text-sm text-ink-2">{{ t('auth.login.subtitle') }}</p></div>
       </div>
       <div class="space-y-2">
         <button v-for="id in DEV_IDENTITIES" :key="id.employeeId"
@@ -41,7 +43,7 @@ async function pick(employeeId: string) {
         </button>
       </div>
       <p v-if="error" class="mt-4 text-sm text-rose-500">{{ error }}</p>
-      <p class="mt-5 flex items-center gap-1.5 text-xs text-ink-3"><ShieldCheck class="size-3.5" /> SSO 安全登录 · 仅授权人员</p>
+      <p class="mt-5 flex items-center gap-1.5 text-xs text-ink-3"><ShieldCheck class="size-3.5" /> {{ t('auth.login.footer') }}</p>
     </GlassCard>
   </div>
 </template>
