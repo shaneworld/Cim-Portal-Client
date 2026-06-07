@@ -47,7 +47,6 @@ export default {
     linkForm: {
       createTitle: '新建链接',
       editTitle: '编辑链接',
-      codeLabel: '代码 Code',
       nameZhLabel: '中文名',
       nameEnLabel: '英文名',
       urlLabel: 'URL',
@@ -56,6 +55,10 @@ export default {
       statusLabel: '状态',
       sortLabel: '排序 Sort',
       openInNewTab: '新标签页打开',
+      envAware: '环境感知(DEV/UAT/RELEASE)',
+      urlDevLabel: '开发环境 URL',
+      urlUatLabel: 'UAT 环境 URL',
+      urlReleaseLabel: '生产环境 URL',
       grants: '访问授权',
       addGrant: '添加授权',
       grantsHint: '未设置授权 = 所有人可见。如需限制访问范围,请添加授权。',

@@ -50,7 +50,6 @@ onMounted(load)
         <div v-for="l in paged" :key="l.id" class="flex h-16 items-center gap-3 px-3.5">
           <span class="min-w-0 flex-1">
             <span class="block truncate font-semibold">{{ pick(l, 'name') }}</span>
-            <span class="block truncate text-xs text-ink-3">{{ l.code }}</span>
           </span>
           <span class="hidden w-24 shrink-0 text-xs text-ink-2 sm:block">{{ l.categoryCode }}</span>
           <span class="hidden w-28 shrink-0 items-center gap-1.5 text-xs text-ink-2 sm:flex"><StatusDot :status="l.statusCode" /> {{ l.statusCode }}</span>

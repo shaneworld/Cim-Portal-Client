@@ -47,7 +47,6 @@ export default {
     linkForm: {
       createTitle: 'New Link',
       editTitle: 'Edit Link',
-      codeLabel: 'Code',
       nameZhLabel: 'Chinese Name',
       nameEnLabel: 'English Name',
       urlLabel: 'URL',
@@ -56,6 +55,10 @@ export default {
       statusLabel: 'Status',
       sortLabel: 'Sort Order',
       openInNewTab: 'Open in new tab',
+      envAware: 'Environment-aware (DEV/UAT/RELEASE)',
+      urlDevLabel: 'Dev URL',
+      urlUatLabel: 'UAT URL',
+      urlReleaseLabel: 'Release URL',
       grants: 'Access Grants',
       addGrant: 'Add Grant',
       grantsHint: 'No grants = visible to everyone. Add grants to restrict access.',

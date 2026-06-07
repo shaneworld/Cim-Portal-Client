@@ -8,17 +8,17 @@ import { LINK_STATUS } from '@/constants'
 defineProps<{ categories: HomeCategory[] }>()
 const { pick, t } = useLocale()
 
-const pending = ref<HomeLink | null>(null)
+const pending = ref<{ link: HomeLink; url: string } | null>(null)
 const dlgOpen = ref(false)
 const dlg = computed(() => {
-  const l = pending.value
+  const l = pending.value?.link
   if (!l) return { title: '', message: '' }
   const name = pick(l, 'name')
   if (l.statusCode === LINK_STATUS.MAINTENANCE) return { title: t('dashboard.maintenanceDlg.title'), message: t('dashboard.maintenanceDlg.message', { name }) }
   return { title: t('dashboard.deprecatedDlg.title'), message: t('dashboard.deprecatedDlg.message', { name }) }
 })
-function onBlocked(l: HomeLink) { pending.value = l; dlgOpen.value = true }
-function proceed() { const l = pending.value; dlgOpen.value = false; if (l) window.open(l.url, l.openInNewTab ? '_blank' : '_self', 'noopener') }
+function onBlocked(payload: { link: HomeLink; url: string }) { pending.value = payload; dlgOpen.value = true }
+function proceed() { const p = pending.value; dlgOpen.value = false; if (p) window.open(p.url, p.link.openInNewTab ? '_blank' : '_self', 'noopener') }
 </script>
 <template>
   <div class="space-y-6">

@@ -9,23 +9,29 @@ beforeEach(() => configureClient({ baseUrl: BASE, getToken: () => 't', getLocale
 
 describe('admin api', () => {
   it('listLinks GET /api/admin/links', async () => {
-    server.use(http.get(`${BASE}/api/admin/links`, () => HttpResponse.json([{ id: 1, code: 'a', nameZh: '甲', nameEn: 'A', url: 'u', icon: 'factory', categoryCode: 'MES', statusCode: 'ACTIVE', sortOrder: 1, openInNewTab: true, grants: [] }])))
-    const r = await listLinks(); expect(r[0].code).toBe('a'); expect(Array.isArray(r[0].grants)).toBe(true)
+    server.use(http.get(`${BASE}/api/admin/links`, () => HttpResponse.json([{ id: 1, nameZh: '甲', nameEn: 'A', url: 'u', icon: 'factory', categoryCode: 'MES', statusCode: 'ACTIVE', sortOrder: 1, openInNewTab: true, grants: [] }])))
+    const r = await listLinks(); expect(r[0].nameZh).toBe('甲'); expect(Array.isArray(r[0].grants)).toBe(true)
   })
   it('getLink GET /{id} (detail includes grants)', async () => {
-    server.use(http.get(`${BASE}/api/admin/links/1`, () => HttpResponse.json({ id: 1, code: 'a', nameZh: '甲', nameEn: 'A', url: 'u', icon: 'factory', categoryCode: 'MES', statusCode: 'ACTIVE', sortOrder: 1, openInNewTab: true, grants: [{ id: 7, linkId: 1, grantType: 'DEPARTMENT', grantCode: 'FAB1-PROD' }] })))
+    server.use(http.get(`${BASE}/api/admin/links/1`, () => HttpResponse.json({ id: 1, nameZh: '甲', nameEn: 'A', url: 'u', icon: 'factory', categoryCode: 'MES', statusCode: 'ACTIVE', sortOrder: 1, openInNewTab: true, grants: [{ id: 7, linkId: 1, grantType: 'DEPARTMENT', grantCode: 'FAB1-PROD' }] })))
     const r = await getLink(1); expect(r.grants[0].grantCode).toBe('FAB1-PROD')
   })
-  it('createLink POST', async () => {
+  it('createLink POST (plain url)', async () => {
     let body: any
     server.use(http.post(`${BASE}/api/admin/links`, async ({ request }) => { body = await request.json(); return HttpResponse.json({ id: 9, ...body, grants: [] }) }))
-    const r = await createLink({ code: 'x', nameZh: '乙', nameEn: 'X', url: 'u', icon: 'book', categoryCode: 'MES', statusCode: 'ACTIVE', sortOrder: 5, openInNewTab: false })
-    expect(r.id).toBe(9); expect(body.code).toBe('x')
+    const r = await createLink({ nameZh: '乙', nameEn: 'X', url: 'u', icon: 'book', categoryCode: 'MES', statusCode: 'ACTIVE', sortOrder: 5, openInNewTab: false })
+    expect(r.id).toBe(9); expect(body.url).toBe('u')
+  })
+  it('createLink POST (env-aware urls)', async () => {
+    let body: any
+    server.use(http.post(`${BASE}/api/admin/links`, async ({ request }) => { body = await request.json(); return HttpResponse.json({ id: 10, ...body, grants: [] }) }))
+    const r = await createLink({ nameZh: '丙', nameEn: 'Y', urlDev: 'https://dev', urlUat: 'https://uat', urlRelease: 'https://rel', icon: 'book', categoryCode: 'MES', statusCode: 'ACTIVE', sortOrder: 5, openInNewTab: false })
+    expect(r.id).toBe(10); expect(body.urlDev).toBe('https://dev'); expect(body.url).toBeUndefined()
   })
   it('updateLink PUT /{id} and deleteLink DELETE /{id}', async () => {
-    server.use(http.put(`${BASE}/api/admin/links/9`, () => HttpResponse.json({ id: 9, code: 'x', nameZh: '乙', nameEn: 'X', url: 'u', icon: 'book', categoryCode: 'MES', statusCode: 'ACTIVE', sortOrder: 5, openInNewTab: false, grants: [] })))
+    server.use(http.put(`${BASE}/api/admin/links/9`, () => HttpResponse.json({ id: 9, nameZh: '乙', nameEn: 'X', url: 'u', icon: 'book', categoryCode: 'MES', statusCode: 'ACTIVE', sortOrder: 5, openInNewTab: false, grants: [] })))
     server.use(http.delete(`${BASE}/api/admin/links/9`, () => new HttpResponse(null, { status: 204 })))
-    expect((await updateLink(9, { code: 'x', nameZh: '乙', nameEn: 'X', url: 'u', icon: 'book', categoryCode: 'MES', statusCode: 'ACTIVE', sortOrder: 5, openInNewTab: false })).id).toBe(9)
+    expect((await updateLink(9, { nameZh: '乙', nameEn: 'X', url: 'u', icon: 'book', categoryCode: 'MES', statusCode: 'ACTIVE', sortOrder: 5, openInNewTab: false })).id).toBe(9)
     await expect(deleteLink(9)).resolves.toBeUndefined()
   })
   it('replaceGrants PUT /{id}/grants with {grants}', async () => {

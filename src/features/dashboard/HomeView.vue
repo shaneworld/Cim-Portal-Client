@@ -19,7 +19,7 @@ const loading = ref(true); const error = ref(false); const query = ref('')
 const filtered = computed(() => {
   const q = query.value.trim().toLowerCase(); if (!q) return categories.value
   return categories.value.map((c) => ({ ...c, links: c.links.filter((l) =>
-    pick(l, 'name').toLowerCase().includes(q) || l.code.toLowerCase().includes(q) || pick(c, 'categoryLabel').toLowerCase().includes(q)) })).filter((c) => c.links.length > 0)
+    pick(l, 'name').toLowerCase().includes(q) || pick(c, 'categoryLabel').toLowerCase().includes(q)) })).filter((c) => c.links.length > 0)
 })
 const resultCount = computed(() => filtered.value.reduce((n, c) => n + c.links.length, 0))
 const noMatch = computed(() => !loading.value && !error.value && categories.value.length > 0 && filtered.value.length === 0)

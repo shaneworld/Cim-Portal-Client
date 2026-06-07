@@ -8,15 +8,15 @@ import { configureClient } from '@/lib/api/client'
 import LinksAdminView from './LinksAdminView.vue'
 
 const BASE = 'http://localhost:8080'
-const LINKS = [{ id: 1, code: 'mes-wip', nameZh: '在制品管理', nameEn: 'WIP', url: 'u', icon: 'factory', categoryCode: 'MES', statusCode: 'ACTIVE', sortOrder: 1, openInNewTab: true, grants: [{ id: 7, linkId: 1, grantType: 'DEPARTMENT', grantCode: 'FAB1-PROD' }] }]
+const LINKS = [{ id: 1, nameZh: '在制品管理', nameEn: 'WIP', url: 'u', icon: 'factory', categoryCode: 'MES', statusCode: 'ACTIVE', sortOrder: 1, openInNewTab: true, grants: [{ id: 7, linkId: 1, grantType: 'DEPARTMENT', grantCode: 'FAB1-PROD' }] }]
 beforeEach(() => { setActivePinia(createPinia()); i18n.global.locale.value = 'zh'
   configureClient({ baseUrl: BASE, getToken: () => 't', getLocale: () => 'zh', onUnauthorized: () => {} })
   server.use(http.get(`${BASE}/api/admin/links`, () => HttpResponse.json(LINKS)))
 })
 describe('LinksAdminView', () => {
-  it('渲染链接行(名称/代码/分类)', async () => {
+  it('渲染链接行(名称/分类)', async () => {
     const w = mount(LinksAdminView, { global: { plugins: [i18n] } }); await flushPromises()
-    expect(w.text()).toContain('在制品管理'); expect(w.text()).toContain('mes-wip'); expect(w.text()).toContain('MES')
+    expect(w.text()).toContain('在制品管理'); expect(w.text()).toContain('MES')
   })
   it('删除走确认 → 调 DELETE', async () => {
     let deleted = false
@@ -29,7 +29,7 @@ describe('LinksAdminView', () => {
     w.unmount(); document.body.innerHTML = ''
   })
   it('超过一页时分页:默认显示 10 行,翻到第 2 页显示其余', async () => {
-    const many = Array.from({ length: 12 }, (_, i) => ({ id: i + 1, code: `c${i + 1}`, nameZh: `名${i + 1}`, nameEn: `N${i + 1}`, url: 'u', icon: 'factory', categoryCode: 'MES', statusCode: 'ACTIVE', sortOrder: i, openInNewTab: true, grants: [] }))
+    const many = Array.from({ length: 12 }, (_, i) => ({ id: i + 1, nameZh: `名${i + 1}`, nameEn: `N${i + 1}`, url: 'u', icon: 'factory', categoryCode: 'MES', statusCode: 'ACTIVE', sortOrder: i, openInNewTab: true, grants: [] }))
     server.use(http.get(`${BASE}/api/admin/links`, () => HttpResponse.json(many)))
     const w = mount(LinksAdminView, { global: { plugins: [i18n] } }); await flushPromises()
     expect(w.findAll('[data-testid^="del-"]').length).toBe(10)

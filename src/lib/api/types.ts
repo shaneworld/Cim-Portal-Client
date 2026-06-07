@@ -2,7 +2,7 @@ export type Locale = 'zh' | 'en'
 export type EnumCategory = 'DEPARTMENT' | 'ROLE' | 'LINK_CATEGORY' | 'LINK_STATUS'
 
 export interface MeResponse { employeeId: string; displayNameZh: string; displayNameEn: string; departmentCode: string; roleCode: string; isAdmin: boolean }
-export interface HomeLink { id: number; code: string; nameZh: string; nameEn: string; url: string; icon: string; statusCode: string; openInNewTab: boolean }
+export interface HomeLink { id: number; nameZh: string; nameEn: string; url?: string; urlDev?: string; urlUat?: string; urlRelease?: string; icon: string; statusCode: string; openInNewTab: boolean }
 export interface HomeCategory { categoryCode: string; categoryLabelZh: string; categoryLabelEn: string; links: HomeLink[] }
 export interface HomeResponse { categories: HomeCategory[] }
 export interface EnumValue { id: number; category: EnumCategory; code: string; labelZh: string; labelEn: string; sortOrder: number; active: boolean }

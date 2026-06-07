@@ -21,8 +21,8 @@ describe('HomeView', () => {
     const a = useAuthStore(); a.currentUser = { employeeId: 'OP1', displayNameZh: '欧阳操作', displayNameEn: 'O', departmentCode: 'FAB1-PROD', roleCode: 'OPERATOR', isAdmin: false } as any
     server.use(http.get(`${BASE}/api/portal/home`, () => HttpResponse.json({ categories: [
       { categoryCode: 'MES', categoryLabelZh: '制造执行', categoryLabelEn: 'MES', links: [
-        { id: 1, code: 'mes-wip', nameZh: '在制品管理', nameEn: 'WIP', url: 'x', icon: 'factory', statusCode: 'ACTIVE', openInNewTab: true },
-        { id: 2, code: 'mes-oee', nameZh: '设备效率', nameEn: 'OEE', url: 'x', icon: 'gauge', statusCode: 'ACTIVE', openInNewTab: true },
+        { id: 1, nameZh: '在制品管理', nameEn: 'WIP', url: 'x', icon: 'factory', statusCode: 'ACTIVE', openInNewTab: true },
+        { id: 2, nameZh: '设备效率', nameEn: 'OEE', url: 'x', icon: 'gauge', statusCode: 'ACTIVE', openInNewTab: true },
       ] } ] })))
   })
   it('renders hero + domains + systems, and filters by search', async () => {

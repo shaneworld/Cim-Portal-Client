@@ -5,12 +5,12 @@ export type GrantType = 'DEPARTMENT' | 'ROLE'
 export interface GrantResponse { id: number; linkId: number; grantType: GrantType; grantCode: string }
 export interface GrantInput { grantType: GrantType; grantCode: string }
 export interface AdminLink {
-  id: number; code: string; nameZh: string; nameEn: string; url: string; icon: string
+  id: number; nameZh: string; nameEn: string; url?: string; urlDev?: string; urlUat?: string; urlRelease?: string; icon: string
   categoryCode: string; statusCode: string; sortOrder: number; openInNewTab: boolean
   grants: GrantResponse[]; createdAt?: string; updatedAt?: string
 }
 export interface LinkInput {
-  code: string; nameZh: string; nameEn: string; url: string; icon: string
+  nameZh: string; nameEn: string; url?: string; urlDev?: string; urlUat?: string; urlRelease?: string; icon: string
   categoryCode: string; statusCode: string; sortOrder: number; openInNewTab: boolean
 }
 
