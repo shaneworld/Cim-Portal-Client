@@ -3,6 +3,7 @@ import { ref, onMounted } from 'vue'
 import { Plus, Pencil, Trash2, AlertTriangle, RotateCw } from 'lucide-vue-next'
 import { listEnumValues, deleteEnumValue } from '@/lib/api/admin'
 import type { EnumValue, EnumCategory } from '@/lib/api/types'
+import { useLocale } from '@/lib/i18n/useLocale'
 import { useToastStore } from '@/stores/toast'
 import { usePagination } from '@/lib/composables/usePagination'
 import { DEFAULT_PAGE_SIZE } from '@/constants'
@@ -14,11 +15,13 @@ import Pagination from '@/lib/ui/Pagination.vue'
 import AdminPanel from '@/features/admin/AdminPanel.vue'
 import EnumFormModal from './EnumFormModal.vue'
 
-const CATEGORIES: { code: EnumCategory; label: string }[] = [
-  { code: 'DEPARTMENT', label: '部门' },
-  { code: 'ROLE', label: '角色' },
-  { code: 'LINK_CATEGORY', label: '链接分类' },
-  { code: 'LINK_STATUS', label: '链接状态' },
+const { t } = useLocale()
+
+const CATEGORIES: { code: EnumCategory; labelKey: string }[] = [
+  { code: 'DEPARTMENT', labelKey: 'admin.enums.categories.department' },
+  { code: 'ROLE', labelKey: 'admin.enums.categories.role' },
+  { code: 'LINK_CATEGORY', labelKey: 'admin.enums.categories.linkCategory' },
+  { code: 'LINK_STATUS', labelKey: 'admin.enums.categories.linkStatus' },
 ]
 
 const toast = useToastStore()
@@ -72,10 +75,10 @@ async function doDelete() {
   if (!pending.value) return
   try {
     await deleteEnumValue(active.value, pending.value.id)
-    toast.push({ type: 'success', message: '已删除' })
+    toast.push({ type: 'success', message: t('common.deleted') })
     await load()
   } catch {
-    toast.push({ type: 'error', message: '删除失败' })
+    toast.push({ type: 'error', message: t('common.deleteFailed') })
   } finally {
     confirmOpen.value = false
     pending.value = null
@@ -86,9 +89,9 @@ onMounted(load)
 </script>
 
 <template>
-  <AdminPanel title="枚举管理" v-model:page-size="rowsPerPage">
+  <AdminPanel :title="t('admin.enums.title')" v-model:page-size="rowsPerPage">
     <template #actions>
-      <Button @click="openCreate"><Plus class="size-4" /> 新建</Button>
+      <Button @click="openCreate"><Plus class="size-4" /> {{ t('admin.enums.new') }}</Button>
     </template>
 
     <template #toolbar>
@@ -100,15 +103,15 @@ onMounted(load)
           class="rounded-xl px-3 py-1.5 text-sm font-medium transition"
           :class="active === c.code ? 'bg-brand text-white shadow' : 'glass-strong text-ink-2 hover:text-[hsl(var(--ink))]'"
           @click="switchTo(c.code)"
-        >{{ c.label }}</button>
+        >{{ t(c.labelKey) }}</button>
       </div>
     </template>
 
     <div v-if="loading" class="space-y-2 p-4"><Skeleton v-for="n in 5" :key="n" /></div>
     <div v-else-if="error" class="p-8 text-center">
       <AlertTriangle class="mx-auto size-9 text-rose-500" />
-      <p class="mt-2 text-rose-500">加载失败</p>
-      <Button class="mx-auto mt-3" @click="load"><RotateCw class="size-4" /> 重试</Button>
+      <p class="mt-2 text-rose-500">{{ t('dashboard.error') }}</p>
+      <Button class="mx-auto mt-3" @click="load"><RotateCw class="size-4" /> {{ t('common.retry') }}</Button>
     </div>
     <template v-else>
       <div class="divide-y divide-border/60">
@@ -118,14 +121,14 @@ onMounted(load)
             {{ v.labelZh }} <span class="text-ink-3">/ {{ v.labelEn }}</span>
           </span>
           <span class="hidden w-12 shrink-0 text-center text-xs text-ink-3 sm:block">{{ v.sortOrder }}</span>
-          <Badge :tone="v.active ? 'go' : 'muted'">{{ v.active ? '启用' : '停用' }}</Badge>
+          <Badge :tone="v.active ? 'go' : 'muted'">{{ v.active ? t('common.enabled') : t('common.disabled') }}</Badge>
           <span class="flex shrink-0 gap-1">
             <Button variant="ghost" size="icon" :data-testid="`enum-edit-${v.id}`" @click="openEdit(v)"><Pencil class="size-4" /></Button>
             <Button variant="ghost" size="icon" :data-testid="`enum-del-${v.id}`" @click="askDelete(v)"><Trash2 class="size-4 text-rose-500" /></Button>
           </span>
         </div>
       </div>
-      <div v-if="!values.length" class="p-8 text-center text-ink-3">该分类暂无枚举值</div>
+      <div v-if="!values.length" class="p-8 text-center text-ink-3">{{ t('admin.enums.empty') }}</div>
     </template>
 
     <template v-if="total > pageSize" #footer>
@@ -136,8 +139,8 @@ onMounted(load)
   <EnumFormModal v-model:open="formOpen" :category="active" :value="editing" @saved="load" />
   <ConfirmDialog
     v-model:open="confirmOpen"
-    title="删除枚举值"
-    :message="`确认删除「${pending?.code}」?删除可能影响仍在使用该 code 的链接/授权。`"
+    :title="t('admin.enums.deleteTitle')"
+    :message="t('admin.enums.deleteMessage', { code: pending?.code })"
     @confirm="doDelete"
     @cancel="confirmOpen = false"
   />

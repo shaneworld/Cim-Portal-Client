@@ -26,6 +26,35 @@ export default {
   header: {
     admin: 'Admin',
   },
+  admin: {
+    backToPortal: 'Back to Portal',
+    comingSoon: 'Coming Soon',
+    nav: {
+      links: 'Links',
+      enums: 'Enums',
+      users: 'Users',
+    },
+    links: {
+      title: 'Link Management',
+      new: 'New Link',
+      empty: 'No links yet',
+      deleteTitle: 'Delete Link',
+      deleteMessage: 'Delete "{name}"?',
+    },
+    enums: {
+      title: 'Enum Management',
+      new: 'New',
+      empty: 'No enum values in this category',
+      deleteTitle: 'Delete Enum Value',
+      deleteMessage: 'Delete "{code}"? This may affect links/grants still using this code.',
+      categories: {
+        department: 'Department',
+        role: 'Role',
+        linkCategory: 'Link Category',
+        linkStatus: 'Link Status',
+      },
+    },
+  },
   dashboard: {
     greeting: { dawn: 'Good early morning', morning: 'Good morning', afternoon: 'Good afternoon', evening: 'Good evening' },
     stats: { systems: 'Systems', categories: 'Categories', online: 'Online' },

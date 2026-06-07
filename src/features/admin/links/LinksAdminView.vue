@@ -14,7 +14,7 @@ import Pagination from '@/lib/ui/Pagination.vue'
 import AdminPanel from '@/features/admin/AdminPanel.vue'
 import LinkFormModal from './LinkFormModal.vue'
 
-const { pick } = useLocale()
+const { pick, t } = useLocale()
 const toast = useToastStore()
 const links = ref<AdminLink[]>([]); const loading = ref(true); const error = ref(false)
 const rowsPerPage = ref(DEFAULT_PAGE_SIZE)
@@ -28,22 +28,22 @@ function openEdit(l: AdminLink) { editing.value = l; formOpen.value = true }
 function askDelete(l: AdminLink) { pendingDelete.value = l; confirmOpen.value = true }
 async function doDelete() {
   if (!pendingDelete.value) return
-  try { await deleteLink(pendingDelete.value.id); toast.push({ type: 'success', message: '已删除' }); await load() }
-  catch { toast.push({ type: 'error', message: '删除失败' }) }
+  try { await deleteLink(pendingDelete.value.id); toast.push({ type: 'success', message: t('common.deleted') }); await load() }
+  catch { toast.push({ type: 'error', message: t('common.deleteFailed') }) }
   finally { confirmOpen.value = false; pendingDelete.value = null }
 }
 onMounted(load)
 </script>
 <template>
-  <AdminPanel title="链接管理" v-model:page-size="rowsPerPage">
+  <AdminPanel :title="t('admin.links.title')" v-model:page-size="rowsPerPage">
     <template #actions>
-      <Button @click="openCreate"><Plus class="size-4" /> 新建链接</Button>
+      <Button @click="openCreate"><Plus class="size-4" /> {{ t('admin.links.new') }}</Button>
     </template>
 
     <div v-if="loading" class="space-y-2 p-4"><Skeleton v-for="n in 6" :key="n" /></div>
     <div v-else-if="error" class="p-8 text-center">
-      <AlertTriangle class="mx-auto size-9 text-rose-500" /><p class="mt-2 text-rose-500">加载失败</p>
-      <Button class="mx-auto mt-3" @click="load"><RotateCw class="size-4" /> 重试</Button>
+      <AlertTriangle class="mx-auto size-9 text-rose-500" /><p class="mt-2 text-rose-500">{{ t('dashboard.error') }}</p>
+      <Button class="mx-auto mt-3" @click="load"><RotateCw class="size-4" /> {{ t('common.retry') }}</Button>
     </div>
     <template v-else>
       <div class="divide-y divide-border/60">
@@ -60,7 +60,7 @@ onMounted(load)
           </span>
         </div>
       </div>
-      <div v-if="!links.length" class="p-8 text-center text-ink-3">暂无链接</div>
+      <div v-if="!links.length" class="p-8 text-center text-ink-3">{{ t('admin.links.empty') }}</div>
     </template>
 
     <template v-if="total > pageSize" #footer>
@@ -69,5 +69,5 @@ onMounted(load)
   </AdminPanel>
 
   <LinkFormModal v-model:open="formOpen" :link="editing" @saved="load" />
-  <ConfirmDialog v-model:open="confirmOpen" title="删除链接" :message="`确认删除「${pendingDelete ? pick(pendingDelete, 'name') : ''}」?`" @confirm="doDelete" @cancel="confirmOpen = false" />
+  <ConfirmDialog v-model:open="confirmOpen" :title="t('admin.links.deleteTitle')" :message="t('admin.links.deleteMessage', { name: pendingDelete ? pick(pendingDelete, 'name') : '' })" @confirm="doDelete" @cancel="confirmOpen = false" />
 </template>

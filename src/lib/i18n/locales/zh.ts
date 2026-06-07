@@ -26,6 +26,35 @@ export default {
   header: {
     admin: '管理',
   },
+  admin: {
+    backToPortal: '返回门户',
+    comingSoon: '即将上线',
+    nav: {
+      links: '链接',
+      enums: '枚举',
+      users: '用户',
+    },
+    links: {
+      title: '链接管理',
+      new: '新建链接',
+      empty: '暂无链接',
+      deleteTitle: '删除链接',
+      deleteMessage: '确认删除「{name}」?',
+    },
+    enums: {
+      title: '枚举管理',
+      new: '新建',
+      empty: '该分类暂无枚举值',
+      deleteTitle: '删除枚举值',
+      deleteMessage: '确认删除「{code}」?删除可能影响仍在使用该 code 的链接/授权。',
+      categories: {
+        department: '部门',
+        role: '角色',
+        linkCategory: '链接分类',
+        linkStatus: '链接状态',
+      },
+    },
+  },
   dashboard: {
     greeting: { dawn: '凌晨好', morning: '早上好', afternoon: '下午好', evening: '晚上好' },
     stats: { systems: '系统', categories: '类别', online: '在线' },
