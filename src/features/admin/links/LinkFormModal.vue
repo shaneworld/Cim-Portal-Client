@@ -128,7 +128,7 @@ async function save() {
         <label class="block" data-testid="f-environment-wrap"><span class="mb-1 block text-xs font-medium text-ink-2">{{ t('admin.linkForm.environmentLabel') }}</span>
           <Select :model-value="form.environment" :options="envOpts" @update:model-value="(v) => form.environment = v" /></label>
         <div class="block"><span class="mb-1 block text-xs font-medium text-ink-2">{{ t('admin.linkForm.openInNewTab') }}</span>
-          <label class="flex h-10 cursor-pointer items-center gap-2 rounded-xl border border-input glass-strong px-3">
+          <label class="flex h-10 cursor-pointer items-center gap-2.5">
             <Switch :model-value="form.openInNewTab" @update:model-value="(v) => form.openInNewTab = v" />
             <span class="text-sm text-ink-2">{{ form.openInNewTab ? t('common.enabled') : t('common.disabled') }}</span>
           </label></div>
