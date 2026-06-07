@@ -5,13 +5,14 @@ import { useLocale } from '@/lib/i18n/useLocale'
 import GlassCard from '@/lib/ui/GlassCard.vue'
 import AppIcon from '@/lib/ui/AppIcon.vue'
 import StatusDot from '@/lib/ui/StatusDot.vue'
+import { LINK_STATUS } from '@/constants'
 const props = defineProps<{ link: HomeLink }>()
 const emit = defineEmits<{ blocked: [HomeLink] }>()
 const { pick } = useLocale()
 const name = computed(() => pick(props.link, 'name'))
-const statusText = computed(() => props.link.statusCode === 'ACTIVE' ? '运行中' : props.link.statusCode === 'MAINTENANCE' ? '维护中' : props.link.statusCode === 'DEPRECATED' ? '已停用' : props.link.statusCode)
+const statusText = computed(() => props.link.statusCode === LINK_STATUS.ACTIVE ? '运行中' : props.link.statusCode === LINK_STATUS.MAINTENANCE ? '维护中' : props.link.statusCode === LINK_STATUS.DEPRECATED ? '已停用' : props.link.statusCode)
 // Non-active systems warn the user before opening (maintenance/deprecated).
-function onClick(e: MouseEvent) { if (props.link.statusCode !== 'ACTIVE') { e.preventDefault(); emit('blocked', props.link) } }
+function onClick(e: MouseEvent) { if (props.link.statusCode !== LINK_STATUS.ACTIVE) { e.preventDefault(); emit('blocked', props.link) } }
 </script>
 <template>
   <a :href="link.url" :target="link.openInNewTab ? '_blank' : '_self'" rel="noopener noreferrer" class="block" @click="onClick">

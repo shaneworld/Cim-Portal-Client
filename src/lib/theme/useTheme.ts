@@ -1,8 +1,9 @@
 import { ref } from 'vue'
+import { STORAGE_KEYS } from '@/constants'
 
 export type ThemeMode = 'light' | 'dark' | 'system'
 
-const KEY = 'cimp.theme'
+const KEY = STORAGE_KEYS.theme
 const mode = ref<ThemeMode>((localStorage.getItem(KEY) as ThemeMode | null) ?? 'system')
 
 function systemDark() {

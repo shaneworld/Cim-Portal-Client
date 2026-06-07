@@ -3,8 +3,9 @@ import { computed, ref } from 'vue'
 import { getMe } from '@/lib/api/portal'
 import { createAuthProvider } from '@/lib/auth'
 import type { MeResponse } from '@/lib/api/types'
+import { STORAGE_KEYS } from '@/constants'
 
-const KEY = 'cimp.token'
+const KEY = STORAGE_KEYS.token
 export const useAuthStore = defineStore('auth', () => {
   const token = ref<string | null>(localStorage.getItem(KEY))
   const currentUser = ref<MeResponse | null>(null)

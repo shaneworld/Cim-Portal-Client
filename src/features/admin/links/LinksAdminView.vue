@@ -5,6 +5,7 @@ import { listLinks, deleteLink, type AdminLink } from '@/lib/api/admin'
 import { useLocale } from '@/lib/i18n/useLocale'
 import { useToastStore } from '@/stores/toast'
 import { usePagination } from '@/lib/composables/usePagination'
+import { DEFAULT_PAGE_SIZE } from '@/constants'
 import Button from '@/lib/ui/Button.vue'
 import StatusDot from '@/lib/ui/StatusDot.vue'
 import Skeleton from '@/lib/ui/Skeleton.vue'
@@ -16,7 +17,7 @@ import LinkFormModal from './LinkFormModal.vue'
 const { pick } = useLocale()
 const toast = useToastStore()
 const links = ref<AdminLink[]>([]); const loading = ref(true); const error = ref(false)
-const rowsPerPage = ref(10)
+const rowsPerPage = ref(DEFAULT_PAGE_SIZE)
 const { page, paged, total, pageSize } = usePagination(links, rowsPerPage)
 const formOpen = ref(false); const editing = ref<AdminLink | null>(null)
 const confirmOpen = ref(false); const pendingDelete = ref<AdminLink | null>(null)

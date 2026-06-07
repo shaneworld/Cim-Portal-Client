@@ -13,6 +13,7 @@ import { createLink, updateLink, replaceGrants, getLink, type AdminLink, type Li
 import { ApiError } from '@/lib/api/client'
 import { useToastStore } from '@/stores/toast'
 import { useLocale } from '@/lib/i18n/useLocale'
+import { GRANT_TYPES } from '@/constants'
 
 const props = defineProps<{ open: boolean; link: AdminLink | null }>()
 const emit = defineEmits<{ 'update:open': [boolean]; saved: [] }>()
@@ -22,14 +23,14 @@ const { pick } = useLocale()
 const ICON_KEYS = ['factory','line-chart','gauge','wrench','boxes','file-text','trending-up','activity','package','book','archive']
 type Opt = { value: string; label: string }
 const catOpts = ref<Opt[]>([]); const statusOpts = ref<Opt[]>([]); const deptOpts = ref<Opt[]>([]); const roleOpts = ref<Opt[]>([])
-const grantTypeOpts: Opt[] = [{ value: 'DEPARTMENT', label: '部门' }, { value: 'ROLE', label: '角色' }]
+const grantTypeOpts: Opt[] = [{ value: GRANT_TYPES.DEPARTMENT, label: '部门' }, { value: GRANT_TYPES.ROLE, label: '角色' }]
 
 const form = reactive<LinkInput>({ code: '', nameZh: '', nameEn: '', url: '', icon: 'factory', categoryCode: '', statusCode: '', sortOrder: 100, openInNewTab: true })
 const grants = ref<GrantInput[]>([])
 const fieldErrors = ref<Record<string, string>>({})
 const saving = ref(false)
 
-function codesFor(t: GrantType): Opt[] { return t === 'DEPARTMENT' ? deptOpts.value : roleOpts.value }
+function codesFor(t: GrantType): Opt[] { return t === GRANT_TYPES.DEPARTMENT ? deptOpts.value : roleOpts.value }
 
 async function loadEnums() {
   const toOpt = (e: { code: string; labelZh: string; labelEn: string }) => ({ value: e.code, label: pick(e as { labelZh: string; labelEn: string } & Record<string, string>, 'label') })

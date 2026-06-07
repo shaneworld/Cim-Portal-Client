@@ -5,6 +5,7 @@ import { listEnumValues, deleteEnumValue } from '@/lib/api/admin'
 import type { EnumValue, EnumCategory } from '@/lib/api/types'
 import { useToastStore } from '@/stores/toast'
 import { usePagination } from '@/lib/composables/usePagination'
+import { DEFAULT_PAGE_SIZE } from '@/constants'
 import Button from '@/lib/ui/Button.vue'
 import Badge from '@/lib/ui/Badge.vue'
 import Skeleton from '@/lib/ui/Skeleton.vue'
@@ -23,7 +24,7 @@ const CATEGORIES: { code: EnumCategory; label: string }[] = [
 const toast = useToastStore()
 const active = ref<EnumCategory>('DEPARTMENT')
 const values = ref<EnumValue[]>([])
-const rowsPerPage = ref(10)
+const rowsPerPage = ref(DEFAULT_PAGE_SIZE)
 const { page, paged, total, pageSize, reset } = usePagination(values, rowsPerPage)
 const loading = ref(true)
 const error = ref(false)
