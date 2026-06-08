@@ -61,7 +61,7 @@ export default {
       launchAppLabel: '启动本地应用',
       protocolUrlLabel: '应用协议 URL',
       downloadUrlLabel: '下载地址',
-      launchAppHint: '需客户机已注册该协议;未安装将跳转下载地址',
+      launchAppHint: '需客户机已注册该协议；未安装将跳转下载地址',
       grants: '访问授权',
       addGrant: '添加授权',
       grantsHint: '未设置授权 = 所有人可见。如需限制访问范围，请添加授权。',
@@ -120,6 +120,6 @@ export default {
     employeeId: '工号',
     proceedOpen: '仍要打开',
     namePunct: '，',
-    launch: { downloadHint: '未检测到本地应用,可前往下载' },
+    launch: { downloadHint: '未检测到本地应用，可前往下载' },
   },
 }
