@@ -121,5 +121,7 @@ export default {
     proceedOpen: '仍要打开',
     namePunct: '，',
     launch: { downloadHint: '未检测到本地应用，可前往下载' },
+    noAccess: '无权限',
+    noAccessHint: '无权限，请联系管理员',
   },
 }

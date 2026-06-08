@@ -121,5 +121,7 @@ export default {
     proceedOpen: 'Open anyway',
     namePunct: ', ',
     launch: { downloadHint: 'Local app not detected — you can download it' },
+    noAccess: 'No access',
+    noAccessHint: 'No access — contact your administrator',
   },
 }

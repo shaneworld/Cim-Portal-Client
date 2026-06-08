@@ -18,7 +18,7 @@ const dlg = computed(() => {
   return { title: t('dashboard.deprecatedDlg.title'), message: t('dashboard.deprecatedDlg.message', { name }) }
 })
 function onBlocked(link: HomeLink) { pending.value = link; dlgOpen.value = true }
-function proceed() { const p = pending.value; dlgOpen.value = false; if (p) window.open(p.url, p.openInNewTab ? '_blank' : '_self', 'noopener') }
+function proceed() { const p = pending.value; dlgOpen.value = false; if (p) window.open(p.url!, p.openInNewTab ? '_blank' : '_self', 'noopener') }
 </script>
 <template>
   <div class="space-y-6">

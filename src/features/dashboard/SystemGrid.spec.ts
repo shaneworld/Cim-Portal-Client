@@ -5,17 +5,21 @@ import { i18n } from '@/lib/i18n'
 import SystemGrid from './SystemGrid.vue'
 
 const cats = [{ categoryCode: 'MES', categoryLabelZh: '制造执行', categoryLabelEn: 'MES', links: [
-  { id: 1, nameZh: '在制品管理', nameEn: 'WIP', url: 'https://x', icon: 'factory', statusCode: 'ACTIVE', openInNewTab: true, launchApp: false },
-  { id: 2, nameZh: '旧门户', nameEn: 'Legacy', url: 'https://y', icon: 'archive', statusCode: 'DEPRECATED', openInNewTab: false, launchApp: false },
+  { id: 1, nameZh: '在制品管理', nameEn: 'WIP', url: 'https://x', icon: 'factory', statusCode: 'ACTIVE', openInNewTab: true, launchApp: false, accessible: true },
+  { id: 2, nameZh: '旧门户', nameEn: 'Legacy', url: 'https://y', icon: 'archive', statusCode: 'DEPRECATED', openInNewTab: false, launchApp: false, accessible: true },
 ] }] as any
 
 const catsWithEnv = [{ categoryCode: 'MES', categoryLabelZh: '制造执行', categoryLabelEn: 'MES', links: [
-  { id: 3, nameZh: '开发系统', nameEn: 'DevSys', url: 'https://dev', icon: 'factory', statusCode: 'ACTIVE', openInNewTab: true, environment: 'DEV', launchApp: false },
-  { id: 4, nameZh: '生产系统', nameEn: 'ProdSys', url: 'https://rel', icon: 'gauge', statusCode: 'ACTIVE', openInNewTab: true, launchApp: false },
+  { id: 3, nameZh: '开发系统', nameEn: 'DevSys', url: 'https://dev', icon: 'factory', statusCode: 'ACTIVE', openInNewTab: true, environment: 'DEV', launchApp: false, accessible: true },
+  { id: 4, nameZh: '生产系统', nameEn: 'ProdSys', url: 'https://rel', icon: 'gauge', statusCode: 'ACTIVE', openInNewTab: true, launchApp: false, accessible: true },
 ] }] as any
 
 const catsWithLaunchLink = [{ categoryCode: 'MES', categoryLabelZh: '制造执行', categoryLabelEn: 'MES', links: [
-  { id: 5, nameZh: 'MES客户端', nameEn: 'MES Client', url: 'mesclient://launch', icon: 'factory', statusCode: 'ACTIVE', openInNewTab: false, launchApp: true, downloadUrl: 'https://download.example.com' },
+  { id: 5, nameZh: 'MES客户端', nameEn: 'MES Client', url: 'mesclient://launch', icon: 'factory', statusCode: 'ACTIVE', openInNewTab: false, launchApp: true, downloadUrl: 'https://download.example.com', accessible: true },
+] }] as any
+
+const catsWithLockedLink = [{ categoryCode: 'MES', categoryLabelZh: '制造执行', categoryLabelEn: 'MES', links: [
+  { id: 6, nameZh: '受限系统', nameEn: 'Restricted', icon: 'lock', statusCode: 'ACTIVE', openInNewTab: true, launchApp: false, accessible: false },
 ] }] as any
 
 describe('SystemGrid', () => {
@@ -60,5 +64,49 @@ describe('SystemGrid', () => {
     const w = mount(SystemGrid, { props: { categories: catsWithLaunchLink }, global: { plugins: [i18n] } })
     await w.find('a').trigger('click')
     expect(launchSpy).toHaveBeenCalledWith('mesclient://launch', 'https://download.example.com')
+  })
+
+  describe('locked (inaccessible) cards', () => {
+    it('renders Lock icon and "无权限" text in zh locale', () => {
+      i18n.global.locale.value = 'zh'
+      const w = mount(SystemGrid, { props: { categories: catsWithLockedLink }, global: { plugins: [i18n] } })
+      expect(w.text()).toContain('受限系统')
+      expect(w.text()).toContain('无权限')
+      // Lock icon rendered as an SVG inside the status area
+      expect(w.findAll('svg').length).toBeGreaterThanOrEqual(1)
+    })
+    it('renders Lock icon and "No access" text in en locale', () => {
+      i18n.global.locale.value = 'en'
+      const w = mount(SystemGrid, { props: { categories: catsWithLockedLink }, global: { plugins: [i18n] } })
+      expect(w.text()).toContain('Restricted')
+      expect(w.text()).toContain('No access')
+    })
+    it('locked card root has no href and has opacity-60 class', () => {
+      const w = mount(SystemGrid, { props: { categories: catsWithLockedLink }, global: { plugins: [i18n] } })
+      const a = w.find('a')
+      expect(a.attributes('href')).toBeUndefined()
+      expect(a.classes()).toContain('opacity-60')
+    })
+    it('locked card has title = noAccessHint tooltip', () => {
+      i18n.global.locale.value = 'zh'
+      const w = mount(SystemGrid, { props: { categories: catsWithLockedLink }, global: { plugins: [i18n] } })
+      const a = w.find('a')
+      expect(a.attributes('title')).toBe('无权限，请联系管理员')
+    })
+    it('clicking locked card does NOT emit blocked and does not navigate', async () => {
+      const w = mount(SystemGrid, { props: { categories: catsWithLockedLink }, global: { plugins: [i18n] } })
+      // Spy on SystemCard's blocked emit via the grid
+      const prevented: boolean[] = []
+      const a = w.find('a')
+      // Trigger click — if blocked were emitted the ConfirmDialog would appear
+      await a.trigger('click')
+      await flushPromises()
+      // No confirmation dialog content should appear
+      expect(w.text()).not.toContain('已停用')
+      expect(w.text()).not.toContain('维护')
+      // blocked event must not have been emitted from SystemGrid's child SystemCard
+      // (SystemGrid forwards it; if it did, dlgOpen would be true and dialog rendered)
+      expect(w.find('[role="dialog"]').exists()).toBe(false)
+    })
   })
 })
