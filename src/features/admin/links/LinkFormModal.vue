@@ -35,8 +35,9 @@ const envOpts: Opt[] = [
 
 const form = reactive<{
   nameZh: string; nameEn: string; icon: string; categoryCode: string; statusCode: string; sortOrder: number; openInNewTab: boolean
-  url: string; environment: string
-}>({ nameZh: '', nameEn: '', icon: 'factory', categoryCode: '', statusCode: '', sortOrder: 100, openInNewTab: true, url: '', environment: ENV_NONE })
+  url: string; environment: string; downloadUrl: string
+}>({ nameZh: '', nameEn: '', icon: 'factory', categoryCode: '', statusCode: '', sortOrder: 100, openInNewTab: true, url: '', environment: ENV_NONE, downloadUrl: '' })
+const launchApp = ref(false)
 const grants = ref<GrantInput[]>([])
 const fieldErrors = ref<Record<string, string>>({})
 const saving = ref(false)
@@ -60,13 +61,16 @@ async function populate() {
       url: props.link.url ?? '',
       environment: props.link.environment ?? ENV_NONE,
       icon: props.link.icon, categoryCode: props.link.categoryCode, statusCode: props.link.statusCode, sortOrder: props.link.sortOrder, openInNewTab: props.link.openInNewTab,
+      downloadUrl: props.link.downloadUrl ?? '',
     })
+    launchApp.value = !!props.link.launchApp
     grants.value = props.link.grants.map((g) => ({ grantType: g.grantType, grantCode: g.grantCode }))
     // The list endpoint returns grants:[]; fetch the detail to load the real grants
     // (otherwise saving would replace them with an empty set and wipe access).
     try { const full = await getLink(props.link.id); grants.value = full.grants.map((g) => ({ grantType: g.grantType, grantCode: g.grantCode })) } catch { /* keep seeded grants */ }
   } else {
-    Object.assign(form, { nameZh: '', nameEn: '', icon: 'factory', categoryCode: '', statusCode: '', sortOrder: 100, openInNewTab: true, url: '', environment: ENV_NONE })
+    Object.assign(form, { nameZh: '', nameEn: '', icon: 'factory', categoryCode: '', statusCode: '', sortOrder: 100, openInNewTab: true, url: '', environment: ENV_NONE, downloadUrl: '' })
+    launchApp.value = false
     grants.value = []
   }
 }
@@ -79,6 +83,7 @@ function validate(): boolean {
   if (!form.nameZh.trim()) e.nameZh = t('common.required')
   if (!form.nameEn.trim()) e.nameEn = t('common.required')
   if (!form.url.trim()) e.url = t('common.required')
+  if (launchApp.value && !form.downloadUrl.trim()) e.downloadUrl = t('common.required')
   if (!form.categoryCode) e.categoryCode = t('common.mustSelect')
   if (!form.statusCode) e.statusCode = t('common.mustSelect')
   if (!form.icon) e.icon = t('common.mustSelect')
@@ -94,6 +99,8 @@ async function save() {
       categoryCode: form.categoryCode, statusCode: form.statusCode,
       sortOrder: Number(form.sortOrder), openInNewTab: form.openInNewTab,
       url: form.url,
+      launchApp: launchApp.value,
+      ...(launchApp.value ? { downloadUrl: form.downloadUrl } : {}),
       ...(form.environment && form.environment !== ENV_NONE ? { environment: form.environment as 'DEV' | 'UAT' | 'RELEASE' } : {}),
     }
     const saved = props.link ? await updateLink(props.link.id, input) : await createLink(input)
@@ -117,10 +124,21 @@ async function save() {
           <Input data-testid="f-nameEn" :model-value="form.nameEn" @update:model-value="(v) => form.nameEn = v" />
           <span v-if="fieldErrors.nameEn" class="mt-1 block text-xs text-rose-500">{{ fieldErrors.nameEn }}</span></label>
       </div>
+      <!-- launch app toggle -->
+      <div class="block"><span class="mb-1 block text-xs font-medium text-ink-2">{{ t('admin.linkForm.launchAppLabel') }}</span>
+        <label class="flex h-10 cursor-pointer items-center gap-2.5" data-testid="f-launchApp-wrap">
+          <Switch data-testid="f-launchApp" :model-value="launchApp" @update:model-value="(v) => launchApp = v" />
+          <span class="text-sm text-ink-2">{{ launchApp ? t('common.enabled') : t('common.disabled') }}</span>
+        </label></div>
       <!-- single URL -->
-      <label class="block"><span class="mb-1 block text-xs font-medium text-ink-2">{{ t('admin.linkForm.urlLabel') }}</span>
-        <Input data-testid="f-url" :model-value="form.url" placeholder="https://..." @update:model-value="(v) => form.url = v" />
+      <label class="block"><span class="mb-1 block text-xs font-medium text-ink-2">{{ launchApp ? t('admin.linkForm.protocolUrlLabel') : t('admin.linkForm.urlLabel') }}</span>
+        <Input data-testid="f-url" :model-value="form.url" :placeholder="launchApp ? 'mesclient://' : 'https://...'" @update:model-value="(v) => form.url = v" />
         <span v-if="fieldErrors.url" class="mt-1 block text-xs text-rose-500">{{ fieldErrors.url }}</span></label>
+      <!-- download URL (only when launchApp) -->
+      <label v-if="launchApp" class="block"><span class="mb-1 block text-xs font-medium text-ink-2">{{ t('admin.linkForm.downloadUrlLabel') }}</span>
+        <Input data-testid="f-downloadUrl" :model-value="form.downloadUrl" placeholder="https://..." @update:model-value="(v) => form.downloadUrl = v" />
+        <span v-if="fieldErrors.downloadUrl" class="mt-1 block text-xs text-rose-500">{{ fieldErrors.downloadUrl }}</span>
+        <span class="mt-1 block text-xs text-ink-3">{{ t('admin.linkForm.launchAppHint') }}</span></label>
       <!-- environment + open-in-new-tab (paired link-behavior row) -->
       <div class="grid grid-cols-1 gap-3 sm:grid-cols-2">
         <label class="block" data-testid="f-environment-wrap"><span class="mb-1 block text-xs font-medium text-ink-2">{{ t('admin.linkForm.environmentLabel') }}</span>

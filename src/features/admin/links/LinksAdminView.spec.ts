@@ -8,10 +8,14 @@ import { configureClient } from '@/lib/api/client'
 import LinksAdminView from './LinksAdminView.vue'
 
 const BASE = 'http://localhost:8080'
-const LINKS = [{ id: 1, nameZh: '在制品管理', nameEn: 'WIP', url: 'u', icon: 'factory', categoryCode: 'MES', statusCode: 'ACTIVE', sortOrder: 1, openInNewTab: true, grants: [{ id: 7, linkId: 1, grantType: 'DEPARTMENT', grantCode: 'FAB1-PROD' }] }]
+const LINKS = [{ id: 1, nameZh: '在制品管理', nameEn: 'WIP', url: 'u', icon: 'factory', categoryCode: 'MES', statusCode: 'ACTIVE', sortOrder: 1, openInNewTab: true, launchApp: false, grants: [{ id: 7, linkId: 1, grantType: 'DEPARTMENT', grantCode: 'FAB1-PROD' }] }]
 const LINKS_WITH_ENV = [
-  { id: 1, nameZh: '在制品管理', nameEn: 'WIP', url: 'u', icon: 'factory', categoryCode: 'MES', statusCode: 'ACTIVE', sortOrder: 1, openInNewTab: true, environment: 'UAT', grants: [] },
-  { id: 2, nameZh: '设备效率', nameEn: 'OEE', url: 'v', icon: 'gauge', categoryCode: 'MES', statusCode: 'ACTIVE', sortOrder: 2, openInNewTab: true, grants: [] },
+  { id: 1, nameZh: '在制品管理', nameEn: 'WIP', url: 'u', icon: 'factory', categoryCode: 'MES', statusCode: 'ACTIVE', sortOrder: 1, openInNewTab: true, environment: 'UAT', launchApp: false, grants: [] },
+  { id: 2, nameZh: '设备效率', nameEn: 'OEE', url: 'v', icon: 'gauge', categoryCode: 'MES', statusCode: 'ACTIVE', sortOrder: 2, openInNewTab: true, launchApp: false, grants: [] },
+]
+const LINKS_WITH_LAUNCH = [
+  { id: 3, nameZh: 'MES客户端', nameEn: 'MES Client', url: 'mesclient://launch', icon: 'factory', categoryCode: 'MES', statusCode: 'ACTIVE', sortOrder: 1, openInNewTab: false, launchApp: true, downloadUrl: 'https://download.example.com', grants: [] },
+  { id: 4, nameZh: '普通链接', nameEn: 'Normal', url: 'https://normal', icon: 'gauge', categoryCode: 'MES', statusCode: 'ACTIVE', sortOrder: 2, openInNewTab: true, launchApp: false, grants: [] },
 ]
 beforeEach(() => { setActivePinia(createPinia()); i18n.global.locale.value = 'zh'
   configureClient({ baseUrl: BASE, getToken: () => 't', getLocale: () => 'zh', onUnauthorized: () => {} })
@@ -42,11 +46,19 @@ describe('LinksAdminView', () => {
     w.unmount(); document.body.innerHTML = ''
   })
   it('超过一页时分页:默认显示 10 行,翻到第 2 页显示其余', async () => {
-    const many = Array.from({ length: 12 }, (_, i) => ({ id: i + 1, nameZh: `名${i + 1}`, nameEn: `N${i + 1}`, url: 'u', icon: 'factory', categoryCode: 'MES', statusCode: 'ACTIVE', sortOrder: i, openInNewTab: true, grants: [] }))
+    const many = Array.from({ length: 12 }, (_, i) => ({ id: i + 1, nameZh: `名${i + 1}`, nameEn: `N${i + 1}`, url: 'u', icon: 'factory', categoryCode: 'MES', statusCode: 'ACTIVE', sortOrder: i, openInNewTab: true, launchApp: false, grants: [] }))
     server.use(http.get(`${BASE}/api/admin/links`, () => HttpResponse.json(many)))
     const w = mount(LinksAdminView, { global: { plugins: [i18n] } }); await flushPromises()
     expect(w.findAll('[data-testid^="del-"]').length).toBe(10)
     await w.get('[data-testid="page-next"]').trigger('click'); await flushPromises()
     expect(w.findAll('[data-testid^="del-"]').length).toBe(2)
+  })
+  it('launchApp=true 的链接显示 APP 徽章,普通链接不显示', async () => {
+    server.use(http.get(`${BASE}/api/admin/links`, () => HttpResponse.json(LINKS_WITH_LAUNCH)))
+    const w = mount(LinksAdminView, { global: { plugins: [i18n] } }); await flushPromises()
+    expect(w.text()).toContain('APP')
+    // The second link (普通链接) should not show APP
+    const rows = w.findAll('[data-testid^="del-"]')
+    expect(rows.length).toBe(2)
   })
 })

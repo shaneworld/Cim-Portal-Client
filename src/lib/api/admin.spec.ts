@@ -19,19 +19,19 @@ describe('admin api', () => {
   it('createLink POST (plain url, no environment)', async () => {
     let body: any
     server.use(http.post(`${BASE}/api/admin/links`, async ({ request }) => { body = await request.json(); return HttpResponse.json({ id: 9, ...body, grants: [] }) }))
-    const r = await createLink({ nameZh: '乙', nameEn: 'X', url: 'u', icon: 'book', categoryCode: 'MES', statusCode: 'ACTIVE', sortOrder: 5, openInNewTab: false })
+    const r = await createLink({ nameZh: '乙', nameEn: 'X', url: 'u', icon: 'book', categoryCode: 'MES', statusCode: 'ACTIVE', sortOrder: 5, openInNewTab: false, launchApp: false })
     expect(r.id).toBe(9); expect(body.url).toBe('u'); expect(body.environment).toBeUndefined()
   })
   it('createLink POST with environment', async () => {
     let body: any
     server.use(http.post(`${BASE}/api/admin/links`, async ({ request }) => { body = await request.json(); return HttpResponse.json({ id: 10, ...body, grants: [] }) }))
-    const r = await createLink({ nameZh: '丙', nameEn: 'Y', url: 'https://uat.example.com', environment: 'UAT', icon: 'book', categoryCode: 'MES', statusCode: 'ACTIVE', sortOrder: 5, openInNewTab: false })
+    const r = await createLink({ nameZh: '丙', nameEn: 'Y', url: 'https://uat.example.com', environment: 'UAT', icon: 'book', categoryCode: 'MES', statusCode: 'ACTIVE', sortOrder: 5, openInNewTab: false, launchApp: false })
     expect(r.id).toBe(10); expect(body.url).toBe('https://uat.example.com'); expect(body.environment).toBe('UAT')
   })
   it('updateLink PUT /{id} and deleteLink DELETE /{id}', async () => {
     server.use(http.put(`${BASE}/api/admin/links/9`, () => HttpResponse.json({ id: 9, nameZh: '乙', nameEn: 'X', url: 'u', icon: 'book', categoryCode: 'MES', statusCode: 'ACTIVE', sortOrder: 5, openInNewTab: false, grants: [] })))
     server.use(http.delete(`${BASE}/api/admin/links/9`, () => new HttpResponse(null, { status: 204 })))
-    expect((await updateLink(9, { nameZh: '乙', nameEn: 'X', url: 'u', icon: 'book', categoryCode: 'MES', statusCode: 'ACTIVE', sortOrder: 5, openInNewTab: false })).id).toBe(9)
+    expect((await updateLink(9, { nameZh: '乙', nameEn: 'X', url: 'u', icon: 'book', categoryCode: 'MES', statusCode: 'ACTIVE', sortOrder: 5, openInNewTab: false, launchApp: false })).id).toBe(9)
     await expect(deleteLink(9)).resolves.toBeUndefined()
   })
   it('replaceGrants PUT /{id}/grants with {grants}', async () => {

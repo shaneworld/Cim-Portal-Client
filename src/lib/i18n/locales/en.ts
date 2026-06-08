@@ -20,6 +20,7 @@ export default {
     created: 'Created',
     updated: 'Updated',
     none: 'None',
+    download: 'Download',
   },
   ui: {
     pagination: { total: '{n} items total' },
@@ -57,6 +58,10 @@ export default {
       statusLabel: 'Status',
       sortLabel: 'Sort Order',
       openInNewTab: 'Open in new tab',
+      launchAppLabel: 'Launch local app',
+      protocolUrlLabel: 'App protocol URL',
+      downloadUrlLabel: 'Download URL',
+      launchAppHint: 'Client must have the protocol registered; otherwise it redirects to the download URL',
       grants: 'Access Grants',
       addGrant: 'Add Grant',
       grantsHint: 'No grants = visible to everyone. Add grants to restrict access.',
@@ -115,5 +120,6 @@ export default {
     employeeId: 'ID',
     proceedOpen: 'Open anyway',
     namePunct: ', ',
+    launch: { downloadHint: 'Local app not detected — you can download it' },
   },
 }

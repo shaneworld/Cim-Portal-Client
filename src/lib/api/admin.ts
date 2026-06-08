@@ -6,12 +6,12 @@ export interface GrantResponse { id: number; linkId: number; grantType: GrantTyp
 export interface GrantInput { grantType: GrantType; grantCode: string }
 export interface AdminLink {
   id: number; nameZh: string; nameEn: string; url: string; icon: string; environment?: 'DEV' | 'UAT' | 'RELEASE'
-  categoryCode: string; statusCode: string; sortOrder: number; openInNewTab: boolean
+  categoryCode: string; statusCode: string; sortOrder: number; openInNewTab: boolean; launchApp: boolean; downloadUrl?: string
   grants: GrantResponse[]; createdAt?: string; updatedAt?: string
 }
 export interface LinkInput {
   nameZh: string; nameEn: string; url: string; icon: string; environment?: 'DEV' | 'UAT' | 'RELEASE'
-  categoryCode: string; statusCode: string; sortOrder: number; openInNewTab: boolean
+  categoryCode: string; statusCode: string; sortOrder: number; openInNewTab: boolean; launchApp: boolean; downloadUrl?: string
 }
 
 export const listLinks = (categoryCode?: string) =>
