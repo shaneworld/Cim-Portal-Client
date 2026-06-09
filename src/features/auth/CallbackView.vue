@@ -17,7 +17,7 @@ onMounted(async () => {
     await auth.hydrateUser()
     router.replace('/')
   } catch {
-    sessionStorage.setItem('sso_failed', '1')
+    sessionStorage.setItem('sso_attempted', '1')
     status.value = 'error'
     router.replace('/login')
   }

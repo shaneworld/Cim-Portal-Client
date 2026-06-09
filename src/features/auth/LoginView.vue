@@ -24,7 +24,13 @@ const redirecting = ref(false)
 const error = ref('')
 
 onMounted(async () => {
-  if (config.ssoEnabled && !sessionStorage.getItem('sso_failed')) {
+  // Already signed in (e.g. landed on /login with a valid token) → go straight to the app,
+  // don't bounce through SSO. Prevents the redirect dance / flicker.
+  if (auth.isAuthenticated) { router.replace('/'); return }
+  // Auto-initiate SSO at most ONCE per browser session. The flag is set BEFORE redirecting
+  // (not only on failure), so anything that returns to /login can't re-trigger an SSO loop.
+  if (config.ssoEnabled && !sessionStorage.getItem('sso_attempted')) {
+    sessionStorage.setItem('sso_attempted', '1')
     redirecting.value = true
     try {
       await startSso(config)
@@ -51,7 +57,7 @@ async function signIn() {
 }
 
 async function ssoRetry() {
-  sessionStorage.removeItem('sso_failed')
+  sessionStorage.setItem('sso_attempted', '1')
   error.value = ''
   redirecting.value = true
   try {

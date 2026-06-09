@@ -46,7 +46,7 @@ describe('CallbackView', () => {
     expect(replaceSpy).toHaveBeenCalledWith('/')
   })
 
-  it('failure: sets sso_failed flag and replaces route to /login', async () => {
+  it('failure: sets sso_attempted flag and replaces route to /login', async () => {
     const configStore = useConfigStore()
     configStore.config = { ssoEnabled: true, authority: 'https://kc.test/realms/r', clientId: 'cim', scopes: 'openid', usernameClaim: 'preferred_username' }
     vi.mocked(completeSso).mockRejectedValue(new Error('callback error'))
@@ -58,7 +58,7 @@ describe('CallbackView', () => {
     mount(CallbackView, { global: { plugins: [router, i18n] } })
     await flushPromises()
 
-    expect(sessionStorage.getItem('sso_failed')).toBe('1')
+    expect(sessionStorage.getItem('sso_attempted')).toBe('1')
     expect(replaceSpy).toHaveBeenCalledWith('/login')
   })
 })

@@ -28,7 +28,34 @@ describe('LoginView', () => {
     return createRouter({ history: createMemoryHistory(), routes })
   }
 
-  it('ssoEnabled=true + no sso_failed flag → calls startSso on mount', async () => {
+  it('already authenticated → redirects to / and does NOT start SSO', async () => {
+    const configStore = useConfigStore()
+    configStore.config = { ssoEnabled: true, authority: 'https://kc.test/realms/r', clientId: 'cim', scopes: 'openid', usernameClaim: 'preferred_username' }
+    configStore.loaded = true
+    const auth = useAuthStore()
+    auth.setToken('tok')
+    const router = makeRouter()
+    const replace = vi.spyOn(router, 'replace')
+    mount(LoginView, { global: { plugins: [router, i18n] } })
+    await flushPromises()
+    expect(startSso).not.toHaveBeenCalled()
+    expect(replace).toHaveBeenCalledWith('/')
+    auth.clear()
+  })
+
+  it('sso_attempted already set → does NOT auto-start SSO (shows form)', async () => {
+    sessionStorage.setItem('sso_attempted', '1')
+    const configStore = useConfigStore()
+    configStore.config = { ssoEnabled: true, authority: 'https://kc.test/realms/r', clientId: 'cim', scopes: 'openid', usernameClaim: 'preferred_username' }
+    configStore.loaded = true
+    const router = makeRouter()
+    const w = mount(LoginView, { global: { plugins: [router, i18n] } })
+    await flushPromises()
+    expect(startSso).not.toHaveBeenCalled()
+    expect(w.find('[data-testid="employeeId"]').exists()).toBe(true)
+  })
+
+  it('ssoEnabled=true + fresh session → calls startSso once on mount', async () => {
     const configStore = useConfigStore()
     configStore.config = { ssoEnabled: true, authority: 'https://kc.test/realms/r', clientId: 'cim', scopes: 'openid', usernameClaim: 'preferred_username' }
     configStore.loaded = true
@@ -39,6 +66,7 @@ describe('LoginView', () => {
     await flushPromises()
 
     expect(startSso).toHaveBeenCalledWith(configStore.config)
+    expect(sessionStorage.getItem('sso_attempted')).toBe('1')
   })
 
   it('ssoEnabled=false → shows internal form, no startSso call', async () => {
@@ -55,8 +83,8 @@ describe('LoginView', () => {
     expect(w.find('[data-testid="password"]').exists()).toBe(true)
   })
 
-  it('sso_failed set → shows internal form + SSO button even when ssoEnabled=true', async () => {
-    sessionStorage.setItem('sso_failed', '1')
+  it('sso_attempted set → shows internal form + SSO button even when ssoEnabled=true', async () => {
+    sessionStorage.setItem('sso_attempted', '1')
     const configStore = useConfigStore()
     configStore.config = { ssoEnabled: true, authority: 'https://kc.test/realms/r', clientId: 'cim', scopes: 'openid', usernameClaim: 'preferred_username' }
     configStore.loaded = true
