@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 import { computed, ref } from 'vue'
-import { getMe } from '@/lib/api/portal'
+import { getMe, internalLogin } from '@/lib/api/portal'
 import { createAuthProvider } from '@/lib/auth'
 import type { MeResponse } from '@/lib/api/types'
 import { STORAGE_KEYS } from '@/constants'
@@ -16,7 +16,12 @@ export const useAuthStore = defineStore('auth', () => {
   function setToken(t: string | null) { token.value = t; if (t) localStorage.setItem(KEY, t); else localStorage.removeItem(KEY) }
   async function hydrateUser() { currentUser.value = await getMe() }
   async function login(employeeId?: string) { setToken(await provider.login(employeeId)); await hydrateUser() }
+  async function loginInternal(employeeId: string, password: string) {
+    const res = await internalLogin(employeeId, password)
+    setToken(res.access_token)
+    await hydrateUser()
+  }
   function clear() { setToken(null); currentUser.value = null }
   function logout() { clear() }
-  return { token, currentUser, isAuthenticated, isAdmin, setToken, hydrateUser, login, clear, logout }
+  return { token, currentUser, isAuthenticated, isAdmin, setToken, hydrateUser, login, loginInternal, clear, logout }
 })

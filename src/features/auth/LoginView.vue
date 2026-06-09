@@ -1,27 +1,65 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
-import { UserRound, ChevronRight, ShieldCheck } from 'lucide-vue-next'
-import { DEV_IDENTITIES } from '@/lib/auth'
+import { ShieldCheck } from 'lucide-vue-next'
 import { useAuthStore } from '@/stores/auth'
+import { useConfigStore } from '@/stores/config'
+import { startSso } from '@/lib/auth/sso'
 import { ApiError } from '@/lib/api/client'
 import GlassCard from '@/lib/ui/GlassCard.vue'
 import BrandMark from '@/lib/ui/BrandMark.vue'
+import Input from '@/lib/ui/Input.vue'
+import Button from '@/lib/ui/Button.vue'
 import { useLocale } from '@/lib/i18n/useLocale'
 
 const router = useRouter()
 const auth = useAuthStore()
+const { config } = useConfigStore()
 const { t } = useLocale()
-const busy = ref<string | null>(null)
+
+const employeeId = ref('')
+const password = ref('')
+const busy = ref(false)
+const redirecting = ref(false)
 const error = ref('')
 
-async function pick(employeeId: string) {
-  busy.value = employeeId; error.value = ''
-  try { await auth.login(employeeId); router.push('/') }
-  catch (e) {
-    if (e instanceof ApiError && (e.code === 'USER_INACTIVE' || e.code === 'USER_NOT_PROVISIONED')) router.push('/account-inactive')
-    else { error.value = e instanceof Error ? e.message : t('auth.login.failed'); auth.clear() }
-  } finally { busy.value = null }
+onMounted(async () => {
+  if (config.ssoEnabled && !sessionStorage.getItem('sso_failed')) {
+    redirecting.value = true
+    try {
+      await startSso(config)
+    } catch {
+      redirecting.value = false
+      error.value = t('auth.login.ssoFailed')
+    }
+  }
+})
+
+async function signIn() {
+  busy.value = true; error.value = ''
+  try {
+    await auth.loginInternal(employeeId.value, password.value)
+    router.push('/')
+  } catch (e) {
+    if (e instanceof ApiError && (e.code === 'USER_INACTIVE' || e.code === 'USER_NOT_PROVISIONED')) {
+      router.push('/account-inactive')
+    } else {
+      error.value = e instanceof Error ? e.message : t('auth.login.failed')
+      auth.clear()
+    }
+  } finally { busy.value = false }
+}
+
+async function ssoRetry() {
+  sessionStorage.removeItem('sso_failed')
+  error.value = ''
+  redirecting.value = true
+  try {
+    await startSso(config)
+  } catch {
+    redirecting.value = false
+    error.value = t('auth.login.ssoFailed')
+  }
 }
 </script>
 <template>
@@ -29,21 +67,33 @@ async function pick(employeeId: string) {
     <GlassCard class="w-full max-w-md p-6 animate-fade-up sm:p-7">
       <div class="mb-6 flex items-center gap-3">
         <span class="grid size-11 place-items-center rounded-xl bg-brand text-white shadow-lg shadow-indigo-500/25"><BrandMark class="size-7" /></span>
-        <div><h1 class="text-2xl font-bold leading-none">{{ t('auth.login.title') }}</h1><p class="mt-1 text-sm text-ink-2">{{ t('auth.login.subtitle') }}</p></div>
+        <div><h1 class="text-2xl font-bold leading-none">{{ t('auth.login.title') }}</h1><p class="mt-1 text-sm text-ink-2">{{ t('auth.login.internalTitle') }}</p></div>
       </div>
-      <div class="space-y-2">
-        <button v-for="id in DEV_IDENTITIES" :key="id.employeeId"
-          class="group flex w-full items-center gap-3 rounded-xl glass-strong p-3 text-left transition hover:-translate-y-0.5 disabled:opacity-50"
-          :disabled="busy !== null" @click="pick(id.employeeId)">
-          <span class="grid size-9 shrink-0 place-items-center rounded-lg bg-brand text-white"><UserRound class="size-4" /></span>
-          <span class="min-w-0 flex-1">
-            <span class="block truncate font-medium">{{ id.employeeId }} · {{ id.nameZh }}</span>
-            <span class="block truncate text-xs text-ink-3">{{ id.hint }}</span>
-          </span>
-          <ChevronRight class="size-4 text-ink-3 transition-transform group-hover:translate-x-0.5" />
-        </button>
+
+      <!-- SSO auto-redirect state -->
+      <div v-if="redirecting" class="flex flex-col items-center gap-3 py-6 text-ink-2">
+        <svg class="size-8 animate-spin text-[hsl(var(--primary))]" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+          <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" />
+          <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
+        </svg>
+        <p class="text-sm">{{ t('auth.login.ssoRedirecting') }}</p>
       </div>
-      <p v-if="error" class="mt-4 text-sm text-rose-500">{{ error }}</p>
+
+      <!-- Internal login form -->
+      <div v-else class="space-y-3">
+        <label class="block">
+          <span class="mb-1 block text-xs font-medium text-ink-2">{{ t('auth.login.employeeIdLabel') }}</span>
+          <Input v-model="employeeId" data-testid="employeeId" :placeholder="t('auth.login.employeeIdLabel')" @keyup.enter="signIn" />
+        </label>
+        <label class="block">
+          <span class="mb-1 block text-xs font-medium text-ink-2">{{ t('auth.login.passwordLabel') }}</span>
+          <Input v-model="password" data-testid="password" type="password" :placeholder="t('auth.login.passwordLabel')" @keyup.enter="signIn" />
+        </label>
+        <p v-if="error" class="text-sm text-rose-500">{{ error }}</p>
+        <Button class="w-full" :disabled="busy" @click="signIn">{{ t('auth.login.signIn') }}</Button>
+        <Button v-if="config.ssoEnabled" variant="outline" class="w-full" :disabled="busy" @click="ssoRetry">{{ t('auth.login.ssoButton') }}</Button>
+      </div>
+
       <p class="mt-5 flex items-center gap-1.5 text-xs text-ink-3"><ShieldCheck class="size-3.5" /> {{ t('auth.login.footer') }}</p>
     </GlassCard>
   </div>

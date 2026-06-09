@@ -34,3 +34,25 @@ export const updateEnumValue = (category: EnumCategory, id: number, body: EnumVa
   request<EnumValue>('PUT', `/api/admin/enums/${category}/${id}`, body)
 export const deleteEnumValue = (category: EnumCategory, id: number) =>
   request<void>('DELETE', `/api/admin/enums/${category}/${id}`)
+
+export interface SecuritySettings {
+  ssoEnabled: boolean
+  issuerUri?: string
+  clientId?: string
+  scopes: string
+  usernameClaim: string
+  updatedAt?: string
+}
+
+export interface SecuritySettingsInput {
+  ssoEnabled: boolean
+  issuerUri?: string
+  clientId?: string
+  scopes: string
+  usernameClaim: string
+  initialPassword?: string
+}
+
+export const getSecuritySettings = () => request<SecuritySettings>('GET', '/api/admin/security-settings')
+export const updateSecuritySettings = (body: SecuritySettingsInput) =>
+  request<SecuritySettings>('PUT', '/api/admin/security-settings', body)

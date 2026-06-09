@@ -6,9 +6,11 @@ import { configureClient } from '@/lib/api/client'
 import { useAuthStore } from '@/stores/auth'
 import { useLocaleStore } from '@/stores/locale'
 import { useTheme } from '@/lib/theme/useTheme'
+import { useConfigStore } from '@/stores/config'
 
-export function bootstrap(app: App) {
-  app.use(createPinia())
+export async function bootstrap(app: App) {
+  const pinia = createPinia()
+  app.use(pinia)
   app.use(i18n)
   configureClient({
     baseUrl: import.meta.env.VITE_API_BASE_URL ?? '',
@@ -18,5 +20,7 @@ export function bootstrap(app: App) {
   })
   useTheme().init()
   useLocaleStore().initLocale()
+  // Load portal config before mounting so login flow knows ssoEnabled
+  await useConfigStore().load()
   app.use(createAppRouter())
 }

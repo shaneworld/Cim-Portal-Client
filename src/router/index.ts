@@ -5,6 +5,7 @@ import { useAuthStore } from '@/stores/auth'
 export const routes: RouteRecordRaw[] = [
   { path: '/login', name: 'login', component: () => import('@/features/auth/LoginView.vue'), meta: { public: true } },
   { path: '/account-inactive', name: 'account-inactive', component: () => import('@/features/auth/AccountInactiveView.vue'), meta: { public: true } },
+  { path: '/auth/callback', name: 'auth-callback', component: () => import('@/features/auth/CallbackView.vue'), meta: { public: true } },
   { path: '/', name: 'home', component: () => import('@/features/dashboard/HomeView.vue') },
   {
     path: '/admin',
@@ -14,6 +15,7 @@ export const routes: RouteRecordRaw[] = [
       { path: '', redirect: '/admin/links' },
       { path: 'links', name: 'admin-links', component: () => import('@/features/admin/links/LinksAdminView.vue') },
       { path: 'enums', name: 'admin-enums', component: () => import('@/features/admin/enums/EnumsAdminView.vue') },
+      { path: 'security', name: 'admin-security', component: () => import('@/features/admin/security/SecurityAdminView.vue') },
     ],
   },
 ]
