@@ -27,7 +27,9 @@ function onClick(e: MouseEvent) {
 <template>
   <a :href="href" :target="link.openInNewTab ? '_blank' : '_self'" rel="noopener noreferrer" :title="locked ? t('dashboard.noAccessHint') : undefined" :aria-disabled="locked" :class="['block', locked && 'opacity-60 cursor-not-allowed']" @click="onClick">
     <GlassCard class="flex items-center gap-3 p-3.5 transition hover:-translate-y-0.5">
-      <span class="grid size-9 shrink-0 place-items-center rounded-xl bg-brand text-white"><AppIcon :name="link.icon" class="size-[18px]" /></span>
+      <span :class="['grid size-9 shrink-0 place-items-center rounded-xl', link.icon?.startsWith('upload:') ? 'border border-border bg-white' : 'bg-brand text-white']">
+        <AppIcon :name="link.icon" :class="link.icon?.startsWith('upload:') ? 'size-7' : 'size-[18px]'" />
+      </span>
       <span class="min-w-0 flex-1">
         <span class="block truncate text-sm font-semibold">{{ name }}</span>
         <span class="mt-0.5 flex items-center gap-1.5 text-[11px] text-ink-2">

@@ -68,6 +68,8 @@ export default {
       addGrant: 'Add Grant',
       grantsHint: 'No grants = visible to everyone. Add grants to restrict access.',
       grantSelect: 'Select',
+      uploadIcon: 'Upload icon',
+      uploadIconFailed: 'Icon upload failed',
     },
     enums: {
       title: 'Enum Management',

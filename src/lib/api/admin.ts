@@ -1,4 +1,4 @@
-import { request } from './client'
+import { request, requestFormData } from './client'
 import type { EnumValue, EnumCategory } from './types'
 
 export type GrantType = 'DEPARTMENT' | 'ROLE' | 'GROUP'
@@ -56,3 +56,10 @@ export interface SecuritySettingsInput {
 export const getSecuritySettings = () => request<SecuritySettings>('GET', '/api/admin/security-settings')
 export const updateSecuritySettings = (body: SecuritySettingsInput) =>
   request<SecuritySettings>('PUT', '/api/admin/security-settings', body)
+
+export interface IconUploadResponse { id: number; ref: string }
+export function uploadIcon(file: File): Promise<IconUploadResponse> {
+  const fd = new FormData()
+  fd.append('file', file)
+  return requestFormData<IconUploadResponse>('POST', '/api/admin/icons', fd)
+}

@@ -10,7 +10,7 @@ import Switch from '@/lib/ui/Switch.vue'
 import AppIcon from '@/lib/ui/AppIcon.vue'
 import { ICON_KEYS } from '@/lib/ui/iconMap'
 import { listEnum } from '@/lib/api/enums'
-import { createLink, updateLink, replaceGrants, getLink, type AdminLink, type LinkInput, type GrantInput, type GrantType } from '@/lib/api/admin'
+import { createLink, updateLink, replaceGrants, getLink, uploadIcon, type AdminLink, type LinkInput, type GrantInput, type GrantType } from '@/lib/api/admin'
 import { listGroups, type Group } from '@/lib/api/permissionGroups'
 import { ApiError } from '@/lib/api/client'
 import { useToastStore } from '@/stores/toast'
@@ -46,6 +46,23 @@ const launchApp = ref(false)
 const grants = ref<GrantInput[]>([])
 const fieldErrors = ref<Record<string, string>>({})
 const saving = ref(false)
+const fileInputRef = ref<HTMLInputElement | null>(null)
+const uploading = ref(false)
+
+async function onFileChange(e: Event) {
+  const file = (e.target as HTMLInputElement).files?.[0]
+  if (!file) return
+  uploading.value = true
+  try {
+    const res = await uploadIcon(file)
+    form.icon = res.ref
+  } catch {
+    toast.push({ type: 'error', message: t('admin.linkForm.uploadIconFailed') })
+  } finally {
+    uploading.value = false
+    if (fileInputRef.value) fileInputRef.value.value = ''
+  }
+}
 
 function codesFor(grantType: GrantType): Opt[] {
   if (grantType === GRANT_TYPES.DEPARTMENT) return deptOpts.value
@@ -170,6 +187,21 @@ async function save() {
       </div>
       <div><span class="mb-1.5 block text-xs font-medium text-ink-2">{{ t('admin.linkForm.iconLabel') }}</span>
         <div class="grid gap-1.5 [grid-template-columns:repeat(auto-fill,minmax(2.75rem,1fr))]">
+          <!-- hidden file input -->
+          <input ref="fileInputRef" type="file" accept="image/png,image/jpeg,image/webp,image/svg+xml" class="hidden" @change="onFileChange" />
+          <!-- upload tile (first) -->
+          <button type="button" :title="t('admin.linkForm.uploadIcon')"
+            class="grid aspect-square place-items-center rounded-lg border border-dashed border-border text-ink-2 transition hover:bg-[hsl(var(--primary)/0.1)]"
+            :disabled="uploading"
+            @click="fileInputRef?.click()">
+            <span class="text-[9px] font-medium leading-tight text-center px-0.5">{{ uploading ? '…' : t('admin.linkForm.uploadIcon') }}</span>
+          </button>
+          <!-- selected custom icon preview tile (shown when upload:* is selected) -->
+          <button v-if="form.icon?.startsWith('upload:')" type="button" :title="form.icon"
+            class="grid aspect-square place-items-center rounded-lg border transition border-transparent bg-brand text-white shadow">
+            <AppIcon :name="form.icon" class="size-5" />
+          </button>
+          <!-- built-in icon tiles -->
           <button v-for="ic in ICON_KEYS" :key="ic" type="button" :title="ic"
             class="grid aspect-square place-items-center rounded-lg border transition"
             :class="form.icon === ic ? 'border-transparent bg-brand text-white shadow' : 'border-border text-ink-2 hover:bg-[hsl(var(--primary)/0.1)]'"
