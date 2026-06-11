@@ -11,6 +11,7 @@ import AppIcon from '@/lib/ui/AppIcon.vue'
 import { ICON_KEYS } from '@/lib/ui/iconMap'
 import { listEnum } from '@/lib/api/enums'
 import { createLink, updateLink, replaceGrants, getLink, type AdminLink, type LinkInput, type GrantInput, type GrantType } from '@/lib/api/admin'
+import { listGroups, type Group } from '@/lib/api/permissionGroups'
 import { ApiError } from '@/lib/api/client'
 import { useToastStore } from '@/stores/toast'
 import { useLocale } from '@/lib/i18n/useLocale'
@@ -22,8 +23,12 @@ const toast = useToastStore()
 const { pick, t } = useLocale()
 
 type Opt = { value: string; label: string }
-const catOpts = ref<Opt[]>([]); const statusOpts = ref<Opt[]>([]); const deptOpts = ref<Opt[]>([]); const roleOpts = ref<Opt[]>([])
-const grantTypeOpts: Opt[] = [{ value: GRANT_TYPES.DEPARTMENT, label: t('admin.enums.categories.department') }, { value: GRANT_TYPES.ROLE, label: t('admin.enums.categories.role') }]
+const catOpts = ref<Opt[]>([]); const statusOpts = ref<Opt[]>([]); const deptOpts = ref<Opt[]>([]); const roleOpts = ref<Opt[]>([]); const groupOpts = ref<Opt[]>([])
+const grantTypeOpts: Opt[] = [
+  { value: GRANT_TYPES.DEPARTMENT, label: t('admin.enums.categories.department') },
+  { value: GRANT_TYPES.ROLE, label: t('admin.enums.categories.role') },
+  { value: GRANT_TYPES.GROUP, label: t('admin.grantTypes.group') },
+]
 
 const ENV_NONE = '__none__'
 const envOpts: Opt[] = [
@@ -42,12 +47,18 @@ const grants = ref<GrantInput[]>([])
 const fieldErrors = ref<Record<string, string>>({})
 const saving = ref(false)
 
-function codesFor(t: GrantType): Opt[] { return t === GRANT_TYPES.DEPARTMENT ? deptOpts.value : roleOpts.value }
+function codesFor(grantType: GrantType): Opt[] {
+  if (grantType === GRANT_TYPES.DEPARTMENT) return deptOpts.value
+  if (grantType === GRANT_TYPES.ROLE) return roleOpts.value
+  return groupOpts.value
+}
 
 async function loadEnums() {
   const toOpt = (e: { code: string; labelZh: string; labelEn: string }) => ({ value: e.code, label: pick(e as { labelZh: string; labelEn: string } & Record<string, string>, 'label') })
-  const [cat, st, dept, role] = await Promise.all([listEnum('LINK_CATEGORY'), listEnum('LINK_STATUS'), listEnum('DEPARTMENT'), listEnum('ROLE')])
+  const toGroupOpt = (g: Group) => ({ value: g.code, label: `${g.code} — ${pick(g as unknown as Record<string, string>, 'name')}` })
+  const [cat, st, dept, role, grps] = await Promise.all([listEnum('LINK_CATEGORY'), listEnum('LINK_STATUS'), listEnum('DEPARTMENT'), listEnum('ROLE'), listGroups()])
   catOpts.value = cat.map(toOpt); statusOpts.value = st.map(toOpt); deptOpts.value = dept.map(toOpt); roleOpts.value = role.map(toOpt)
+  groupOpts.value = grps.filter((g) => g.active).map(toGroupOpt)
   if (!props.link) {
     if (!form.categoryCode && catOpts.value[0]) form.categoryCode = catOpts.value[0].value
     if (!form.statusCode && statusOpts.value[0]) form.statusCode = statusOpts.value[0].value

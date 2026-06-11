@@ -7,6 +7,6 @@ describe('constants', () => {
     expect(SUPPORT_PHONE).toBe('39100')
     expect([DEFAULT_PAGE_SIZE, PAGE_ROW_HEIGHT_PX, MIN_PAGE_ROWS]).toEqual([10, 64, 5])
     expect(LINK_STATUS).toEqual({ ACTIVE: 'ACTIVE', MAINTENANCE: 'MAINTENANCE', DEPRECATED: 'DEPRECATED' })
-    expect(GRANT_TYPES).toEqual({ DEPARTMENT: 'DEPARTMENT', ROLE: 'ROLE' })
+    expect(GRANT_TYPES).toEqual({ DEPARTMENT: 'DEPARTMENT', ROLE: 'ROLE', GROUP: 'GROUP' })
   })
 })

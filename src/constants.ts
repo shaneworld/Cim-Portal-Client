@@ -17,7 +17,7 @@ export const MIN_PAGE_ROWS = 5
 export const LINK_STATUS = { ACTIVE: 'ACTIVE', MAINTENANCE: 'MAINTENANCE', DEPRECATED: 'DEPRECATED' } as const
 
 // 授权类型码
-export const GRANT_TYPES = { DEPARTMENT: 'DEPARTMENT', ROLE: 'ROLE' } as const
+export const GRANT_TYPES = { DEPARTMENT: 'DEPARTMENT', ROLE: 'ROLE', GROUP: 'GROUP' } as const
 
 // 链接环境徽章样式映射(badge = 色调+描边;dot = 圆点实色)
 export const LINK_ENVS = {

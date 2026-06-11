@@ -1,7 +1,7 @@
 import { request } from './client'
 import type { EnumValue, EnumCategory } from './types'
 
-export type GrantType = 'DEPARTMENT' | 'ROLE'
+export type GrantType = 'DEPARTMENT' | 'ROLE' | 'GROUP'
 export interface GrantResponse { id: number; linkId: number; grantType: GrantType; grantCode: string }
 export interface GrantInput { grantType: GrantType; grantCode: string }
 export interface AdminLink {

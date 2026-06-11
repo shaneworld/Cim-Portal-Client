@@ -13,6 +13,7 @@ beforeEach(() => { setActivePinia(createPinia()); i18n.global.locale.value = 'zh
   const m: Record<string,string> = { LINK_CATEGORY: 'MES', LINK_STATUS: 'ACTIVE', DEPARTMENT: 'FAB1-PROD', ROLE: 'OPERATOR' }
   for (const c of Object.keys(m))
     server.use(http.get(`${BASE}/api/enums/${c}`, () => HttpResponse.json([{ id: 1, category: c, code: m[c], labelZh: '项', labelEn: 'x', sortOrder: 1, active: true }])))
+  server.use(http.get(`${BASE}/api/admin/permission-groups`, () => HttpResponse.json([])))
 })
 describe('LinkFormModal', () => {
   it('create: 保存调 POST link 再 PUT grants', async () => {

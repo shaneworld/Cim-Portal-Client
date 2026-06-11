@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { RouterLink, RouterView } from 'vue-router'
-import { ChevronLeft, Link2, ListChecks, ShieldCheck } from 'lucide-vue-next'
+import { ChevronLeft, Link2, ListChecks, ShieldCheck, Shield } from 'lucide-vue-next'
 import GlassCard from '@/lib/ui/GlassCard.vue'
 import AppHeader from '@/features/dashboard/AppHeader.vue'
 import { useLocale } from '@/lib/i18n/useLocale'
@@ -10,6 +10,7 @@ const { t } = useLocale()
 const nav = [
   { to: '/admin/links', labelKey: 'admin.nav.links', icon: Link2, enabled: true },
   { to: '/admin/enums', labelKey: 'admin.nav.enums', icon: ListChecks, enabled: true },
+  { to: '/admin/groups', labelKey: 'admin.nav.groups', icon: Shield, enabled: true },
   { to: '/admin/security', labelKey: 'admin.nav.security', icon: ShieldCheck, enabled: true },
 ]
 </script>

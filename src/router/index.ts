@@ -15,6 +15,7 @@ export const routes: RouteRecordRaw[] = [
       { path: '', redirect: '/admin/links' },
       { path: 'links', name: 'admin-links', component: () => import('@/features/admin/links/LinksAdminView.vue') },
       { path: 'enums', name: 'admin-enums', component: () => import('@/features/admin/enums/EnumsAdminView.vue') },
+      { path: 'groups', name: 'admin-groups', component: () => import('@/features/admin/groups/GroupsAdminView.vue') },
       { path: 'security', name: 'admin-security', component: () => import('@/features/admin/security/SecurityAdminView.vue') },
     ],
   },
