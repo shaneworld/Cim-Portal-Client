@@ -1,8 +1,10 @@
 import { request } from './client'
 import type { HomeResponse, MeResponse } from './types'
+import type { Announcement } from './announcements'
 
 export const getHome = () => request<HomeResponse>('GET', '/api/portal/home')
 export const getMe = () => request<MeResponse>('GET', '/api/portal/me')
+export const listAnnouncements = () => request<Announcement[]>('GET', '/api/portal/announcements')
 
 export interface PortalConfig {
   ssoEnabled: boolean

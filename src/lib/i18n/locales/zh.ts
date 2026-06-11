@@ -40,6 +40,8 @@ export default {
       groups: '权限组',
       users: '用户',
       security: '安全',
+      announcements: '公告',
+      announcementTypes: '公告类型',
     },
     links: {
       title: '链接管理',
@@ -138,6 +140,46 @@ export default {
     grantTypes: {
       group: '权限组',
     },
+    announcements: {
+      title: '公告管理',
+      new: '新建公告',
+      empty: '暂无公告',
+      deleteTitle: '删除公告',
+      deleteMessage: '确认删除「{title}」？',
+      featureEnabled: '公告功能已启用',
+    },
+    announcementForm: {
+      createTitle: '新建公告',
+      editTitle: '编辑公告',
+      titleZhLabel: '中文标题',
+      titleEnLabel: '英文标题',
+      bodyZhLabel: '中文正文',
+      bodyEnLabel: '英文正文',
+      typeLabel: '类型',
+      pinnedLabel: '置顶',
+      activeLabel: '启用',
+      startsAtLabel: '开始时间（可选）',
+      endsAtLabel: '结束时间（可选）',
+    },
+    announcementTypes: {
+      title: '公告类型管理',
+      new: '新建类型',
+      empty: '暂无公告类型',
+      deleteTitle: '删除公告类型',
+      deleteMessage: '确认删除「{code}」？',
+    },
+    announcementTypeForm: {
+      createTitle: '新建公告类型',
+      editTitle: '编辑公告类型',
+      codeLabel: '代码 Code',
+      codePlaceholder: '如 NOTICE',
+      zhLabel: '中文名',
+      enLabel: '英文名',
+      colorLabel: '颜色',
+      iconLabel: '图标',
+      sortLabel: '排序 Sort',
+      activeLabel: '启用',
+    },
   },
   auth: {
     login: {
@@ -180,5 +222,10 @@ export default {
     launch: { downloadHint: '未检测到本地应用，可前往下载' },
     noAccess: '无权限',
     noAccessHint: '无权限，请联系管理员',
+    announcements: {
+      title: '公告',
+      pinned: '置顶',
+      dismiss: '关闭',
+    },
   },
 }

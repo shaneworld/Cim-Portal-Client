@@ -41,6 +41,8 @@ export interface SecuritySettings {
   clientId?: string
   scopes: string
   usernameClaim: string
+  announcementsEnabled?: boolean
+  dutyLinesEnabled?: boolean
   updatedAt?: string
 }
 
@@ -50,6 +52,8 @@ export interface SecuritySettingsInput {
   clientId?: string
   scopes: string
   usernameClaim: string
+  announcementsEnabled?: boolean
+  dutyLinesEnabled?: boolean
   initialPassword?: string
 }
 

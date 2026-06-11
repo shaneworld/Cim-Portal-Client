@@ -40,6 +40,8 @@ export default {
       groups: 'Groups',
       users: 'Users',
       security: 'Security',
+      announcements: 'Announcements',
+      announcementTypes: 'Announcement Types',
     },
     links: {
       title: 'Link Management',
@@ -138,6 +140,46 @@ export default {
     grantTypes: {
       group: 'Permission Group',
     },
+    announcements: {
+      title: 'Announcements',
+      new: 'New Announcement',
+      empty: 'No announcements yet',
+      deleteTitle: 'Delete Announcement',
+      deleteMessage: 'Delete "{title}"?',
+      featureEnabled: 'Announcements feature enabled',
+    },
+    announcementForm: {
+      createTitle: 'New Announcement',
+      editTitle: 'Edit Announcement',
+      titleZhLabel: 'Chinese Title',
+      titleEnLabel: 'English Title',
+      bodyZhLabel: 'Chinese Body',
+      bodyEnLabel: 'English Body',
+      typeLabel: 'Type',
+      pinnedLabel: 'Pinned',
+      activeLabel: 'Enabled',
+      startsAtLabel: 'Starts At (optional)',
+      endsAtLabel: 'Ends At (optional)',
+    },
+    announcementTypes: {
+      title: 'Announcement Types',
+      new: 'New Type',
+      empty: 'No announcement types yet',
+      deleteTitle: 'Delete Announcement Type',
+      deleteMessage: 'Delete "{code}"?',
+    },
+    announcementTypeForm: {
+      createTitle: 'New Announcement Type',
+      editTitle: 'Edit Announcement Type',
+      codeLabel: 'Code',
+      codePlaceholder: 'e.g. NOTICE',
+      zhLabel: 'Chinese Name',
+      enLabel: 'English Name',
+      colorLabel: 'Color',
+      iconLabel: 'Icon',
+      sortLabel: 'Sort Order',
+      activeLabel: 'Enabled',
+    },
   },
   auth: {
     login: {
@@ -180,5 +222,10 @@ export default {
     launch: { downloadHint: 'Local app not detected — you can download it' },
     noAccess: 'No access',
     noAccessHint: 'No access — contact your administrator',
+    announcements: {
+      title: 'Announcements',
+      pinned: 'Pinned',
+      dismiss: 'Dismiss',
+    },
   },
 }
