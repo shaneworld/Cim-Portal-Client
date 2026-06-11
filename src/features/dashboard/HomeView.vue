@@ -13,6 +13,7 @@ import HeroPanel from './HeroPanel.vue'
 import SystemGrid from './SystemGrid.vue'
 import GlobalSearch from './GlobalSearch.vue'
 import AnnouncementsPanel from './AnnouncementsPanel.vue'
+import DutyLinesPanel from './DutyLinesPanel.vue'
 
 const { pick, t } = useLocale()
 const { config } = useConfigStore()
@@ -44,6 +45,7 @@ onMounted(load)
         <HeroPanel :categories="categories" :compact="!!(config.announcementsEnabled || config.dutyLinesEnabled)" />
         <div class="grid gap-4 md:[grid-template-columns:1.95fr_1fr]">
           <AnnouncementsPanel />
+          <DutyLinesPanel />
         </div>
         <GlobalSearch v-model:query="query" :result-count="resultCount" />
         <GlassCard v-if="categories.length === 0" class="mx-auto mt-4 max-w-md p-10 text-center">

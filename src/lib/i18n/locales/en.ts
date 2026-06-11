@@ -42,6 +42,7 @@ export default {
       security: 'Security',
       announcements: 'Announcements',
       announcementTypes: 'Announcement Types',
+      dutyLines: 'Duty Lines',
     },
     links: {
       title: 'Link Management',
@@ -180,6 +181,23 @@ export default {
       sortLabel: 'Sort Order',
       activeLabel: 'Enabled',
     },
+    dutyLines: {
+      title: 'Duty Lines',
+      new: 'New Duty Line',
+      empty: 'No duty lines yet',
+      deleteTitle: 'Delete Duty Line',
+      deleteMessage: 'Delete "{label}"?',
+      featureEnabled: 'Duty Lines feature enabled',
+    },
+    dutyLineForm: {
+      createTitle: 'New Duty Line',
+      editTitle: 'Edit Duty Line',
+      labelZhLabel: 'Chinese Name',
+      labelEnLabel: 'English Name',
+      phoneLabel: 'Phone Number',
+      sortLabel: 'Sort Order',
+      activeLabel: 'Enabled',
+    },
   },
   auth: {
     login: {
@@ -226,6 +244,9 @@ export default {
       title: 'Announcements',
       pinned: 'Pinned',
       dismiss: 'Dismiss',
+    },
+    dutyLines: {
+      title: 'Duty Lines',
     },
   },
 }

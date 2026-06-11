@@ -42,6 +42,7 @@ export default {
       security: '安全',
       announcements: '公告',
       announcementTypes: '公告类型',
+      dutyLines: '值班电话',
     },
     links: {
       title: '链接管理',
@@ -180,6 +181,23 @@ export default {
       sortLabel: '排序 Sort',
       activeLabel: '启用',
     },
+    dutyLines: {
+      title: '值班电话管理',
+      new: '新建值班电话',
+      empty: '暂无值班电话',
+      deleteTitle: '删除值班电话',
+      deleteMessage: '确认删除「{label}」？',
+      featureEnabled: '值班电话功能已启用',
+    },
+    dutyLineForm: {
+      createTitle: '新建值班电话',
+      editTitle: '编辑值班电话',
+      labelZhLabel: '中文名称',
+      labelEnLabel: '英文名称',
+      phoneLabel: '电话号码',
+      sortLabel: '排序 Sort',
+      activeLabel: '启用',
+    },
   },
   auth: {
     login: {
@@ -226,6 +244,9 @@ export default {
       title: '公告',
       pinned: '置顶',
       dismiss: '关闭',
+    },
+    dutyLines: {
+      title: '值班电话',
     },
   },
 }

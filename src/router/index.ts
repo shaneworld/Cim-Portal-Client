@@ -19,6 +19,7 @@ export const routes: RouteRecordRaw[] = [
       { path: 'security', name: 'admin-security', component: () => import('@/features/admin/security/SecurityAdminView.vue') },
       { path: 'announcements', name: 'admin-announcements', component: () => import('@/features/admin/announcements/AnnouncementsAdminView.vue') },
       { path: 'announcement-types', name: 'admin-announcement-types', component: () => import('@/features/admin/announcement-types/AnnouncementTypesAdminView.vue') },
+      { path: 'duty-lines', name: 'admin-duty-lines', component: () => import('@/features/admin/duty-lines/DutyLinesAdminView.vue') },
     ],
   },
 ]
