@@ -146,6 +146,8 @@ export default {
       internalTitle: '使用内部账号登录',
       employeeIdLabel: '工号',
       passwordLabel: '密码',
+      showPassword: '显示密码',
+      hidePassword: '隐藏密码',
       signIn: '登录',
       ssoButton: '使用 SSO 登录',
       ssoRedirecting: '正在跳转至 SSO……',

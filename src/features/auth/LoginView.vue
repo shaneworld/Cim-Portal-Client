@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
-import { ShieldCheck } from 'lucide-vue-next'
+import { ShieldCheck, Eye, EyeOff } from 'lucide-vue-next'
 import { useAuthStore } from '@/stores/auth'
 import { useConfigStore } from '@/stores/config'
 import { startSso } from '@/lib/auth/sso'
@@ -19,6 +19,7 @@ const { t } = useLocale()
 
 const employeeId = ref('')
 const password = ref('')
+const showPassword = ref(false)
 const busy = ref(false)
 const redirecting = ref(false)
 const error = ref('')
@@ -93,7 +94,15 @@ async function ssoRetry() {
         </label>
         <label class="block">
           <span class="mb-1 block text-xs font-medium text-ink-2">{{ t('auth.login.passwordLabel') }}</span>
-          <Input v-model="password" data-testid="password" type="password" :placeholder="t('auth.login.passwordLabel')" @keyup.enter="signIn" />
+          <div class="relative">
+            <Input v-model="password" data-testid="password" :type="showPassword ? 'text' : 'password'" :placeholder="t('auth.login.passwordLabel')" class="pr-10" @keyup.enter="signIn" />
+            <button type="button" :aria-label="showPassword ? t('auth.login.hidePassword') : t('auth.login.showPassword')"
+              class="absolute inset-y-0 right-0 grid w-10 place-items-center text-ink-3 transition hover:text-ink-2"
+              @click="showPassword = !showPassword">
+              <EyeOff v-if="showPassword" class="size-4" />
+              <Eye v-else class="size-4" />
+            </button>
+          </div>
         </label>
         <p v-if="error" class="text-sm text-rose-500">{{ error }}</p>
         <Button class="w-full" :disabled="busy" @click="signIn">{{ t('auth.login.signIn') }}</Button>

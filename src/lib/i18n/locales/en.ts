@@ -146,6 +146,8 @@ export default {
       internalTitle: 'Sign in with your internal account',
       employeeIdLabel: 'Employee ID',
       passwordLabel: 'Password',
+      showPassword: 'Show password',
+      hidePassword: 'Hide password',
       signIn: 'Sign In',
       ssoButton: 'Sign in with SSO',
       ssoRedirecting: 'Redirecting to SSO…',
