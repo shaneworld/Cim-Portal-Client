@@ -113,7 +113,7 @@ describe('LoginView', () => {
 
     await w.find('[data-testid="employeeId"]').setValue('EMP1')
     await w.find('[data-testid="password"]').setValue('s3cret')
-    await w.find('button').trigger('click')
+    await w.find('[data-testid="signIn"]').trigger('click')
     await flushPromises()
 
     expect(spy).toHaveBeenCalledWith('EMP1', 's3cret')

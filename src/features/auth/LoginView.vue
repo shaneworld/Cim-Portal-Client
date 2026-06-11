@@ -105,7 +105,7 @@ async function ssoRetry() {
           </div>
         </label>
         <p v-if="error" class="text-sm text-rose-500">{{ error }}</p>
-        <Button class="w-full" :disabled="busy" @click="signIn">{{ t('auth.login.signIn') }}</Button>
+        <Button data-testid="signIn" class="w-full" :disabled="busy" @click="signIn">{{ t('auth.login.signIn') }}</Button>
         <Button v-if="config.ssoEnabled" variant="outline" class="w-full" :disabled="busy" @click="ssoRetry">{{ t('auth.login.ssoButton') }}</Button>
       </div>
 
