@@ -12,10 +12,11 @@ const cats = [
 
 describe('HeroPanel', () => {
   beforeEach(() => { setActivePinia(createPinia()); i18n.global.locale.value = 'zh' })
-  it('shows greeting + identity + clock + real stats (no sample metrics)', () => {
+
+  it('shows greeting + identity + clock + real stats (no sample metrics) — default (compact:false)', () => {
     const auth = useAuthStore()
     auth.currentUser = { employeeId: 'OP1', displayNameZh: '欧阳操作', displayNameEn: 'O', departmentCode: 'FAB1-PROD', roleCode: 'OPERATOR', isAdmin: false } as any
-    const w = mount(HeroPanel, { props: { categories: cats }, global: { plugins: [i18n] } })
+    const w = mount(HeroPanel, { props: { categories: cats, compact: false }, global: { plugins: [i18n] } })
     const t = w.text()
     expect(t).toMatch(/好/)               // greeting
     expect(t).toContain('欧阳操作')
@@ -23,5 +24,18 @@ describe('HeroPanel', () => {
     expect(t).toContain('系统'); expect(t).toContain('3')          // 3 links total
     expect(t).toContain('类别'); expect(t).toContain('在线')
     expect(t).not.toMatch(/OEE|SAMPLE|示例/)                       // sample metrics removed
+  })
+
+  it('shows greeting + identity + stats in compact variant (compact:true)', () => {
+    const auth = useAuthStore()
+    auth.currentUser = { employeeId: 'OP2', displayNameZh: '张三', displayNameEn: 'Zhang', departmentCode: 'FAB2-QA', roleCode: 'INSPECTOR', isAdmin: false } as any
+    const w = mount(HeroPanel, { props: { categories: cats, compact: true }, global: { plugins: [i18n] } })
+    const t = w.text()
+    expect(t).toMatch(/好/)               // greeting
+    expect(t).toContain('张三')           // name
+    expect(t).toContain('FAB2-QA'); expect(t).toContain('OP2')    // identity + 工号
+    expect(t).toContain('系统'); expect(t).toContain('3')          // 3 links total
+    expect(t).toContain('类别'); expect(t).toContain('在线')
+    expect(t).not.toMatch(/OEE|SAMPLE|示例/)
   })
 })

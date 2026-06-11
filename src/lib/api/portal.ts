@@ -10,6 +10,10 @@ export interface PortalConfig {
   clientId?: string
   scopes: string
   usernameClaim: string
+  /** Added in block B — undefined until backend delivers it; treated as false */
+  announcementsEnabled?: boolean
+  /** Added in block C — undefined until backend delivers it; treated as false */
+  dutyLinesEnabled?: boolean
 }
 
 export const getConfig = () => request<PortalConfig>('GET', '/api/portal/config')

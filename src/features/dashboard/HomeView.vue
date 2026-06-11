@@ -4,6 +4,7 @@ import { Inbox, AlertTriangle, RotateCw, SearchX } from 'lucide-vue-next'
 import type { HomeCategory } from '@/lib/api/types'
 import { getHome } from '@/lib/api/portal'
 import { useLocale } from '@/lib/i18n/useLocale'
+import { useConfigStore } from '@/stores/config'
 import GlassCard from '@/lib/ui/GlassCard.vue'
 import Button from '@/lib/ui/Button.vue'
 import Skeleton from '@/lib/ui/Skeleton.vue'
@@ -13,6 +14,7 @@ import SystemGrid from './SystemGrid.vue'
 import GlobalSearch from './GlobalSearch.vue'
 
 const { pick, t } = useLocale()
+const { config } = useConfigStore()
 const categories = ref<HomeCategory[]>([])
 const loading = ref(true); const error = ref(false); const query = ref('')
 
@@ -38,7 +40,7 @@ onMounted(load)
         <Button class="mx-auto mt-4" @click="load"><RotateCw class="size-4" /> {{ t('common.retry') }}</Button>
       </GlassCard>
       <template v-else>
-        <HeroPanel :categories="categories" />
+        <HeroPanel :categories="categories" :compact="!!(config.announcementsEnabled || config.dutyLinesEnabled)" />
         <GlobalSearch v-model:query="query" :result-count="resultCount" />
         <GlassCard v-if="categories.length === 0" class="mx-auto mt-4 max-w-md p-10 text-center">
           <Inbox class="mx-auto size-12 text-ink-3" /><p class="mt-3 text-ink-2">{{ t('dashboard.empty') }}</p>
