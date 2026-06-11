@@ -248,5 +248,8 @@ export default {
     dutyLines: {
       title: 'Duty Lines',
     },
+    myLinks: 'My links',
+    favoriteAdd: 'Add to favorites',
+    favoriteRemove: 'Remove from favorites',
   },
 }

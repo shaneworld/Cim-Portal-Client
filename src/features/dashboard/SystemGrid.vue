@@ -6,6 +6,7 @@ import SystemCard from './SystemCard.vue'
 import ConfirmDialog from '@/lib/ui/ConfirmDialog.vue'
 import { LINK_STATUS } from '@/constants'
 defineProps<{ categories: HomeCategory[] }>()
+const emit = defineEmits<{ 'favorite-changed': [{ id: number; favorite: boolean }] }>()
 const { pick, t } = useLocale()
 
 const pending = ref<HomeLink | null>(null)
@@ -30,7 +31,7 @@ function proceed() { const p = pending.value; dlgOpen.value = false; if (p) wind
         <span class="h-px flex-1 bg-border"></span>
       </h3>
       <div class="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5">
-        <SystemCard v-for="l in c.links" :key="l.id" :link="l" @blocked="onBlocked" />
+        <SystemCard v-for="l in c.links" :key="l.id" :link="l" @blocked="onBlocked" @favorite-changed="emit('favorite-changed', $event)" />
       </div>
     </section>
     <ConfirmDialog v-model:open="dlgOpen" :title="dlg.title" :message="dlg.message" :confirm-label="t('dashboard.proceedOpen')" tone="primary" @confirm="proceed" @cancel="dlgOpen = false" />

@@ -4,6 +4,8 @@ import type { Announcement } from './announcements'
 import type { DutyLine } from './dutyLines'
 
 export const getHome = () => request<HomeResponse>('GET', '/api/portal/home')
+export const toggleFavorite = (linkId: number, on: boolean) =>
+  request<void>(on ? 'POST' : 'DELETE', '/api/portal/favorites/' + linkId)
 export const getMe = () => request<MeResponse>('GET', '/api/portal/me')
 export const listAnnouncements = () => request<Announcement[]>('GET', '/api/portal/announcements')
 export const listDutyLines = () => request<DutyLine[]>('GET', '/api/portal/duty-lines')

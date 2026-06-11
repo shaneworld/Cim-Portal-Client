@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue'
 import { Inbox, AlertTriangle, RotateCw, SearchX } from 'lucide-vue-next'
-import type { HomeCategory } from '@/lib/api/types'
+import type { HomeCategory, HomeLink } from '@/lib/api/types'
 import { getHome } from '@/lib/api/portal'
 import { useLocale } from '@/lib/i18n/useLocale'
 import { useConfigStore } from '@/stores/config'
@@ -11,6 +11,7 @@ import Skeleton from '@/lib/ui/Skeleton.vue'
 import AppHeader from './AppHeader.vue'
 import HeroPanel from './HeroPanel.vue'
 import SystemGrid from './SystemGrid.vue'
+import SystemCard from './SystemCard.vue'
 import GlobalSearch from './GlobalSearch.vue'
 import AnnouncementsPanel from './AnnouncementsPanel.vue'
 import DutyLinesPanel from './DutyLinesPanel.vue'
@@ -27,6 +28,28 @@ const filtered = computed(() => {
 })
 const resultCount = computed(() => filtered.value.reduce((n, c) => n + c.links.length, 0))
 const noMatch = computed(() => !loading.value && !error.value && categories.value.length > 0 && filtered.value.length === 0)
+
+// Deduplicated favorites from the filtered set (accessible + favorite)
+const seen = new Set<number>()
+const favorites = computed<HomeLink[]>(() => {
+  seen.clear()
+  return filtered.value.flatMap((c) => c.links).filter((l) => {
+    if (!l.favorite || !l.accessible) return false
+    if (seen.has(l.id)) return false
+    seen.add(l.id)
+    return true
+  })
+})
+
+// Handle star toggle from a SystemCard: update the link in the categories array in place
+function onFavoriteChanged({ id, favorite }: { id: number; favorite: boolean }) {
+  for (const cat of categories.value) {
+    for (const link of cat.links) {
+      if (link.id === id) { link.favorite = favorite; return }
+    }
+  }
+}
+
 async function load() { loading.value = true; error.value = false; try { categories.value = (await getHome()).categories } catch { error.value = true } finally { loading.value = false } }
 onMounted(load)
 </script>
@@ -54,7 +77,25 @@ onMounted(load)
         <GlassCard v-else-if="noMatch" class="mx-auto mt-4 max-w-md p-10 text-center">
           <SearchX class="mx-auto size-12 text-ink-3" /><p class="mt-3 text-ink-2">{{ t('dashboard.noMatch') }}</p>
         </GlassCard>
-        <SystemGrid v-else :categories="filtered" />
+        <template v-else>
+          <!-- My links / 我的收藏 section — only shown when there are favorites -->
+          <section v-if="favorites.length > 0">
+            <h3 class="mb-4 flex items-center gap-3">
+              <span class="h-6 w-1.5 rounded-full bg-amber-400"></span>
+              <span class="text-lg font-extrabold tracking-tight">{{ t('dashboard.myLinks') }}</span>
+              <span class="h-px flex-1 bg-border"></span>
+            </h3>
+            <div class="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5">
+              <SystemCard
+                v-for="l in favorites"
+                :key="l.id"
+                :link="l"
+                @favorite-changed="onFavoriteChanged"
+              />
+            </div>
+          </section>
+          <SystemGrid :categories="filtered" @favorite-changed="onFavoriteChanged" />
+        </template>
       </template>
     </div>
   </div>

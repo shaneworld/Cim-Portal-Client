@@ -248,5 +248,8 @@ export default {
     dutyLines: {
       title: '值班电话',
     },
+    myLinks: '我的收藏',
+    favoriteAdd: '收藏',
+    favoriteRemove: '取消收藏',
   },
 }
