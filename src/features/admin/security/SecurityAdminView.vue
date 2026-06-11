@@ -20,7 +20,6 @@ const form = reactive({
   clientId: '',
   scopes: 'openid profile',
   usernameClaim: 'preferred_username',
-  infoPanelEnabled: true,
   initialPassword: '',
 })
 
@@ -30,7 +29,6 @@ function populate(s: SecuritySettings) {
   form.clientId = s.clientId ?? ''
   form.scopes = s.scopes
   form.usernameClaim = s.usernameClaim
-  form.infoPanelEnabled = s.infoPanelEnabled ?? true
   form.initialPassword = ''
 }
 
@@ -51,7 +49,6 @@ async function save() {
       clientId: form.clientId || undefined,
       scopes: form.scopes,
       usernameClaim: form.usernameClaim,
-      infoPanelEnabled: form.infoPanelEnabled,
       ...(form.initialPassword ? { initialPassword: form.initialPassword } : {}),
     }
     populate(await updateSecuritySettings(body))
@@ -68,15 +65,6 @@ async function save() {
     <div class="p-5 space-y-5 max-w-lg">
       <div v-if="loading" class="text-sm text-ink-2">{{ t('common.loading') }}…</div>
       <template v-else>
-        <!-- Info Panel toggle -->
-        <div>
-          <span class="mb-1 block text-xs font-medium text-ink-2">{{ t('admin.security.infoPanelEnabled') }}</span>
-          <label class="flex h-10 cursor-pointer items-center gap-2.5">
-            <Switch v-model="form.infoPanelEnabled" data-testid="info-panel-enabled" />
-            <span class="text-sm text-ink-2">{{ form.infoPanelEnabled ? t('common.enabled') : t('common.disabled') }}</span>
-          </label>
-        </div>
-
         <!-- SSO Enabled toggle -->
         <div>
           <span class="mb-1 block text-xs font-medium text-ink-2">{{ t('admin.security.ssoEnabled') }}</span>

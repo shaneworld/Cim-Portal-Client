@@ -17,7 +17,8 @@ import AnnouncementsPanel from './AnnouncementsPanel.vue'
 import DutyLinesPanel from './DutyLinesPanel.vue'
 
 const { pick, t } = useLocale()
-const { config } = useConfigStore()
+const configStore = useConfigStore()
+const { config } = configStore
 const categories = ref<HomeCategory[]>([])
 const loading = ref(true); const error = ref(false); const query = ref('')
 
@@ -50,7 +51,11 @@ function onFavoriteChanged({ id, favorite }: { id: number; favorite: boolean }) 
   }
 }
 
-async function load() { loading.value = true; error.value = false; try { categories.value = (await getHome()).categories } catch { error.value = true } finally { loading.value = false } }
+async function load() {
+  loading.value = true; error.value = false
+  await configStore.reload()
+  try { categories.value = (await getHome()).categories } catch { error.value = true } finally { loading.value = false }
+}
 onMounted(load)
 </script>
 <template>
@@ -65,7 +70,7 @@ onMounted(load)
         <Button class="mx-auto mt-4" @click="load"><RotateCw class="size-4" /> {{ t('common.retry') }}</Button>
       </GlassCard>
       <template v-else>
-        <HeroPanel :categories="categories" :compact="!!config.infoPanelEnabled" />
+        <HeroPanel v-if="config.heroEnabled !== false" :categories="categories" :compact="!!config.infoPanelEnabled" />
         <div v-if="config.infoPanelEnabled" class="grid gap-4 md:[grid-template-columns:1.95fr_1fr]">
           <AnnouncementsPanel />
           <DutyLinesPanel />

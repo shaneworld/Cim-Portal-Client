@@ -16,6 +16,8 @@ export interface PortalConfig {
   clientId?: string
   scopes: string
   usernameClaim: string
+  /** Hero panel toggle */
+  heroEnabled?: boolean
   /** Info panel (announcements + duty lines) toggle */
   infoPanelEnabled?: boolean
 }

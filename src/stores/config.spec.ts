@@ -42,4 +42,34 @@ describe('config store', () => {
     await store.load()
     expect(calls).toBe(1)
   })
+
+  it('reload() always re-fetches even when already loaded', async () => {
+    let calls = 0
+    server.use(http.get(`${BASE}/api/portal/config`, () => {
+      calls++
+      return HttpResponse.json({ ssoEnabled: false, scopes: 'openid', usernameClaim: 'sub', heroEnabled: calls > 1, infoPanelEnabled: calls > 1 })
+    }))
+    const store = useConfigStore()
+    await store.load()
+    expect(calls).toBe(1)
+    await store.reload()
+    expect(calls).toBe(2)
+    expect(store.config.heroEnabled).toBe(true)
+    expect(store.config.infoPanelEnabled).toBe(true)
+    expect(store.loaded).toBe(true)
+  })
+
+  it('reload() keeps current config on network failure', async () => {
+    server.use(http.get(`${BASE}/api/portal/config`, () =>
+      HttpResponse.json({ ssoEnabled: true, scopes: 'openid profile', usernameClaim: 'preferred_username' })))
+    const store = useConfigStore()
+    await store.load()
+    expect(store.config.ssoEnabled).toBe(true)
+
+    server.use(http.get(`${BASE}/api/portal/config`, () => HttpResponse.error()))
+    await store.reload()
+    // config unchanged, loaded stays true
+    expect(store.config.ssoEnabled).toBe(true)
+    expect(store.loaded).toBe(true)
+  })
 })

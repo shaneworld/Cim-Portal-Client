@@ -42,6 +42,7 @@ export default {
       security: 'Security',
       announcements: 'Announcements',
       dutyLines: 'Duty Lines',
+      display: 'Display',
     },
     links: {
       title: 'Link Management',
@@ -111,7 +112,13 @@ export default {
       initialPassword: 'Initial Password',
       initialPasswordHint: 'Leave blank to keep unchanged',
       save: 'Save Settings',
-      infoPanelEnabled: 'Info panel (announcements + duty lines)',
+    },
+    display: {
+      title: 'Display Settings',
+      heroPanel: 'Hero panel',
+      heroPanelHint: 'Welcome banner and stats cards at the top of the home page',
+      infoPanel: 'Info bar (announcements + duty lines)',
+      infoPanelHint: 'Announcements list and duty phone panel on the home page',
     },
     permissionGroups: {
       title: 'Permission Groups',

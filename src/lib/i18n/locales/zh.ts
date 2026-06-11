@@ -42,6 +42,7 @@ export default {
       security: '安全',
       announcements: '公告',
       dutyLines: '值班电话',
+      display: '显示设置',
     },
     links: {
       title: '链接管理',
@@ -111,7 +112,13 @@ export default {
       initialPassword: '初始密码',
       initialPasswordHint: '留空则不变',
       save: '保存配置',
-      infoPanelEnabled: '信息栏（公告 + 值班电话）',
+    },
+    display: {
+      title: '显示设置',
+      heroPanel: 'Hero 面板',
+      heroPanelHint: '首页顶部的欢迎横幅与统计卡片',
+      infoPanel: '信息栏（公告 + 值班电话）',
+      infoPanelHint: '首页右侧的公告列表与值班电话',
     },
     permissionGroups: {
       title: '权限组管理',

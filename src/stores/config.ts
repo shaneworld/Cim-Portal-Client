@@ -18,5 +18,14 @@ export const useConfigStore = defineStore('config', () => {
     loaded.value = true
   }
 
-  return { config, loaded, load }
+  async function reload() {
+    try {
+      config.value = await getConfig()
+    } catch {
+      // keep current config on failure
+    }
+    loaded.value = true
+  }
+
+  return { config, loaded, load, reload }
 })

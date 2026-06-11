@@ -22,6 +22,8 @@ describe('SecurityAdminView', () => {
     clientId: 'cim-portal',
     scopes: 'openid profile',
     usernameClaim: 'preferred_username',
+    heroEnabled: true,
+    infoPanelEnabled: true,
     updatedAt: '2024-01-01T00:00:00Z',
   }
 

@@ -41,16 +41,18 @@ export interface SecuritySettings {
   clientId?: string
   scopes: string
   usernameClaim: string
+  heroEnabled?: boolean
   infoPanelEnabled?: boolean
   updatedAt?: string
 }
 
 export interface SecuritySettingsInput {
-  ssoEnabled: boolean
+  ssoEnabled?: boolean
   issuerUri?: string
   clientId?: string
-  scopes: string
-  usernameClaim: string
+  scopes?: string
+  usernameClaim?: string
+  heroEnabled?: boolean
   infoPanelEnabled?: boolean
   initialPassword?: string
 }
