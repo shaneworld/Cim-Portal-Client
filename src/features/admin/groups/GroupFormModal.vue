@@ -72,6 +72,7 @@ async function save() {
 
 <template>
   <Modal
+    size="md"
     :open="open"
     :title="group ? t('admin.groupForm.editTitle') : t('admin.groupForm.createTitle')"
     @update:open="(v) => emit('update:open', v)"

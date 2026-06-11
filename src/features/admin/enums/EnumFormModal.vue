@@ -50,7 +50,7 @@ async function save() {
 }
 </script>
 <template>
-  <Modal :open="open" :title="value ? t('admin.enumForm.editTitle') : t('admin.enumForm.createTitle')" @update:open="(v) => emit('update:open', v)">
+  <Modal size="md" :open="open" :title="value ? t('admin.enumForm.editTitle') : t('admin.enumForm.createTitle')" @update:open="(v) => emit('update:open', v)">
     <div class="space-y-3">
       <label class="block"><span class="mb-1 block text-xs font-medium text-ink-2">{{ t('admin.enumForm.codeLabel') }}</span>
         <Input data-testid="e-code" :model-value="form.code" :disabled="!!value" :placeholder="t('admin.enumForm.codePlaceholder')" @update:model-value="(v) => form.code = v" />

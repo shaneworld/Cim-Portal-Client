@@ -125,7 +125,7 @@ async function save() {
 }
 </script>
 <template>
-  <Modal :open="open" :title="link ? t('admin.linkForm.editTitle') : t('admin.linkForm.createTitle')" @update:open="(v) => emit('update:open', v)">
+  <Modal size="xl" :open="open" :title="link ? t('admin.linkForm.editTitle') : t('admin.linkForm.createTitle')" @update:open="(v) => emit('update:open', v)">
     <div class="space-y-3">
       <div class="grid grid-cols-1 gap-3 sm:grid-cols-2">
         <label class="block"><span class="mb-1 block text-xs font-medium text-ink-2">{{ t('admin.linkForm.nameZhLabel') }}</span>

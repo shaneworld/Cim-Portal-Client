@@ -83,6 +83,7 @@ async function save() {
 
 <template>
   <Modal
+    size="lg"
     :open="open"
     :title="t('admin.permissionGroups.membersTitle') + (group ? ` — ${group.code}` : '')"
     @update:open="(v) => emit('update:open', v)"

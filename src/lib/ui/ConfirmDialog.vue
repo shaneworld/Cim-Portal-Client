@@ -7,7 +7,7 @@ const emit = defineEmits<{ confirm: []; cancel: []; 'update:open': [boolean] }>(
 const { t } = useLocale()
 </script>
 <template>
-  <Modal :open="open" :title="title ?? t('ui.confirm.title')" @update:open="(v) => { if (!v) emit('cancel'); emit('update:open', v) }">
+  <Modal size="sm" :open="open" :title="title ?? t('ui.confirm.title')" @update:open="(v) => { if (!v) emit('cancel'); emit('update:open', v) }">
     <p class="text-sm text-ink-2">{{ message }}</p>
     <template #footer>
       <Button variant="ghost" @click="emit('cancel'); emit('update:open', false)">{{ t('common.cancel') }}</Button>

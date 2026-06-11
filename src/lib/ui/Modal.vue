@@ -1,9 +1,23 @@
 <script setup lang="ts">
 import { DialogRoot, DialogPortal, DialogOverlay, DialogContent, DialogTitle } from 'reka-ui'
-import { useSlots } from 'vue'
-const props = defineProps<{ open: boolean; title?: string }>()
+import { computed, useSlots } from 'vue'
+
+type ModalSize = 'sm' | 'md' | 'lg' | 'xl'
+
+const props = defineProps<{ open: boolean; title?: string; size?: ModalSize }>()
 const emit = defineEmits<{ 'update:open': [boolean] }>()
 const slots = useSlots()
+
+const maxW: Record<ModalSize, string> = {
+  sm: '28rem',
+  md: '36rem',
+  lg: '48rem',
+  xl: '60rem',
+}
+
+const contentStyle = computed(() => ({
+  width: `min(92vw, ${maxW[props.size ?? 'md']})`,
+}))
 </script>
 <template>
   <DialogRoot :open="props.open" @update:open="(v) => emit('update:open', v)">
@@ -16,7 +30,8 @@ const slots = useSlots()
         >
           <div
             data-testid="modal-content"
-            class="anim-fade w-full max-w-lg rounded-2xl border border-border bg-white p-5 shadow-2xl max-h-[85vh] overflow-y-auto dark:bg-[#141b2e]"
+            :style="contentStyle"
+            class="anim-fade rounded-2xl border border-border bg-white p-5 shadow-2xl max-h-[90vh] overflow-y-auto dark:bg-[#141b2e]"
           >
             <DialogTitle v-if="title" class="mb-4 text-lg font-bold">{{ title }}</DialogTitle>
             <slot />
