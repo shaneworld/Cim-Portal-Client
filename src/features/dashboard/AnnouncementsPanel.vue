@@ -11,7 +11,7 @@ import AppIcon from '@/lib/ui/AppIcon.vue'
 
 const DISMISSED_KEY = 'cim.dismissedAnnouncements'
 
-const { config } = useConfigStore()
+const cfg = useConfigStore()
 const { pick, t } = useLocale()
 
 const all = ref<Announcement[]>([])
@@ -40,7 +40,7 @@ function dismiss(id: number) {
 }
 
 onMounted(async () => {
-  if (!config.announcementsEnabled) return
+  if (!cfg.config.announcementsEnabled) return
   dismissed.value = readDismissed()
   try {
     all.value = await listAnnouncements()
@@ -51,7 +51,7 @@ onMounted(async () => {
 </script>
 
 <template>
-  <template v-if="config.announcementsEnabled && items.length > 0">
+  <template v-if="cfg.config.announcementsEnabled && items.length > 0">
     <GlassCard class="p-4">
       <h2 class="mb-3 text-sm font-semibold text-ink-2">{{ t('dashboard.announcements.title') }}</h2>
       <div class="space-y-2">

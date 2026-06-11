@@ -7,13 +7,13 @@ import { useConfigStore } from '@/stores/config'
 import { useLocale } from '@/lib/i18n/useLocale'
 import GlassCard from '@/lib/ui/GlassCard.vue'
 
-const { config } = useConfigStore()
+const cfg = useConfigStore()
 const { pick, t } = useLocale()
 
 const lines = ref<DutyLine[]>([])
 
 onMounted(async () => {
-  if (!config.dutyLinesEnabled) return
+  if (!cfg.config.dutyLinesEnabled) return
   try {
     lines.value = await listDutyLines()
   } catch {
@@ -23,7 +23,7 @@ onMounted(async () => {
 </script>
 
 <template>
-  <template v-if="config.dutyLinesEnabled && lines.length > 0">
+  <template v-if="cfg.config.dutyLinesEnabled && lines.length > 0">
     <GlassCard class="p-4">
       <h2 class="mb-3 flex items-center gap-2 text-sm font-semibold text-ink-2">
         <Phone class="size-4 shrink-0" />

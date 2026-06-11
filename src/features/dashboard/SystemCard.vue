@@ -69,16 +69,16 @@ async function onStarClick(e: MouseEvent) {
       >
         <span :class="['size-1.5 rounded-full', LINK_ENVS[link.environment].dot]"></span>{{ link.environment }}
       </span>
+      <button
+        v-if="!locked"
+        type="button"
+        :aria-label="localFavorite ? t('dashboard.favoriteRemove') : t('dashboard.favoriteAdd')"
+        :title="localFavorite ? t('dashboard.favoriteRemove') : t('dashboard.favoriteAdd')"
+        :class="['shrink-0 rounded-full p-0.5 transition-colors focus:outline-none', localFavorite ? 'text-amber-400' : 'text-ink-3 hover:text-amber-400']"
+        @click="onStarClick"
+      >
+        <Star :class="['size-4', localFavorite ? 'fill-current' : '']" />
+      </button>
     </GlassCard>
-    <button
-      v-if="!locked"
-      type="button"
-      :aria-label="localFavorite ? t('dashboard.favoriteRemove') : t('dashboard.favoriteAdd')"
-      :title="localFavorite ? t('dashboard.favoriteRemove') : t('dashboard.favoriteAdd')"
-      :class="['absolute right-3 top-3 z-10 rounded-full p-0.5 transition-colors focus:outline-none', localFavorite ? 'text-amber-400' : 'text-ink-3 hover:text-amber-400']"
-      @click="onStarClick"
-    >
-      <Star :class="['size-4', localFavorite ? 'fill-current' : '']" />
-    </button>
   </a>
 </template>
