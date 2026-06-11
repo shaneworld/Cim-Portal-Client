@@ -169,11 +169,11 @@ async function save() {
           <NumberInput data-testid="f-sortOrder" :model-value="form.sortOrder" @update:model-value="(v) => form.sortOrder = v" /></label>
       </div>
       <div><span class="mb-1.5 block text-xs font-medium text-ink-2">{{ t('admin.linkForm.iconLabel') }}</span>
-        <div class="grid grid-cols-6 gap-1.5 sm:grid-cols-12">
+        <div class="grid gap-1.5 [grid-template-columns:repeat(auto-fill,minmax(2.75rem,1fr))]">
           <button v-for="ic in ICON_KEYS" :key="ic" type="button" :title="ic"
-            class="grid aspect-square w-full place-items-center rounded-lg border transition"
+            class="grid aspect-square place-items-center rounded-lg border transition"
             :class="form.icon === ic ? 'border-transparent bg-brand text-white shadow' : 'border-border text-ink-2 hover:bg-[hsl(var(--primary)/0.1)]'"
-            @click="form.icon = ic"><AppIcon :name="ic" class="size-4" /></button>
+            @click="form.icon = ic"><AppIcon :name="ic" class="size-5" /></button>
         </div>
       </div>
       <div class="border-t border-border/60 pt-3">
