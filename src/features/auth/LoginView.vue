@@ -87,26 +87,30 @@ async function ssoRetry() {
       </div>
 
       <!-- Internal login form -->
-      <div v-else class="space-y-3">
-        <label class="block">
-          <span class="mb-1 block text-xs font-medium text-ink-2">{{ t('auth.login.employeeIdLabel') }}</span>
-          <Input v-model="employeeId" data-testid="employeeId" :placeholder="t('auth.login.employeeIdLabel')" @keyup.enter="signIn" />
-        </label>
-        <label class="block">
-          <span class="mb-1 block text-xs font-medium text-ink-2">{{ t('auth.login.passwordLabel') }}</span>
-          <div class="relative">
-            <Input v-model="password" data-testid="password" :type="showPassword ? 'text' : 'password'" :placeholder="t('auth.login.passwordLabel')" class="pr-10" @keyup.enter="signIn" />
-            <button type="button" :aria-label="showPassword ? t('auth.login.hidePassword') : t('auth.login.showPassword')"
-              class="absolute inset-y-0 right-0 grid w-10 place-items-center text-ink-3 transition hover:text-ink-2"
-              @click="showPassword = !showPassword">
-              <EyeOff v-if="showPassword" class="size-4" />
-              <Eye v-else class="size-4" />
-            </button>
-          </div>
-        </label>
+      <div v-else class="space-y-5">
+        <div class="space-y-3">
+          <label class="block">
+            <span class="mb-1 block text-xs font-medium text-ink-2">{{ t('auth.login.employeeIdLabel') }}</span>
+            <Input v-model="employeeId" data-testid="employeeId" :placeholder="t('auth.login.employeeIdLabel')" @keyup.enter="signIn" />
+          </label>
+          <label class="block">
+            <span class="mb-1 block text-xs font-medium text-ink-2">{{ t('auth.login.passwordLabel') }}</span>
+            <div class="relative">
+              <Input v-model="password" data-testid="password" :type="showPassword ? 'text' : 'password'" :placeholder="t('auth.login.passwordLabel')" class="pr-10" @keyup.enter="signIn" />
+              <button type="button" :aria-label="showPassword ? t('auth.login.hidePassword') : t('auth.login.showPassword')"
+                class="absolute inset-y-0 right-0 grid w-10 place-items-center text-ink-3 transition hover:text-ink-2"
+                @click="showPassword = !showPassword">
+                <EyeOff v-if="showPassword" class="size-4" />
+                <Eye v-else class="size-4" />
+              </button>
+            </div>
+          </label>
+        </div>
         <p v-if="error" class="text-sm text-rose-500">{{ error }}</p>
-        <Button data-testid="signIn" class="w-full" :disabled="busy" @click="signIn">{{ t('auth.login.signIn') }}</Button>
-        <Button v-if="config.ssoEnabled" variant="outline" class="w-full" :disabled="busy" @click="ssoRetry">{{ t('auth.login.ssoButton') }}</Button>
+        <div class="space-y-3">
+          <Button data-testid="signIn" class="w-full" :disabled="busy" @click="signIn">{{ t('auth.login.signIn') }}</Button>
+          <Button v-if="config.ssoEnabled" variant="outline" class="w-full" :disabled="busy" @click="ssoRetry">{{ t('auth.login.ssoButton') }}</Button>
+        </div>
       </div>
 
       <p class="mt-5 flex items-center gap-1.5 text-xs text-ink-3"><ShieldCheck class="size-3.5" /> {{ t('auth.login.footer') }}</p>
