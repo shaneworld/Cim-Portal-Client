@@ -14,6 +14,7 @@ beforeEach(() => {
   configureClient({ baseUrl: BASE, getToken: () => 't', getLocale: () => 'zh', onUnauthorized: () => {} })
   server.use(http.get(`${BASE}/api/admin/enums/DEPARTMENT`, () => HttpResponse.json([{ id: 1, category: 'DEPARTMENT', code: 'IT', labelZh: '信息技术', labelEn: 'IT', sortOrder: 10, active: true }])))
   server.use(http.get(`${BASE}/api/admin/enums/ROLE`, () => HttpResponse.json([{ id: 2, category: 'ROLE', code: 'OPERATOR', labelZh: '操作员', labelEn: 'Operator', sortOrder: 10, active: true }])))
+  server.use(http.get(`${BASE}/api/admin/enums/ANNOUNCEMENT_TYPE`, () => HttpResponse.json([{ id: 3, category: 'ANNOUNCEMENT_TYPE', code: 'INFO', labelZh: '信息', labelEn: 'Info', sortOrder: 10, active: true, color: 'blue', icon: 'bell' }])))
 })
 describe('EnumsAdminView', () => {
   it('默认载入部门;切到角色 tab 载入角色', async () => {
@@ -51,5 +52,15 @@ describe('EnumsAdminView', () => {
     const role = [...w.findAll('button')].find((b) => b.text().includes('角色'))!
     await role.trigger('click'); await flushPromises()
     expect(w.text()).toContain('操作'); expect(w.find('[data-testid="page-next"]').exists()).toBe(false)
+  })
+  it('ANNOUNCEMENT_TYPE tab 显示公告类型数据', async () => {
+    const w = mount(EnumsAdminView, { global: { plugins: [i18n] } })
+    await flushPromises()
+    const annTab = [...w.findAll('button')].find((b) => b.text().includes('公告类型'))!
+    expect(annTab).toBeDefined()
+    await annTab.trigger('click')
+    await flushPromises()
+    expect(w.text()).toContain('信息')
+    expect(w.text()).toContain('INFO')
   })
 })

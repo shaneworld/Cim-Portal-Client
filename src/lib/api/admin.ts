@@ -24,7 +24,7 @@ export const deleteLink = (id: number) => request<void>('DELETE', `/api/admin/li
 export const replaceGrants = (id: number, grants: GrantInput[]) =>
   request<GrantResponse[]>('PUT', `/api/admin/links/${id}/grants`, { grants })
 
-export interface EnumValueInput { code: string; labelZh: string; labelEn: string; sortOrder: number; active: boolean }
+export interface EnumValueInput { code: string; labelZh: string; labelEn: string; sortOrder: number; active: boolean; color?: string | null; icon?: string | null }
 
 export const listEnumValues = (category: EnumCategory) =>
   request<EnumValue[]>('GET', `/api/admin/enums/${category}`)
@@ -41,8 +41,7 @@ export interface SecuritySettings {
   clientId?: string
   scopes: string
   usernameClaim: string
-  announcementsEnabled?: boolean
-  dutyLinesEnabled?: boolean
+  infoPanelEnabled?: boolean
   updatedAt?: string
 }
 
@@ -52,8 +51,7 @@ export interface SecuritySettingsInput {
   clientId?: string
   scopes: string
   usernameClaim: string
-  announcementsEnabled?: boolean
-  dutyLinesEnabled?: boolean
+  infoPanelEnabled?: boolean
   initialPassword?: string
 }
 

@@ -13,7 +13,7 @@ const { pick, t } = useLocale()
 const lines = ref<DutyLine[]>([])
 
 onMounted(async () => {
-  if (!cfg.config.dutyLinesEnabled) return
+  if (!cfg.config.infoPanelEnabled) return
   try {
     lines.value = await listDutyLines()
   } catch {
@@ -23,7 +23,7 @@ onMounted(async () => {
 </script>
 
 <template>
-  <template v-if="cfg.config.dutyLinesEnabled && lines.length > 0">
+  <template v-if="cfg.config.infoPanelEnabled && lines.length > 0">
     <GlassCard class="p-4">
       <h2 class="mb-3 flex items-center gap-2 text-sm font-semibold text-ink-2">
         <Phone class="size-4 shrink-0" />

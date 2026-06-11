@@ -6,7 +6,8 @@ import Switch from '@/lib/ui/Switch.vue'
 import Button from '@/lib/ui/Button.vue'
 import Select from '@/lib/ui/Select.vue'
 import { createAnnouncement, updateAnnouncement, type AnnouncementInput, type Announcement } from '@/lib/api/announcements'
-import { listAnnouncementTypes, type AnnouncementType } from '@/lib/api/announcementTypes'
+import { listEnum } from '@/lib/api/enums'
+import type { EnumValue } from '@/lib/api/types'
 import { ApiError } from '@/lib/api/client'
 import { useToastStore } from '@/stores/toast'
 import { useLocale } from '@/lib/i18n/useLocale'
@@ -27,7 +28,7 @@ interface FormState {
 const form = reactive<FormState>({ titleZh: '', titleEn: '', bodyZh: '', bodyEn: '', typeCode: '', pinned: false, active: true, startsAt: '', endsAt: '' })
 const fieldErrors = ref<Record<string, string>>({})
 const saving = ref(false)
-const types = ref<AnnouncementType[]>([])
+const types = ref<EnumValue[]>([])
 
 const typeOptions = () => types.value.filter((t) => t.active).map((t) => ({ value: t.code, label: pick(t, 'label') }))
 
@@ -104,7 +105,7 @@ async function save() {
 }
 
 onMounted(async () => {
-  try { types.value = await listAnnouncementTypes() } catch { /* ignore */ }
+  try { types.value = await listEnum('ANNOUNCEMENT_TYPE') } catch { /* ignore */ }
 })
 </script>
 

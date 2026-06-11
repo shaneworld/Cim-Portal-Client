@@ -22,6 +22,7 @@ const CATEGORIES: { code: EnumCategory; labelKey: string }[] = [
   { code: 'ROLE', labelKey: 'admin.enums.categories.role' },
   { code: 'LINK_CATEGORY', labelKey: 'admin.enums.categories.linkCategory' },
   { code: 'LINK_STATUS', labelKey: 'admin.enums.categories.linkStatus' },
+  { code: 'ANNOUNCEMENT_TYPE', labelKey: 'admin.enums.categories.announcementType' },
 ]
 
 const toast = useToastStore()

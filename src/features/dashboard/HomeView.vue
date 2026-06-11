@@ -65,8 +65,8 @@ onMounted(load)
         <Button class="mx-auto mt-4" @click="load"><RotateCw class="size-4" /> {{ t('common.retry') }}</Button>
       </GlassCard>
       <template v-else>
-        <HeroPanel :categories="categories" :compact="!!(config.announcementsEnabled || config.dutyLinesEnabled)" />
-        <div class="grid gap-4 md:[grid-template-columns:1.95fr_1fr]">
+        <HeroPanel :categories="categories" :compact="!!config.infoPanelEnabled" />
+        <div v-if="config.infoPanelEnabled" class="grid gap-4 md:[grid-template-columns:1.95fr_1fr]">
           <AnnouncementsPanel />
           <DutyLinesPanel />
         </div>

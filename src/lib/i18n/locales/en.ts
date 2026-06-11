@@ -41,7 +41,6 @@ export default {
       users: 'Users',
       security: 'Security',
       announcements: 'Announcements',
-      announcementTypes: 'Announcement Types',
       dutyLines: 'Duty Lines',
     },
     links: {
@@ -87,6 +86,7 @@ export default {
         role: 'Role',
         linkCategory: 'Link Category',
         linkStatus: 'Link Status',
+        announcementType: 'Announcement Type',
       },
     },
     enumForm: {
@@ -98,6 +98,8 @@ export default {
       sortLabel: 'Sort Order',
       enabledLabel: 'Enabled',
       codePlaceholder: 'e.g. MES',
+      colorLabel: 'Color',
+      iconLabel: 'Icon',
     },
     security: {
       title: 'Security / SSO Settings',
@@ -109,6 +111,7 @@ export default {
       initialPassword: 'Initial Password',
       initialPasswordHint: 'Leave blank to keep unchanged',
       save: 'Save Settings',
+      infoPanelEnabled: 'Info panel (announcements + duty lines)',
     },
     permissionGroups: {
       title: 'Permission Groups',
@@ -147,7 +150,6 @@ export default {
       empty: 'No announcements yet',
       deleteTitle: 'Delete Announcement',
       deleteMessage: 'Delete "{title}"?',
-      featureEnabled: 'Announcements feature enabled',
     },
     announcementForm: {
       createTitle: 'New Announcement',
@@ -162,32 +164,12 @@ export default {
       startsAtLabel: 'Starts At (optional)',
       endsAtLabel: 'Ends At (optional)',
     },
-    announcementTypes: {
-      title: 'Announcement Types',
-      new: 'New Type',
-      empty: 'No announcement types yet',
-      deleteTitle: 'Delete Announcement Type',
-      deleteMessage: 'Delete "{code}"?',
-    },
-    announcementTypeForm: {
-      createTitle: 'New Announcement Type',
-      editTitle: 'Edit Announcement Type',
-      codeLabel: 'Code',
-      codePlaceholder: 'e.g. NOTICE',
-      zhLabel: 'Chinese Name',
-      enLabel: 'English Name',
-      colorLabel: 'Color',
-      iconLabel: 'Icon',
-      sortLabel: 'Sort Order',
-      activeLabel: 'Enabled',
-    },
     dutyLines: {
       title: 'Duty Lines',
       new: 'New Duty Line',
       empty: 'No duty lines yet',
       deleteTitle: 'Delete Duty Line',
       deleteMessage: 'Delete "{label}"?',
-      featureEnabled: 'Duty Lines feature enabled',
     },
     dutyLineForm: {
       createTitle: 'New Duty Line',
@@ -243,7 +225,7 @@ export default {
     announcements: {
       title: 'Announcements',
       pinned: 'Pinned',
-      dismiss: 'Dismiss',
+      empty: 'No announcements',
     },
     dutyLines: {
       title: 'Duty Lines',

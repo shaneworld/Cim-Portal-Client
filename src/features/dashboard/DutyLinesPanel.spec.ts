@@ -24,12 +24,12 @@ beforeEach(() => {
 })
 
 describe('DutyLinesPanel', () => {
-  it('renders nothing when dutyLinesEnabled is false', async () => {
+  it('renders nothing when infoPanelEnabled is false', async () => {
     server.use(http.get(`${BASE}/api/portal/duty-lines`, () => HttpResponse.json([LINE_1, LINE_2])))
     const pinia = createPinia()
     setActivePinia(pinia)
     const config = useConfigStore()
-    config.config.dutyLinesEnabled = false
+    config.config.infoPanelEnabled = false
 
     const w = mount(DutyLinesPanel, { global: { plugins: [pinia, i18n] } })
     await flushPromises()
@@ -41,7 +41,7 @@ describe('DutyLinesPanel', () => {
     const pinia = createPinia()
     setActivePinia(pinia)
     const config = useConfigStore()
-    config.config.dutyLinesEnabled = true
+    config.config.infoPanelEnabled = true
 
     const w = mount(DutyLinesPanel, { global: { plugins: [pinia, i18n] } })
     await flushPromises()
@@ -53,7 +53,7 @@ describe('DutyLinesPanel', () => {
     const pinia = createPinia()
     setActivePinia(pinia)
     const config = useConfigStore()
-    config.config.dutyLinesEnabled = true
+    config.config.infoPanelEnabled = true
 
     const w = mount(DutyLinesPanel, { global: { plugins: [pinia, i18n] } })
     await flushPromises()

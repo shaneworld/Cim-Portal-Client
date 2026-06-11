@@ -3,7 +3,6 @@ import { ref, onMounted } from 'vue'
 import { Plus, Pencil, Trash2, AlertTriangle, RotateCw, Phone } from 'lucide-vue-next'
 import { listAdminDutyLines, deleteDutyLine } from '@/lib/api/dutyLines'
 import type { DutyLine } from '@/lib/api/dutyLines'
-import { getSecuritySettings, updateSecuritySettings } from '@/lib/api/admin'
 import { useLocale } from '@/lib/i18n/useLocale'
 import { useToastStore } from '@/stores/toast'
 import { usePagination } from '@/lib/composables/usePagination'
@@ -11,7 +10,6 @@ import { DEFAULT_PAGE_SIZE } from '@/constants'
 import Button from '@/lib/ui/Button.vue'
 import Badge from '@/lib/ui/Badge.vue'
 import Skeleton from '@/lib/ui/Skeleton.vue'
-import Switch from '@/lib/ui/Switch.vue'
 import ConfirmDialog from '@/lib/ui/ConfirmDialog.vue'
 import Pagination from '@/lib/ui/Pagination.vue'
 import AdminPanel from '@/features/admin/AdminPanel.vue'
@@ -29,45 +27,6 @@ const formOpen = ref(false)
 const editing = ref<DutyLine | null>(null)
 const confirmOpen = ref(false)
 const pending = ref<DutyLine | null>(null)
-
-// Duty Lines feature toggle
-const featureEnabled = ref(false)
-const featureLoading = ref(true)
-const featureSaving = ref(false)
-
-async function loadFeature() {
-  featureLoading.value = true
-  try {
-    const s = await getSecuritySettings()
-    featureEnabled.value = s.dutyLinesEnabled ?? false
-  } catch {
-    // ignore
-  } finally {
-    featureLoading.value = false
-  }
-}
-
-async function toggleFeature(val: boolean) {
-  featureSaving.value = true
-  try {
-    const s = await getSecuritySettings()
-    await updateSecuritySettings({
-      ssoEnabled: s.ssoEnabled,
-      issuerUri: s.issuerUri,
-      clientId: s.clientId,
-      scopes: s.scopes,
-      usernameClaim: s.usernameClaim,
-      announcementsEnabled: s.announcementsEnabled,
-      dutyLinesEnabled: val,
-    })
-    featureEnabled.value = val
-    toast.push({ type: 'success', message: t('common.updated') })
-  } catch {
-    toast.push({ type: 'error', message: t('common.saveFailed') })
-  } finally {
-    featureSaving.value = false
-  }
-}
 
 async function load() {
   loading.value = true
@@ -99,25 +58,13 @@ async function doDelete() {
   }
 }
 
-onMounted(() => { loadFeature(); load() })
+onMounted(load)
 </script>
 
 <template>
   <AdminPanel :title="t('admin.dutyLines.title')" v-model:page-size="rowsPerPage">
     <template #actions>
       <Button @click="openCreate"><Plus class="size-4" /> {{ t('admin.dutyLines.new') }}</Button>
-    </template>
-
-    <template #toolbar>
-      <div class="flex items-center gap-2.5">
-        <Switch
-          :model-value="featureEnabled"
-          :disabled="featureLoading || featureSaving"
-          data-testid="duty-lines-enabled"
-          @update:model-value="toggleFeature"
-        />
-        <span class="text-sm text-ink-2">{{ t('admin.dutyLines.featureEnabled') }}</span>
-      </div>
     </template>
 
     <div v-if="loading" class="space-y-2 p-4"><Skeleton v-for="n in 5" :key="n" /></div>
