@@ -1,3 +1,5 @@
+@import './fonts.css';
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -22,7 +24,7 @@
     --glass-bg: rgba(255,255,255,.06); --glass-strong: rgba(255,255,255,.10);
     --glass-bd: rgba(255,255,255,.14); --glass-sh: 0 14px 40px -14px rgba(0,0,0,.6);
   }
-  body { color: hsl(var(--ink)); min-height: 100vh; background: #eef2f8; }
+  body { color: hsl(var(--ink)); min-height: 100vh; background: #eef2f8; font-family: theme('fontFamily.sans'); -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
   /* Ambient gradient on a fixed, GPU-composited layer — avoids per-scroll repaint
      that `background-attachment: fixed` causes. */
   body::before { content: ""; position: fixed; inset: 0; z-index: -1; pointer-events: none;
