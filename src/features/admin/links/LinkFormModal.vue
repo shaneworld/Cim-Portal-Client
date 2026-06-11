@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { reactive, ref, watch } from 'vue'
-import { Trash2, Plus } from 'lucide-vue-next'
+import { computed, reactive, ref, watch } from 'vue'
+import { Trash2, Plus, Upload } from 'lucide-vue-next'
 import Modal from '@/lib/ui/Modal.vue'
 import Input from '@/lib/ui/Input.vue'
 import NumberInput from '@/lib/ui/NumberInput.vue'
@@ -48,6 +48,7 @@ const fieldErrors = ref<Record<string, string>>({})
 const saving = ref(false)
 const fileInputRef = ref<HTMLInputElement | null>(null)
 const uploading = ref(false)
+const isUpload = computed(() => !!form.icon?.startsWith('upload:'))
 
 async function onFileChange(e: Event) {
   const file = (e.target as HTMLInputElement).files?.[0]
@@ -185,27 +186,29 @@ async function save() {
         <label class="block"><span class="mb-1 block text-xs font-medium text-ink-2">{{ t('admin.linkForm.sortLabel') }}</span>
           <NumberInput data-testid="f-sortOrder" :model-value="form.sortOrder" @update:model-value="(v) => form.sortOrder = v" /></label>
       </div>
-      <div><span class="mb-1.5 block text-xs font-medium text-ink-2">{{ t('admin.linkForm.iconLabel') }}</span>
+      <div>
+        <span class="mb-1.5 block text-xs font-medium text-ink-2">{{ t('admin.linkForm.iconLabel') }}</span>
+        <input ref="fileInputRef" type="file" accept="image/png,image/jpeg,image/webp,image/svg+xml" class="hidden" @change="onFileChange" />
+        <!-- live preview + upload button -->
+        <div class="mb-3 flex items-center gap-4">
+          <div :class="['grid size-16 shrink-0 place-items-center rounded-2xl', isUpload ? 'border border-border bg-white p-2' : 'bg-brand text-white']">
+            <AppIcon :name="form.icon" :class="isUpload ? 'h-full w-full' : 'size-9'" />
+          </div>
+          <div class="min-w-0">
+            <button type="button" :disabled="uploading"
+              class="inline-flex items-center gap-2 rounded-xl border border-[hsl(var(--primary)/0.35)] bg-[hsl(var(--primary)/0.06)] px-3.5 py-2 text-sm font-semibold text-[hsl(var(--primary))] transition hover:bg-[hsl(var(--primary)/0.12)] disabled:opacity-60"
+              @click="fileInputRef?.click()">
+              <Upload class="size-4" /> {{ uploading ? t('common.loading') : (isUpload ? t('admin.linkForm.replaceIcon') : t('admin.linkForm.uploadIcon')) }}
+            </button>
+            <p class="mt-1.5 text-xs text-ink-3">{{ t('admin.linkForm.iconHint') }}</p>
+          </div>
+        </div>
+        <!-- built-in icon grid -->
         <div class="grid gap-1.5 [grid-template-columns:repeat(auto-fill,minmax(2.75rem,1fr))]">
-          <!-- hidden file input -->
-          <input ref="fileInputRef" type="file" accept="image/png,image/jpeg,image/webp,image/svg+xml" class="hidden" @change="onFileChange" />
-          <!-- upload tile (first) -->
-          <button type="button" :title="t('admin.linkForm.uploadIcon')"
-            class="grid aspect-square place-items-center rounded-lg border border-dashed border-border text-ink-2 transition hover:bg-[hsl(var(--primary)/0.1)]"
-            :disabled="uploading"
-            @click="fileInputRef?.click()">
-            <span class="text-[9px] font-medium leading-tight text-center px-0.5">{{ uploading ? '…' : t('admin.linkForm.uploadIcon') }}</span>
-          </button>
-          <!-- selected custom icon preview tile (shown when upload:* is selected) -->
-          <button v-if="form.icon?.startsWith('upload:')" type="button" :title="form.icon"
-            class="grid aspect-square place-items-center rounded-lg border transition border-transparent bg-brand text-white shadow">
-            <AppIcon :name="form.icon" class="size-5" />
-          </button>
-          <!-- built-in icon tiles -->
           <button v-for="ic in ICON_KEYS" :key="ic" type="button" :title="ic"
             class="grid aspect-square place-items-center rounded-lg border transition"
             :class="form.icon === ic ? 'border-transparent bg-brand text-white shadow' : 'border-border text-ink-2 hover:bg-[hsl(var(--primary)/0.1)]'"
-            @click="form.icon = ic"><AppIcon :name="ic" class="size-5" /></button>
+            @click="form.icon = ic"><AppIcon :name="ic" class="size-6" /></button>
         </div>
       </div>
       <div class="border-t border-border/60 pt-3">

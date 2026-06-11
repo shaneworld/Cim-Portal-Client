@@ -68,7 +68,9 @@ export default {
       addGrant: '添加授权',
       grantsHint: '未设置授权 = 所有人可见。如需限制访问范围，请添加授权。',
       grantSelect: '选择',
-      uploadIcon: '上传图标',
+      uploadIcon: '上传自定义图标',
+      replaceIcon: '重新上传',
+      iconHint: '支持 PNG · JPEG · WebP · SVG,≤ 512KB;左侧为所选图标预览',
       uploadIconFailed: '图标上传失败',
     },
     enums: {

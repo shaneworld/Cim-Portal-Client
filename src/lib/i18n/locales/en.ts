@@ -68,7 +68,9 @@ export default {
       addGrant: 'Add Grant',
       grantsHint: 'No grants = visible to everyone. Add grants to restrict access.',
       grantSelect: 'Select',
-      uploadIcon: 'Upload icon',
+      uploadIcon: 'Upload custom icon',
+      replaceIcon: 'Replace',
+      iconHint: 'PNG · JPEG · WebP · SVG, ≤512KB. Preview on the left.',
       uploadIconFailed: 'Icon upload failed',
     },
     enums: {
