@@ -63,4 +63,22 @@ describe('DutyLinesPanel', () => {
     expect(w.find('[data-testid="duty-phone-1"]').text()).toBe('400-123-4567')
     expect(w.find('[data-testid="duty-phone-2"]').text()).toBe('400-987-6543')
   })
+
+  it('shows the resolved on-duty person name when dutyName is present', async () => {
+    server.use(http.get(`${BASE}/api/portal/duty-lines`, () => HttpResponse.json([
+      { ...LINE_1, dutyName: '张三', scheduleName: 'IT-roster' },
+      LINE_2,
+    ])))
+    const pinia = createPinia()
+    setActivePinia(pinia)
+    const config = useConfigStore()
+    config.config.infoPanelEnabled = true
+
+    const w = mount(DutyLinesPanel, { global: { plugins: [pinia, i18n] } })
+    await flushPromises()
+
+    expect(w.text()).toContain('张三')
+    // line 2 has no dutyName → no person label rendered for it
+    expect(w.text()).toContain('网络运维')
+  })
 })

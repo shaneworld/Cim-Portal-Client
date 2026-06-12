@@ -27,10 +27,11 @@ onMounted(async () => {
 <template>
   <GlassCard v-if="cfg.config.infoPanelEnabled" class="p-4">
     <h2 class="mb-3 text-sm font-semibold text-ink-2">{{ t('dashboard.announcements.title') }}</h2>
-    <div v-if="all.length === 0" class="py-4 text-center text-sm text-ink-3">
-      {{ t('dashboard.announcements.empty') }}
-    </div>
-    <div v-else class="space-y-2">
+    <div class="max-h-[22rem] overflow-y-auto pr-1">
+      <div v-if="all.length === 0" class="py-4 text-center text-sm text-ink-3">
+        {{ t('dashboard.announcements.empty') }}
+      </div>
+      <div v-else class="space-y-2">
       <div
         v-for="a in all"
         :key="a.id"
@@ -60,6 +61,7 @@ onMounted(async () => {
           <p class="mt-1 text-sm font-medium">{{ pick(a, 'title') }}</p>
           <p class="mt-0.5 whitespace-pre-line text-xs text-ink-2">{{ pick(a, 'body') }}</p>
         </div>
+      </div>
       </div>
     </div>
   </GlassCard>

@@ -7,6 +7,8 @@ export interface DutyLine {
   phone: string
   sortOrder: number
   active: boolean
+  scheduleName?: string | null
+  dutyName?: string | null
 }
 
 export interface DutyLineInput {
@@ -15,6 +17,7 @@ export interface DutyLineInput {
   phone: string
   sortOrder: number
   active: boolean
+  scheduleName?: string
 }
 
 export const listAdminDutyLines = () =>

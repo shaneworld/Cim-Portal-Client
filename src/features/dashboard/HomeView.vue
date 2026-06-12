@@ -15,6 +15,7 @@ import SystemCard from './SystemCard.vue'
 import GlobalSearch from './GlobalSearch.vue'
 import AnnouncementsPanel from './AnnouncementsPanel.vue'
 import DutyLinesPanel from './DutyLinesPanel.vue'
+import QuickLinksPanel from './QuickLinksPanel.vue'
 
 const { pick, t } = useLocale()
 const configStore = useConfigStore()
@@ -60,7 +61,7 @@ onMounted(load)
 </script>
 <template>
   <div class="min-h-screen py-4 sm:py-6 px-[max(1rem,7vw)]">
-    <div class="space-y-8">
+    <div class="space-y-6">
       <AppHeader />
       <template v-if="loading">
         <div class="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4"><Skeleton v-for="n in 8" :key="n" /></div>
@@ -73,7 +74,10 @@ onMounted(load)
         <HeroPanel v-if="config.heroEnabled !== false" :categories="categories" :compact="!!config.infoPanelEnabled" />
         <div v-if="config.infoPanelEnabled" class="grid gap-4 md:[grid-template-columns:1.95fr_1fr]">
           <AnnouncementsPanel />
-          <DutyLinesPanel />
+          <div class="space-y-4">
+            <DutyLinesPanel />
+            <QuickLinksPanel />
+          </div>
         </div>
         <GlobalSearch v-model:query="query" :result-count="resultCount" />
         <GlassCard v-if="categories.length === 0" class="mx-auto mt-4 max-w-md p-10 text-center">

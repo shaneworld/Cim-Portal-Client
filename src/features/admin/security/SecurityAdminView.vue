@@ -21,7 +21,11 @@ const form = reactive({
   scopes: 'openid profile',
   usernameClaim: 'preferred_username',
   initialPassword: '',
+  dutyApiBaseUrl: '',
+  dutyApiKey: '',
 })
+
+const dutyApiKeyConfigured = ref(false)
 
 function populate(s: SecuritySettings) {
   form.ssoEnabled = s.ssoEnabled
@@ -30,6 +34,9 @@ function populate(s: SecuritySettings) {
   form.scopes = s.scopes
   form.usernameClaim = s.usernameClaim
   form.initialPassword = ''
+  form.dutyApiBaseUrl = s.dutyApiBaseUrl ?? ''
+  form.dutyApiKey = ''
+  dutyApiKeyConfigured.value = !!s.dutyApiKeyConfigured
 }
 
 onMounted(async () => {
@@ -49,7 +56,9 @@ async function save() {
       clientId: form.clientId || undefined,
       scopes: form.scopes,
       usernameClaim: form.usernameClaim,
+      dutyApiBaseUrl: form.dutyApiBaseUrl || undefined,
       ...(form.initialPassword ? { initialPassword: form.initialPassword } : {}),
+      ...(form.dutyApiKey ? { dutyApiKey: form.dutyApiKey } : {}),
     }
     populate(await updateSecuritySettings(body))
     toast.push({ type: 'success', message: t('common.updated') })
@@ -103,6 +112,30 @@ async function save() {
           <span class="mb-1 block text-xs font-medium text-ink-2">{{ t('admin.security.initialPassword') }}</span>
           <Input v-model="form.initialPassword" data-testid="initial-password" type="password" :placeholder="t('admin.security.initialPasswordHint')" />
         </label>
+
+        <!-- Duty system integration -->
+        <div class="border-t border-border pt-5">
+          <h3 class="mb-3 text-sm font-semibold text-ink-1">{{ t('admin.security.dutyApiSection') }}</h3>
+          <div class="space-y-5">
+            <!-- Duty API base URL -->
+            <label class="block">
+              <span class="mb-1 block text-xs font-medium text-ink-2">{{ t('admin.security.dutyApiBaseUrl') }}</span>
+              <Input v-model="form.dutyApiBaseUrl" data-testid="duty-api-base-url" placeholder="http://duty-system:port" />
+            </label>
+
+            <!-- Duty API key (write-only) -->
+            <label class="block">
+              <span class="mb-1 block text-xs font-medium text-ink-2">{{ t('admin.security.dutyApiKey') }}</span>
+              <Input
+                v-model="form.dutyApiKey"
+                data-testid="duty-api-key"
+                type="password"
+                :placeholder="dutyApiKeyConfigured ? t('admin.security.dutyApiKeyConfigured') : t('admin.security.dutyApiKeyUnset')"
+              />
+              <span class="mt-1 block text-xs text-ink-3">{{ t('admin.security.dutyApiKeyHint') }}</span>
+            </label>
+          </div>
+        </div>
 
         <Button :disabled="saving" @click="save">{{ t('admin.security.save') }}</Button>
       </template>

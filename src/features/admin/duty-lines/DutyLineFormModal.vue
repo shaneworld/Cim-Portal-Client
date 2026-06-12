@@ -19,11 +19,12 @@ interface FormState {
   labelZh: string
   labelEn: string
   phone: string
+  scheduleName: string
   sortOrder: number
   active: boolean
 }
 
-const form = reactive<FormState>({ labelZh: '', labelEn: '', phone: '', sortOrder: 0, active: true })
+const form = reactive<FormState>({ labelZh: '', labelEn: '', phone: '', scheduleName: '', sortOrder: 0, active: true })
 const fieldErrors = ref<Record<string, string>>({})
 const saving = ref(false)
 
@@ -35,11 +36,12 @@ watch(() => props.open, (o) => {
       labelZh: props.value.labelZh,
       labelEn: props.value.labelEn,
       phone: props.value.phone,
+      scheduleName: props.value.scheduleName ?? '',
       sortOrder: props.value.sortOrder,
       active: props.value.active,
     })
   } else {
-    Object.assign(form, { labelZh: '', labelEn: '', phone: '', sortOrder: 0, active: true })
+    Object.assign(form, { labelZh: '', labelEn: '', phone: '', scheduleName: '', sortOrder: 0, active: true })
   }
 }, { immediate: true })
 
@@ -60,6 +62,7 @@ async function save() {
       labelZh: form.labelZh,
       labelEn: form.labelEn,
       phone: form.phone,
+      scheduleName: form.scheduleName.trim() || undefined,
       sortOrder: form.sortOrder,
       active: form.active,
     }
@@ -103,6 +106,13 @@ async function save() {
         <span class="mb-1 block text-xs font-medium text-ink-2">{{ t('admin.dutyLineForm.phoneLabel') }}</span>
         <Input data-testid="duty-phone" :model-value="form.phone" @update:model-value="(v) => form.phone = v" />
         <span v-if="fieldErrors.phone" class="mt-1 block text-xs text-rose-500">{{ fieldErrors.phone }}</span>
+      </label>
+
+      <!-- Schedule name (optional — drives external duty-system lookup) -->
+      <label class="block">
+        <span class="mb-1 block text-xs font-medium text-ink-2">{{ t('admin.dutyLineForm.scheduleNameLabel') }}</span>
+        <Input data-testid="duty-schedule-name" :model-value="form.scheduleName" @update:model-value="(v) => form.scheduleName = v" />
+        <span class="mt-1 block text-xs text-ink-3">{{ t('admin.dutyLineForm.scheduleNameHint') }}</span>
       </label>
 
       <!-- Sort Order + Active -->
