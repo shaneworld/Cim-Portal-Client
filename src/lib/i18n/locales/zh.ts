@@ -22,6 +22,7 @@ export default {
     none: '无',
     download: '下载',
     clear: '清除',
+    close: '关闭',
   },
   ui: {
     pagination: { total: '共 {n} 条' },

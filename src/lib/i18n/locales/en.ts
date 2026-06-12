@@ -22,6 +22,7 @@ export default {
     none: 'None',
     download: 'Download',
     clear: 'Clear',
+    close: 'Close',
   },
   ui: {
     pagination: { total: '{n} items total' },
