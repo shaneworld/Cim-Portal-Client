@@ -128,12 +128,19 @@ const minutes = Array.from({ length: 60 }, (_, i) => i)
         <span v-if="display" class="truncate">{{ display }}</span>
         <span v-else class="truncate text-muted-foreground">{{ placeholder }}</span>
       </span>
-      <X
+      <span
         v-if="clearable && modelValue"
+        role="button"
+        tabindex="0"
+        :aria-label="t('common.clear')"
         data-testid="dtp-clear"
         class="size-4 shrink-0 text-muted-foreground hover:text-foreground"
         @click.stop="clear"
-      />
+        @keydown.enter.stop.prevent="clear"
+        @keydown.space.stop.prevent="clear"
+      >
+        <X class="size-4" />
+      </span>
     </PopoverTrigger>
     <PopoverPortal>
       <PopoverContent
@@ -180,6 +187,7 @@ const minutes = Array.from({ length: 60 }, (_, i) => i)
         <div class="mt-3 flex items-center justify-center gap-2">
           <select
             v-model.number="selHour"
+            :aria-label="t('ui.datepicker.hour')"
             class="h-9 rounded-lg border border-input bg-background px-2 text-sm outline-none focus-visible:ring-2 focus-visible:ring-ring"
             @change="onTimeChange"
           >
@@ -188,6 +196,7 @@ const minutes = Array.from({ length: 60 }, (_, i) => i)
           <span class="text-muted-foreground">:</span>
           <select
             v-model.number="selMin"
+            :aria-label="t('ui.datepicker.minute')"
             class="h-9 rounded-lg border border-input bg-background px-2 text-sm outline-none focus-visible:ring-2 focus-visible:ring-ring"
             @change="onTimeChange"
           >

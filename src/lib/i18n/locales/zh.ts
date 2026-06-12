@@ -21,13 +21,14 @@ export default {
     updated: '已更新',
     none: '无',
     download: '下载',
+    clear: '清除',
   },
   ui: {
     pagination: { total: '共 {n} 条' },
     numberInput: { increase: '增加', decrease: '减少' },
     select: { placeholder: '请选择' },
     confirm: { title: '确认' },
-    datepicker: { now: '此刻' },
+    datepicker: { now: '此刻', hour: '时', minute: '分' },
   },
   header: {
     admin: '管理',

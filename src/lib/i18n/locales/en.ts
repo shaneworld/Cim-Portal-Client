@@ -21,13 +21,14 @@ export default {
     updated: 'Updated',
     none: 'None',
     download: 'Download',
+    clear: 'Clear',
   },
   ui: {
     pagination: { total: '{n} items total' },
     numberInput: { increase: 'Increase', decrease: 'Decrease' },
     select: { placeholder: 'Please select' },
     confirm: { title: 'Confirm' },
-    datepicker: { now: 'Now' },
+    datepicker: { now: 'Now', hour: 'Hour', minute: 'Minute' },
   },
   header: {
     admin: 'Admin',
