@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { Pin } from 'lucide-vue-next'
+import { DialogTitle } from 'reka-ui'
 import Modal from '@/lib/ui/Modal.vue'
 import AppIcon from '@/lib/ui/AppIcon.vue'
 import type { Announcement } from '@/lib/api/announcements'
@@ -43,7 +44,7 @@ function fmt(s?: string | null) {
       </div>
 
       <!-- title -->
-      <h2 class="mt-3 text-xl font-bold leading-snug">{{ pick(announcement, 'title') }}</h2>
+      <DialogTitle class="mt-3 text-xl font-bold leading-snug">{{ pick(announcement, 'title') }}</DialogTitle>
 
       <!-- meta -->
       <div class="mt-1 text-xs text-ink-3">
