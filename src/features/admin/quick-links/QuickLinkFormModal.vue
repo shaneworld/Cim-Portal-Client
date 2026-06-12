@@ -9,7 +9,7 @@ import NumberInput from '@/lib/ui/NumberInput.vue'
 import AppIcon from '@/lib/ui/AppIcon.vue'
 import { ICON_KEYS } from '@/lib/ui/iconMap'
 import { uploadIcon } from '@/lib/api/admin'
-import { createQuickLink, updateQuickLink, getAdminQuickLink, type QuickLinkInput, type QuickLink } from '@/lib/api/quickLinks'
+import { createQuickLink, updateQuickLink, type QuickLinkInput, type QuickLink } from '@/lib/api/quickLinks'
 import { ApiError } from '@/lib/api/client'
 import { useToastStore } from '@/stores/toast'
 import { useLocale } from '@/lib/i18n/useLocale'
@@ -50,7 +50,8 @@ async function onFileChange(e: Event) {
   }
 }
 
-async function populate() {
+watch(() => props.open, (o) => {
+  if (!o) return
   fieldErrors.value = {}
   if (props.value) {
     Object.assign(form, {
@@ -61,24 +62,10 @@ async function populate() {
       sortOrder: props.value.sortOrder,
       active: props.value.active,
     })
-    // Fetch the detail to ensure latest values.
-    try {
-      const full = await getAdminQuickLink(props.value.id)
-      Object.assign(form, {
-        labelZh: full.labelZh,
-        labelEn: full.labelEn,
-        url: full.url,
-        icon: full.icon || 'external-link',
-        sortOrder: full.sortOrder,
-        active: full.active,
-      })
-    } catch { /* keep seeded values */ }
   } else {
     Object.assign(form, { labelZh: '', labelEn: '', url: '', icon: 'external-link', sortOrder: 0, active: true })
   }
-}
-
-watch(() => props.open, (o) => { if (o) populate() }, { immediate: true })
+}, { immediate: true })
 
 function validate(): boolean {
   const e: Record<string, string> = {}

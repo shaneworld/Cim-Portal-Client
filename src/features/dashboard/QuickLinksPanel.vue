@@ -36,7 +36,7 @@ onMounted(async () => {
           :key="l.id"
           :href="l.url"
           target="_blank"
-          rel="noopener"
+          rel="noopener noreferrer"
           class="flex items-center gap-3 rounded-xl border border-border/60 bg-surface/40 px-3 py-2 transition hover:bg-[hsl(var(--primary)/0.08)]"
         >
           <!-- icon chip -->

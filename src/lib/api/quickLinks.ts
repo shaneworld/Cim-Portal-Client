@@ -22,9 +22,6 @@ export interface QuickLinkInput {
 export const listAdminQuickLinks = () =>
   request<QuickLink[]>('GET', '/api/admin/quick-links')
 
-export const getAdminQuickLink = (id: number) =>
-  request<QuickLink>('GET', `/api/admin/quick-links/${id}`)
-
 export const createQuickLink = (body: QuickLinkInput) =>
   request<QuickLink>('POST', '/api/admin/quick-links', body)
 
