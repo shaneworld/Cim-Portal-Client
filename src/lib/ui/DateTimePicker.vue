@@ -147,7 +147,7 @@ const minutes = Array.from({ length: 60 }, (_, i) => i)
         position="popper"
         :side-offset="6"
         align="start"
-        class="anim-fade z-[60] w-[18rem] rounded-2xl border border-border bg-background p-3 shadow-2xl dark:bg-[#141b2e]"
+        class="anim-fade z-[60] w-[18rem] rounded-2xl border border-border bg-white p-3 shadow-2xl dark:bg-[#141b2e]"
       >
         <!-- Month header -->
         <div class="mb-2 flex items-center justify-between">
@@ -188,7 +188,7 @@ const minutes = Array.from({ length: 60 }, (_, i) => i)
           <select
             v-model.number="selHour"
             :aria-label="t('ui.datepicker.hour')"
-            class="h-9 rounded-lg border border-input bg-background px-2 text-sm outline-none focus-visible:ring-2 focus-visible:ring-ring"
+            class="h-9 rounded-lg border border-input bg-white px-2 text-sm text-foreground outline-none focus-visible:ring-2 focus-visible:ring-ring dark:bg-[#141b2e]"
             @change="onTimeChange"
           >
             <option v-for="h in hours" :key="h" :value="h">{{ pad(h) }}</option>
@@ -197,7 +197,7 @@ const minutes = Array.from({ length: 60 }, (_, i) => i)
           <select
             v-model.number="selMin"
             :aria-label="t('ui.datepicker.minute')"
-            class="h-9 rounded-lg border border-input bg-background px-2 text-sm outline-none focus-visible:ring-2 focus-visible:ring-ring"
+            class="h-9 rounded-lg border border-input bg-white px-2 text-sm text-foreground outline-none focus-visible:ring-2 focus-visible:ring-ring dark:bg-[#141b2e]"
             @change="onTimeChange"
           >
             <option v-for="mi in minutes" :key="mi" :value="mi">{{ pad(mi) }}</option>
