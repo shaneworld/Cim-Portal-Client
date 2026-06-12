@@ -78,7 +78,10 @@ describe('DutyLinesPanel', () => {
     await flushPromises()
 
     expect(w.text()).toContain('张三')
-    // line 2 has no dutyName → no person label rendered for it
+    expect(w.find('[data-testid="duty-name-1"]').exists()).toBe(true)
+    expect(w.find('[data-testid="duty-name-1"]').text()).toBe('张三')
+    // line 2 has no dutyName → no person-name span rendered for it
     expect(w.text()).toContain('网络运维')
+    expect(w.find('[data-testid="duty-name-2"]').exists()).toBe(false)
   })
 })

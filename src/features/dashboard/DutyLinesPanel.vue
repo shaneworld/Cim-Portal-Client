@@ -42,7 +42,7 @@ onMounted(async () => {
           <!-- label -->
           <span class="min-w-0 flex-1 truncate text-sm font-medium">{{ pick(line, 'label') }}</span>
           <!-- on-duty person's name (when resolved from the external duty system) -->
-          <span v-if="line.dutyName" class="shrink-0 truncate text-xs text-ink-2 max-w-[6rem]">{{ line.dutyName }}</span>
+          <span v-if="line.dutyName" class="shrink-0 truncate text-xs text-ink-2 max-w-[6rem]" :data-testid="`duty-name-${line.id}`">{{ line.dutyName }}</span>
           <!-- phone number -->
           <span class="shrink-0 tabular-nums font-semibold text-sm text-ink-1" :data-testid="`duty-phone-${line.id}`">{{ line.phone }}</span>
         </div>
