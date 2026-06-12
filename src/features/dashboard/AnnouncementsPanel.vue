@@ -25,9 +25,9 @@ onMounted(async () => {
 </script>
 
 <template>
-  <GlassCard v-if="cfg.config.infoPanelEnabled" class="p-4">
+  <GlassCard v-if="cfg.config.infoPanelEnabled" class="flex flex-col h-full p-4">
     <h2 class="mb-3 text-sm font-semibold text-ink-2">{{ t('dashboard.announcements.title') }}</h2>
-    <div class="max-h-[min(22rem,60vh)] overflow-y-auto pr-1">
+    <div class="flex-1 min-h-0 overflow-y-auto scroll-slim max-h-[60vh] md:max-h-none pr-1">
       <div v-if="all.length === 0" class="py-4 text-center text-sm text-ink-3">
         {{ t('dashboard.announcements.empty') }}
       </div>

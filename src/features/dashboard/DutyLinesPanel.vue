@@ -23,13 +23,16 @@ onMounted(async () => {
 </script>
 
 <template>
-  <template v-if="cfg.config.infoPanelEnabled && lines.length > 0">
-    <GlassCard class="p-4">
-      <h2 class="mb-3 flex items-center gap-2 text-sm font-semibold text-ink-2">
-        <Phone class="size-4 shrink-0" />
-        {{ t('dashboard.dutyLines.title') }}
-      </h2>
-      <div class="space-y-2">
+  <GlassCard v-if="cfg.config.infoPanelEnabled" class="flex flex-col h-full p-4">
+    <h2 class="mb-3 flex items-center gap-2 text-sm font-semibold text-ink-2">
+      <Phone class="size-4 shrink-0" />
+      {{ t('dashboard.dutyLines.title') }}
+    </h2>
+    <div class="flex-1 min-h-0 overflow-y-auto scroll-slim max-h-[60vh] md:max-h-none">
+      <div v-if="lines.length === 0" class="py-4 text-center text-sm text-ink-3">
+        {{ t('dashboard.dutyLines.empty') }}
+      </div>
+      <div v-else class="space-y-2">
         <div
           v-for="line in lines"
           :key="line.id"
@@ -47,6 +50,6 @@ onMounted(async () => {
           <span class="shrink-0 tabular-nums font-semibold text-sm text-ink-1" :data-testid="`duty-phone-${line.id}`">{{ line.phone }}</span>
         </div>
       </div>
-    </GlassCard>
-  </template>
+    </div>
+  </GlassCard>
 </template>

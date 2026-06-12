@@ -71,9 +71,9 @@ onMounted(load)
       </GlassCard>
       <template v-else>
         <HeroPanel v-if="config.heroEnabled !== false" :categories="categories" :compact="!!config.infoPanelEnabled" />
-        <div v-if="config.infoPanelEnabled" class="grid gap-4 md:[grid-template-columns:1.95fr_1fr]">
-          <AnnouncementsPanel />
-          <DutyLinesPanel />
+        <div v-if="config.infoPanelEnabled" class="grid gap-4 md:[grid-template-columns:1.95fr_1fr] md:h-[clamp(18rem,42vh,26rem)]">
+          <AnnouncementsPanel class="min-h-0" />
+          <DutyLinesPanel class="min-h-0" />
         </div>
         <GlobalSearch v-model:query="query" :result-count="resultCount" />
         <GlassCard v-if="categories.length === 0" class="mx-auto mt-4 max-w-md p-10 text-center">

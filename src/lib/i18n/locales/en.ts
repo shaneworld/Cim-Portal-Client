@@ -244,6 +244,7 @@ export default {
     },
     dutyLines: {
       title: 'Duty Lines',
+      empty: 'No duty info',
     },
     myLinks: 'My links',
     favoriteAdd: 'Add to favorites',

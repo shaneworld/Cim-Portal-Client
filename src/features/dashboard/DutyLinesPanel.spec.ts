@@ -36,7 +36,7 @@ describe('DutyLinesPanel', () => {
     expect(w.text()).toBe('')
   })
 
-  it('renders nothing when enabled but list is empty', async () => {
+  it('renders the card with an empty placeholder when enabled but list is empty', async () => {
     server.use(http.get(`${BASE}/api/portal/duty-lines`, () => HttpResponse.json([])))
     const pinia = createPinia()
     setActivePinia(pinia)
@@ -45,7 +45,9 @@ describe('DutyLinesPanel', () => {
 
     const w = mount(DutyLinesPanel, { global: { plugins: [pinia, i18n] } })
     await flushPromises()
-    expect(w.text()).toBe('')
+    // card is now always rendered (fixed-height column); shows the empty-state placeholder
+    expect(w.find('.glass').exists()).toBe(true)
+    expect(w.text()).toContain(i18n.global.t('dashboard.dutyLines.empty'))
   })
 
   it('renders 2 duty lines with their phone numbers when enabled and populated', async () => {
