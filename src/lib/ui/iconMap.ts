@@ -3,10 +3,11 @@ import {
   Database, Server, Cpu, HardDrive, Network, Cloud, Monitor, Settings, Cog, Shield, ShieldCheck, Lock, KeyRound,
   Users, User, Bell, Mail, Calendar, Clock, Folder, Layers, BarChart3, PieChart, ClipboardList, Truck, Warehouse,
   FlaskConical, Microscope, Hammer, ScanLine, Search, Globe, Workflow, Bot, Zap, Terminal, Building2,
+  ExternalLink,
 } from 'lucide-vue-next'
 import type { LucideIcon } from 'lucide-vue-next'
 
-// Exactly 48 icons → fills a 6-col (mobile) / 8-col (desktop) grid with no ragged row.
+// Selectable icons for the picker grid (6-col mobile / 8-col desktop; the grid wraps any count).
 const map: Record<string, LucideIcon> = {
   factory: Factory,
   'line-chart': LineChart,
@@ -56,6 +57,7 @@ const map: Record<string, LucideIcon> = {
   search: Search,
   globe: Globe,
   building: Building2,
+  'external-link': ExternalLink,
 }
 
 export const ICON_KEYS = Object.keys(map)
