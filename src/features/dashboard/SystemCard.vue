@@ -53,12 +53,12 @@ async function onStarClick(e: MouseEvent) {
       </span>
       <span class="min-w-0 flex-1">
         <span class="block truncate text-sm font-semibold">{{ name }}</span>
-        <span class="mt-0.5 flex items-center gap-1.5 text-[11px] text-ink-2">
+        <span class="mt-0.5 flex min-w-0 items-center gap-1.5 text-[11px] text-ink-2">
           <template v-if="locked">
-            <span class="inline-flex items-center gap-1.5 text-ink-3"><Lock class="size-3.5" /> {{ t('dashboard.noAccess') }}</span>
+            <span class="inline-flex min-w-0 items-center gap-1.5 text-ink-3"><Lock class="size-3.5 shrink-0" /> <span class="truncate">{{ t('dashboard.noAccess') }}</span></span>
           </template>
           <template v-else>
-            <StatusDot :status="link.statusCode" /> {{ statusText }}
+            <StatusDot :status="link.statusCode" class="shrink-0" /> <span class="truncate">{{ statusText }}</span>
           </template>
         </span>
       </span>
