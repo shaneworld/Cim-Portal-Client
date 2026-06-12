@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { computed } from 'vue'
 import { Pin } from 'lucide-vue-next'
 import { DialogTitle } from 'reka-ui'
 import Modal from '@/lib/ui/Modal.vue'
@@ -11,11 +12,20 @@ import { renderMarkdown } from '@/lib/ui/markdown'
 const props = defineProps<{ open: boolean; announcement: Announcement | null }>()
 const emit = defineEmits<{ 'update:open': [boolean] }>()
 
-const { pick, t } = useLocale()
+const { locale, pick, t } = useLocale()
 
 function fmt(s?: string | null) {
-  return s ? new Date(s).toLocaleString() : ''
+  if (!s) return ''
+  return new Date(s).toLocaleString(locale.value === 'zh' ? 'zh-CN' : 'en-US')
 }
+
+const windowText = computed(() => {
+  const a = props.announcement
+  if (!a) return ''
+  const s = fmt(a.startsAt), e = fmt(a.endsAt)
+  if (s && e) return `${s} ${t('dashboard.announcements.to')} ${e}`
+  return s || e
+})
 </script>
 
 <template>
@@ -48,7 +58,7 @@ function fmt(s?: string | null) {
 
       <!-- meta -->
       <div class="mt-1 text-xs text-ink-3">
-        {{ t('dashboard.announcements.publishedAt') }} {{ fmt(announcement.createdAt) }}<template v-if="announcement.startsAt || announcement.endsAt"> · {{ t('dashboard.announcements.window') }} {{ fmt(announcement.startsAt) }} {{ t('dashboard.announcements.to') }} {{ fmt(announcement.endsAt) }}</template>
+        {{ t('dashboard.announcements.publishedAt') }} {{ fmt(announcement.createdAt) }}<template v-if="announcement.startsAt || announcement.endsAt"> · {{ t('dashboard.announcements.window') }} {{ windowText }}</template>
       </div>
 
       <hr class="my-4 border-border" />
