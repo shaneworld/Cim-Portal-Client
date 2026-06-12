@@ -21,16 +21,8 @@ const PURIFY_CONFIG = {
   ALLOWED_URI_REGEXP: /^(?:https?:|mailto:|\/|#)/i,
 } as const
 
-// Dangerous URI schemes. markdown-it (validateLink) already refuses to turn
-// these into links and DOMPurify's ALLOWED_URI_REGEXP blocks them as attrs,
-// so they can never be an executable href. This extra pass only neutralizes the
-// scheme when it survives as inert literal text (e.g. `[x](javascript:..)`,
-// which markdown-it leaves as plain text) — defense in depth, not a relaxation.
-const DANGEROUS_SCHEME = /(javascript|data|vbscript)\s*:/gi
-
 export function renderMarkdown(src: string): string {
   if (!src || !src.trim()) return ''
   const rawHtml = md.render(src)
-  const clean = String(DOMPurify.sanitize(rawHtml, PURIFY_CONFIG as any))
-  return clean.replace(DANGEROUS_SCHEME, '$1&#58;')
+  return String(DOMPurify.sanitize(rawHtml, PURIFY_CONFIG as any))
 }

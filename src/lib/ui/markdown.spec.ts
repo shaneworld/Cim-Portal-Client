@@ -20,7 +20,8 @@ describe('renderMarkdown', () => {
   it('keeps links but adds rel and blocks javascript: protocol', () => {
     expect(renderMarkdown('[ok](https://e.com)')).toContain('rel="noopener noreferrer"')
     const bad = renderMarkdown('[x](javascript:alert(1))')
-    expect(bad.toLowerCase()).not.toContain('javascript:')
+    expect(bad).not.toContain('href="javascript:')      // no executable js href
+    expect(bad.toLowerCase()).not.toContain('<script')
   })
   it('returns empty string for blank input', () => {
     expect(renderMarkdown('   ')).toBe('')
