@@ -27,6 +27,7 @@ export default {
     numberInput: { increase: '增加', decrease: '减少' },
     select: { placeholder: '请选择' },
     confirm: { title: '确认' },
+    datepicker: { now: '此刻' },
   },
   header: {
     admin: '管理',

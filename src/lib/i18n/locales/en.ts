@@ -27,6 +27,7 @@ export default {
     numberInput: { increase: 'Increase', decrease: 'Decrease' },
     select: { placeholder: 'Please select' },
     confirm: { title: 'Confirm' },
+    datepicker: { now: 'Now' },
   },
   header: {
     admin: 'Admin',
