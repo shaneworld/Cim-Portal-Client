@@ -8,11 +8,19 @@ import { useLocale } from '@/lib/i18n/useLocale'
 import { colorClasses } from '@/lib/ui/announcementColor'
 import GlassCard from '@/lib/ui/GlassCard.vue'
 import AppIcon from '@/lib/ui/AppIcon.vue'
+import AnnouncementDetailModal from './AnnouncementDetailModal.vue'
 
 const cfg = useConfigStore()
 const { pick, t } = useLocale()
 
 const all = ref<Announcement[]>([])
+const selected = ref<Announcement | null>(null)
+const detailOpen = ref(false)
+
+function openDetail(a: Announcement) {
+  selected.value = a
+  detailOpen.value = true
+}
 
 onMounted(async () => {
   if (!cfg.config.infoPanelEnabled) return
@@ -32,11 +40,14 @@ onMounted(async () => {
         {{ t('dashboard.announcements.empty') }}
       </div>
       <div v-else class="space-y-2">
-      <div
+      <button
         v-for="a in all"
         :key="a.id"
-        class="flex items-start gap-3 rounded-xl border p-3"
+        type="button"
+        :data-testid="`announcement-row-${a.id}`"
+        class="flex w-full items-start gap-3 rounded-xl border p-3 text-left transition hover:bg-surface/40"
         :class="colorClasses(a.typeColor).wrap"
+        @click="openDetail(a)"
       >
         <!-- icon chip -->
         <span
@@ -59,10 +70,11 @@ onMounted(async () => {
             </span>
           </div>
           <p class="mt-1 text-sm font-medium">{{ pick(a, 'title') }}</p>
-          <p class="mt-0.5 whitespace-pre-line text-xs text-ink-2">{{ pick(a, 'body') }}</p>
+          <p class="mt-0.5 line-clamp-1 text-xs text-ink-3">{{ pick(a, 'body') }}</p>
         </div>
-      </div>
+      </button>
       </div>
     </div>
+    <AnnouncementDetailModal v-model:open="detailOpen" :announcement="selected" />
   </GlassCard>
 </template>

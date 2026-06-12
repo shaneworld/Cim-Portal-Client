@@ -71,4 +71,32 @@ describe('AnnouncementsPanel', () => {
     expect(w.text()).toContain('紧急公告')
     expect(w.findAll('[data-testid^="dismiss-"]').length).toBe(0)
   })
+
+  it('clicking an announcement row opens the detail modal with Markdown-rendered body', async () => {
+    const ANN_MD = {
+      id: 1, titleZh: '标题A', titleEn: 'Title A',
+      bodyZh: '| A | B |\n|-|-|\n| 1 | 2 |', bodyEn: '| A | B |\n|-|-|\n| 1 | 2 |',
+      typeCode: 'INFO', typeLabelZh: '通知', typeLabelEn: 'Notice',
+      typeColor: 'blue', typeIcon: 'info',
+      pinned: false, startsAt: null, endsAt: null, active: true, createdAt: '2026-06-01T00:00:00Z',
+    }
+    server.use(http.get(`${BASE}/api/portal/announcements`, () => HttpResponse.json([ANN_MD])))
+    const pinia = createPinia()
+    setActivePinia(pinia)
+    const config = useConfigStore()
+    config.config.infoPanelEnabled = true
+
+    const w = mount(AnnouncementsPanel, { global: { plugins: [pinia, i18n] } })
+    await flushPromises()
+
+    const row = w.find('[data-testid="announcement-row-1"]')
+    expect(row.exists()).toBe(true)
+    await row.trigger('click')
+    await flushPromises()
+
+    // Modal teleports its content into document.body
+    const html = document.body.innerHTML
+    expect(html).toContain('标题A')
+    expect(html).toContain('<table')
+  })
 })
