@@ -91,6 +91,8 @@ describe('AnnouncementsPanel', () => {
 
     const row = w.find('[data-testid="announcement-row-1"]')
     expect(row.exists()).toBe(true)
+    // card preview shows plain text, not raw Markdown table markup
+    expect(row.find('p.line-clamp-1').text()).not.toContain('|')
     await row.trigger('click')
     await flushPromises()
 
