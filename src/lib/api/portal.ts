@@ -2,7 +2,6 @@ import { request } from './client'
 import type { HomeResponse, MeResponse } from './types'
 import type { Announcement } from './announcements'
 import type { DutyLine } from './dutyLines'
-import type { QuickLink } from './quickLinks'
 
 export const getHome = () => request<HomeResponse>('GET', '/api/portal/home')
 export const toggleFavorite = (linkId: number, on: boolean) =>
@@ -10,7 +9,6 @@ export const toggleFavorite = (linkId: number, on: boolean) =>
 export const getMe = () => request<MeResponse>('GET', '/api/portal/me')
 export const listAnnouncements = () => request<Announcement[]>('GET', '/api/portal/announcements')
 export const listDutyLines = () => request<DutyLine[]>('GET', '/api/portal/duty-lines')
-export const listQuickLinks = () => request<QuickLink[]>('GET', '/api/portal/quick-links')
 
 export interface PortalConfig {
   ssoEnabled: boolean

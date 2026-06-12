@@ -42,7 +42,6 @@ export default {
       security: 'Security',
       announcements: 'Announcements',
       dutyLines: 'Duty Lines',
-      quickLinks: 'Quick Links',
       display: 'Display',
     },
     links: {
@@ -196,23 +195,6 @@ export default {
       sortLabel: 'Sort Order',
       activeLabel: 'Enabled',
     },
-    quickLinks: {
-      title: 'Quick Links',
-      new: 'New Quick Link',
-      empty: 'No quick links yet',
-      deleteTitle: 'Delete Quick Link',
-      deleteMessage: 'Delete "{label}"?',
-    },
-    quickLinkForm: {
-      createTitle: 'New Quick Link',
-      editTitle: 'Edit Quick Link',
-      labelZhLabel: 'Chinese Name',
-      labelEnLabel: 'English Name',
-      urlLabel: 'URL',
-      iconLabel: 'Icon',
-      sortLabel: 'Sort Order',
-      activeLabel: 'Enabled',
-    },
   },
   auth: {
     login: {
@@ -262,9 +244,6 @@ export default {
     },
     dutyLines: {
       title: 'Duty Lines',
-    },
-    quickLinks: {
-      title: 'Quick Links',
     },
     myLinks: 'My links',
     favoriteAdd: 'Add to favorites',

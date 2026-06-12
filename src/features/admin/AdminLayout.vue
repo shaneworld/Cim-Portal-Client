@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { RouterLink, RouterView } from 'vue-router'
-import { ChevronLeft, Link2, ListChecks, ShieldCheck, Shield, Megaphone, Phone, ExternalLink, Monitor } from 'lucide-vue-next'
+import { ChevronLeft, Link2, ListChecks, ShieldCheck, Shield, Megaphone, Phone, Monitor } from 'lucide-vue-next'
 import GlassCard from '@/lib/ui/GlassCard.vue'
 import AppHeader from '@/features/dashboard/AppHeader.vue'
 import { useLocale } from '@/lib/i18n/useLocale'
@@ -14,7 +14,6 @@ const nav = [
   { to: '/admin/security', labelKey: 'admin.nav.security', icon: ShieldCheck, enabled: true },
   { to: '/admin/announcements', labelKey: 'admin.nav.announcements', icon: Megaphone, enabled: true },
   { to: '/admin/duty-lines', labelKey: 'admin.nav.dutyLines', icon: Phone, enabled: true },
-  { to: '/admin/quick-links', labelKey: 'admin.nav.quickLinks', icon: ExternalLink, enabled: true },
   { to: '/admin/display', labelKey: 'admin.nav.display', icon: Monitor, enabled: true },
 ]
 </script>

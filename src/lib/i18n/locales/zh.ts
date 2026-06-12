@@ -42,7 +42,6 @@ export default {
       security: '安全',
       announcements: '公告',
       dutyLines: '值班电话',
-      quickLinks: '快捷链接',
       display: '显示设置',
     },
     links: {
@@ -196,23 +195,6 @@ export default {
       sortLabel: '排序 Sort',
       activeLabel: '启用',
     },
-    quickLinks: {
-      title: '快捷链接管理',
-      new: '新建快捷链接',
-      empty: '暂无快捷链接',
-      deleteTitle: '删除快捷链接',
-      deleteMessage: '确认删除「{label}」？',
-    },
-    quickLinkForm: {
-      createTitle: '新建快捷链接',
-      editTitle: '编辑快捷链接',
-      labelZhLabel: '中文名称',
-      labelEnLabel: '英文名称',
-      urlLabel: '链接地址',
-      iconLabel: '图标',
-      sortLabel: '排序 Sort',
-      activeLabel: '启用',
-    },
   },
   auth: {
     login: {
@@ -262,9 +244,6 @@ export default {
     },
     dutyLines: {
       title: '值班电话',
-    },
-    quickLinks: {
-      title: '快捷链接',
     },
     myLinks: '我的收藏',
     favoriteAdd: '收藏',
