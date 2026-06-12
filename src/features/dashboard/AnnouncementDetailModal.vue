@@ -11,35 +11,49 @@ const props = defineProps<{ open: boolean; announcement: Announcement | null }>(
 const emit = defineEmits<{ 'update:open': [boolean] }>()
 
 const { pick, t } = useLocale()
+
+function fmt(s?: string | null) {
+  return s ? new Date(s).toLocaleString() : ''
+}
 </script>
 
 <template>
   <Modal
-    size="lg"
+    size="2xl"
     :open="open"
-    :title="announcement ? pick(announcement, 'title') : ''"
+    :title="''"
     @update:open="(v) => emit('update:open', v)"
   >
     <div v-if="announcement">
-      <div class="mb-4 flex flex-wrap items-center gap-2">
-        <!-- icon chip -->
+      <!-- header row -->
+      <div class="flex flex-wrap items-center gap-2">
         <span
-          class="flex size-7 shrink-0 items-center justify-center rounded-lg"
+          class="grid size-8 shrink-0 place-items-center rounded-lg"
           :class="colorClasses(announcement.typeColor).chip"
         >
-          <AppIcon :name="announcement.typeIcon" class="size-4" />
+          <AppIcon :name="announcement.typeIcon" class="size-[18px]" />
         </span>
-        <!-- type tag -->
         <span
-          class="rounded px-1.5 py-0.5 text-[11px] font-medium"
+          class="rounded px-2 py-0.5 text-xs font-medium"
           :class="colorClasses(announcement.typeColor).tag"
         >{{ pick(announcement, 'typeLabel') }}</span>
-        <!-- pinned marker -->
-        <span v-if="announcement.pinned" class="flex items-center gap-0.5 text-[11px] text-ink-3">
-          <Pin class="size-3" />{{ t('dashboard.announcements.pinned') }}
+        <span v-if="announcement.pinned" class="flex items-center gap-1 text-xs text-ink-3">
+          <Pin class="size-3.5" />{{ t('dashboard.announcements.pinned') }}
         </span>
       </div>
-      <div class="markdown-body" v-html="renderMarkdown(pick(announcement, 'body'))"></div>
+
+      <!-- title -->
+      <h2 class="mt-3 text-xl font-bold leading-snug">{{ pick(announcement, 'title') }}</h2>
+
+      <!-- meta -->
+      <div class="mt-1 text-xs text-ink-3">
+        {{ t('dashboard.announcements.publishedAt') }} {{ fmt(announcement.createdAt) }}<template v-if="announcement.startsAt || announcement.endsAt"> · {{ t('dashboard.announcements.window') }} {{ fmt(announcement.startsAt) }} {{ t('dashboard.announcements.to') }} {{ fmt(announcement.endsAt) }}</template>
+      </div>
+
+      <hr class="my-4 border-border" />
+
+      <!-- body -->
+      <div class="markdown-body markdown-body-lg" v-html="renderMarkdown(pick(announcement, 'body'))"></div>
     </div>
   </Modal>
 </template>

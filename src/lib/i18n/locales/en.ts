@@ -246,6 +246,9 @@ export default {
       title: 'Announcements',
       pinned: 'Pinned',
       empty: 'No announcements',
+      publishedAt: 'Published',
+      window: 'Active period',
+      to: 'to',
     },
     dutyLines: {
       title: 'Duty Lines',

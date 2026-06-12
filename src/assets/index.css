@@ -88,6 +88,14 @@
   .markdown-body th,.markdown-body td { @apply border border-border px-2 py-1 text-left; }
   .markdown-body thead th { @apply bg-muted/60 font-semibold; }
   .markdown-body tbody tr:nth-child(even) { @apply bg-muted/30; }
+  .markdown-body-lg { @apply text-base leading-7; }
+  .markdown-body-lg h1 { @apply text-xl; }
+  .markdown-body-lg h2 { @apply text-lg; }
+  .markdown-body-lg h3 { @apply text-base; }
+  .markdown-body-lg p { @apply my-3; }
+  .markdown-body-lg ul,.markdown-body-lg ol { @apply my-3; }
+  .markdown-body-lg table { @apply my-3; }
+  .markdown-body-lg th,.markdown-body-lg td { @apply px-3 py-1.5; }
   .scroll-slim { scrollbar-width: thin; scrollbar-color: rgb(148 163 184 / 0.5) transparent; }
   .scroll-slim::-webkit-scrollbar { width: 6px; height: 6px; }
   .scroll-slim::-webkit-scrollbar-thumb { @apply rounded-full bg-border; }

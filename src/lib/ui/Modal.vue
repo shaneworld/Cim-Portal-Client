@@ -4,7 +4,7 @@ import { X } from 'lucide-vue-next'
 import { computed, useSlots } from 'vue'
 import { useLocale } from '@/lib/i18n/useLocale'
 
-type ModalSize = 'sm' | 'md' | 'lg' | 'xl'
+type ModalSize = 'sm' | 'md' | 'lg' | 'xl' | '2xl'
 
 const props = defineProps<{ open: boolean; title?: string; size?: ModalSize }>()
 const emit = defineEmits<{ 'update:open': [boolean] }>()
@@ -16,6 +16,7 @@ const maxW: Record<ModalSize, string> = {
   md: '36rem',
   lg: '48rem',
   xl: '60rem',
+  '2xl': '64rem',
 }
 
 const contentStyle = computed(() => ({

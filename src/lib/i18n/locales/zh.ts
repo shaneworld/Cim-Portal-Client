@@ -246,6 +246,9 @@ export default {
       title: '公告',
       pinned: '置顶',
       empty: '暂无公告',
+      publishedAt: '发布于',
+      window: '生效时间',
+      to: '至',
     },
     dutyLines: {
       title: '值班电话',
