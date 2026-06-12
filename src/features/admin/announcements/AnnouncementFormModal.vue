@@ -137,6 +137,7 @@ onMounted(async () => {
         <div class="md:grid md:grid-cols-2 md:gap-3">
           <textarea
             data-testid="ann-body-zh"
+            :aria-label="t('admin.announcementForm.bodyZhLabel')"
             class="min-h-[14rem] w-full resize-y rounded-xl border border-input bg-transparent px-3 py-2 text-sm outline-none focus-visible:ring-2 focus-visible:ring-ring"
             :value="form.bodyZh"
             @input="(e) => form.bodyZh = (e.target as HTMLTextAreaElement).value"
@@ -157,6 +158,7 @@ onMounted(async () => {
         <div class="md:grid md:grid-cols-2 md:gap-3">
           <textarea
             data-testid="ann-body-en"
+            :aria-label="t('admin.announcementForm.bodyEnLabel')"
             class="min-h-[14rem] w-full resize-y rounded-xl border border-input bg-transparent px-3 py-2 text-sm outline-none focus-visible:ring-2 focus-visible:ring-ring"
             :value="form.bodyEn"
             @input="(e) => form.bodyEn = (e.target as HTMLTextAreaElement).value"
