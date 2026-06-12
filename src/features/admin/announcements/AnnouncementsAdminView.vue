@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed, watch, onMounted } from 'vue'
 import { Plus, Pencil, Trash2, AlertTriangle, RotateCw, Pin } from 'lucide-vue-next'
 import { listAdminAnnouncements, deleteAnnouncement } from '@/lib/api/announcements'
 import type { Announcement } from '@/lib/api/announcements'
@@ -16,12 +16,19 @@ import Pagination from '@/lib/ui/Pagination.vue'
 import AdminPanel from '@/features/admin/AdminPanel.vue'
 import AnnouncementFormModal from './AnnouncementFormModal.vue'
 
-const { t, pick } = useLocale()
+const { t, pick, locale } = useLocale()
 const toast = useToastStore()
 
 const items = ref<Announcement[]>([])
+const tab = ref<'active' | 'history'>('active')
+const visible = computed(() =>
+  tab.value === 'active'
+    ? items.value.filter((a) => a.active === true)
+    : items.value.filter((a) => a.active === false),
+)
 const rowsPerPage = ref(DEFAULT_PAGE_SIZE)
-const { page, paged, total, pageSize } = usePagination(items, rowsPerPage)
+const { page, paged, total, pageSize, reset } = usePagination(visible, rowsPerPage)
+watch(tab, () => reset())
 const loading = ref(true)
 const error = ref(false)
 const formOpen = ref(false)
@@ -65,14 +72,23 @@ const windowText = computed(() => (a: Announcement) => {
   return `${fmt(a.startsAt)} – ${fmt(a.endsAt)}`
 })
 
+function fmtClosed(s?: string | null) {
+  return s ? new Date(s).toLocaleString(locale.value === 'zh' ? 'zh-CN' : 'en-US') : ''
+}
+
 onMounted(load)
 </script>
 
 <template>
   <AdminPanel :title="t('admin.announcements.title')" v-model:page-size="rowsPerPage">
     <template #actions>
-      <Button @click="openCreate"><Plus class="size-4" /> {{ t('admin.announcements.new') }}</Button>
+      <Button v-if="tab === 'active'" @click="openCreate"><Plus class="size-4" /> {{ t('admin.announcements.new') }}</Button>
     </template>
+
+    <div class="mb-3 inline-flex rounded-xl border border-border p-0.5 text-sm">
+      <button type="button" class="rounded-lg px-3 py-1 transition" :class="tab==='active' ? 'bg-primary text-white' : 'text-ink-2 hover:text-foreground'" data-testid="ann-tab-active" @click="tab='active'">{{ t('admin.announcements.tabActive') }}</button>
+      <button type="button" class="rounded-lg px-3 py-1 transition" :class="tab==='history' ? 'bg-primary text-white' : 'text-ink-2 hover:text-foreground'" data-testid="ann-tab-history" @click="tab='history'">{{ t('admin.announcements.tabHistory') }}</button>
+    </div>
 
     <div v-if="loading" class="space-y-2 p-4"><Skeleton v-for="n in 5" :key="n" /></div>
     <div v-else-if="error" class="p-8 text-center">
@@ -100,8 +116,13 @@ onMounted(load)
           <Pin v-if="a.pinned" class="size-3.5 shrink-0 text-ink-3" />
           <!-- window -->
           <span class="hidden w-28 shrink-0 text-center text-xs text-ink-3 md:block">{{ windowText(a) }}</span>
+          <!-- history close info -->
+          <span v-if="tab === 'history'" class="shrink-0 text-right text-xs text-ink-3">
+            <Badge :tone="a.closedAt ? 'caution' : 'muted'">{{ a.closedAt ? t('admin.announcements.closedExpired') : t('admin.announcements.closedDisabled') }}</Badge>
+            <span v-if="a.closedAt" class="ml-2 hidden md:inline">{{ t('admin.announcements.closedAtLabel') }}: {{ fmtClosed(a.closedAt) }}</span>
+          </span>
           <!-- active -->
-          <Badge :tone="a.active ? 'go' : 'muted'">{{ a.active ? t('common.enabled') : t('common.disabled') }}</Badge>
+          <Badge v-else :tone="a.active ? 'go' : 'muted'">{{ a.active ? t('common.enabled') : t('common.disabled') }}</Badge>
           <!-- actions -->
           <span class="flex shrink-0 gap-1">
             <Button variant="ghost" size="icon" :data-testid="`ann-edit-${a.id}`" @click="openEdit(a)"><Pencil class="size-4" /></Button>
@@ -109,7 +130,7 @@ onMounted(load)
           </span>
         </div>
       </div>
-      <div v-if="!items.length" class="p-8 text-center text-ink-3">{{ t('admin.announcements.empty') }}</div>
+      <div v-if="!visible.length" class="p-8 text-center text-ink-3">{{ t('admin.announcements.empty') }}</div>
     </template>
 
     <template v-if="total > pageSize" #footer>

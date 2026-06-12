@@ -166,6 +166,11 @@ export default {
       empty: '暂无公告',
       deleteTitle: '删除公告',
       deleteMessage: '确认删除「{title}」？',
+      tabActive: '当前',
+      tabHistory: '历史',
+      closedExpired: '已到期',
+      closedDisabled: '已停用',
+      closedAtLabel: '关闭时间',
     },
     announcementForm: {
       createTitle: '新建公告',

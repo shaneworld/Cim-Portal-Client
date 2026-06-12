@@ -15,6 +15,7 @@ export interface Announcement {
   startsAt?: string
   endsAt?: string
   active: boolean
+  closedAt?: string | null
   createdAt: string
 }
 

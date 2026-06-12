@@ -166,6 +166,11 @@ export default {
       empty: 'No announcements yet',
       deleteTitle: 'Delete Announcement',
       deleteMessage: 'Delete "{title}"?',
+      tabActive: 'Active',
+      tabHistory: 'History',
+      closedExpired: 'Expired',
+      closedDisabled: 'Disabled',
+      closedAtLabel: 'Closed at',
     },
     announcementForm: {
       createTitle: 'New Announcement',
