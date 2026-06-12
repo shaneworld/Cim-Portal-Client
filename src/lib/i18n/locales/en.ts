@@ -178,6 +178,8 @@ export default {
       activeLabel: 'Enabled',
       startsAtLabel: 'Starts At (optional)',
       endsAtLabel: 'Ends At (optional)',
+      markdownHint: 'Markdown supported (incl. tables)',
+      preview: 'Preview',
     },
     dutyLines: {
       title: 'Duty Lines',

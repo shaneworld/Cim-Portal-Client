@@ -5,6 +5,8 @@ import Input from '@/lib/ui/Input.vue'
 import Switch from '@/lib/ui/Switch.vue'
 import Button from '@/lib/ui/Button.vue'
 import Select from '@/lib/ui/Select.vue'
+import DateTimePicker from '@/lib/ui/DateTimePicker.vue'
+import { renderMarkdown } from '@/lib/ui/markdown'
 import { createAnnouncement, updateAnnouncement, type AnnouncementInput, type Announcement } from '@/lib/api/announcements'
 import { listEnum } from '@/lib/api/enums'
 import type { EnumValue } from '@/lib/api/types'
@@ -110,7 +112,7 @@ onMounted(async () => {
 </script>
 
 <template>
-  <Modal size="lg" :open="open" :title="value ? t('admin.announcementForm.editTitle') : t('admin.announcementForm.createTitle')" @update:open="(v) => emit('update:open', v)">
+  <Modal size="xl" :open="open" :title="value ? t('admin.announcementForm.editTitle') : t('admin.announcementForm.createTitle')" @update:open="(v) => emit('update:open', v)">
     <div class="space-y-3">
       <!-- Title ZH / EN -->
       <div class="grid grid-cols-1 gap-3 sm:grid-cols-2">
@@ -126,26 +128,44 @@ onMounted(async () => {
         </label>
       </div>
 
-      <!-- Body ZH / EN -->
-      <div class="grid grid-cols-1 gap-3 sm:grid-cols-2">
-        <label class="block">
-          <span class="mb-1 block text-xs font-medium text-ink-2">{{ t('admin.announcementForm.bodyZhLabel') }}</span>
+      <!-- Body ZH -->
+      <div class="space-y-1">
+        <div class="flex items-baseline justify-between gap-2">
+          <span class="text-xs font-medium text-ink-2">{{ t('admin.announcementForm.bodyZhLabel') }}</span>
+          <span class="text-xs text-muted-foreground">{{ t('admin.announcementForm.markdownHint') }}</span>
+        </div>
+        <div class="md:grid md:grid-cols-2 md:gap-3">
           <textarea
             data-testid="ann-body-zh"
-            class="h-24 w-full resize-y rounded-xl border border-input bg-transparent px-3 py-2 text-sm outline-none focus-visible:ring-2 focus-visible:ring-ring"
+            class="min-h-[14rem] w-full resize-y rounded-xl border border-input bg-transparent px-3 py-2 text-sm outline-none focus-visible:ring-2 focus-visible:ring-ring"
             :value="form.bodyZh"
             @input="(e) => form.bodyZh = (e.target as HTMLTextAreaElement).value"
           />
-        </label>
-        <label class="block">
-          <span class="mb-1 block text-xs font-medium text-ink-2">{{ t('admin.announcementForm.bodyEnLabel') }}</span>
+          <div class="markdown-body max-h-[14rem] overflow-y-auto scroll-slim rounded-xl border border-input p-2">
+            <div v-if="form.bodyZh.trim()" v-html="renderMarkdown(form.bodyZh)" />
+            <div v-else class="grid h-full place-items-center text-xs text-muted-foreground">{{ t('admin.announcementForm.preview') }}</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Body EN -->
+      <div class="space-y-1">
+        <div class="flex items-baseline justify-between gap-2">
+          <span class="text-xs font-medium text-ink-2">{{ t('admin.announcementForm.bodyEnLabel') }}</span>
+          <span class="text-xs text-muted-foreground">{{ t('admin.announcementForm.markdownHint') }}</span>
+        </div>
+        <div class="md:grid md:grid-cols-2 md:gap-3">
           <textarea
             data-testid="ann-body-en"
-            class="h-24 w-full resize-y rounded-xl border border-input bg-transparent px-3 py-2 text-sm outline-none focus-visible:ring-2 focus-visible:ring-ring"
+            class="min-h-[14rem] w-full resize-y rounded-xl border border-input bg-transparent px-3 py-2 text-sm outline-none focus-visible:ring-2 focus-visible:ring-ring"
             :value="form.bodyEn"
             @input="(e) => form.bodyEn = (e.target as HTMLTextAreaElement).value"
           />
-        </label>
+          <div class="markdown-body max-h-[14rem] overflow-y-auto scroll-slim rounded-xl border border-input p-2">
+            <div v-if="form.bodyEn.trim()" v-html="renderMarkdown(form.bodyEn)" />
+            <div v-else class="grid h-full place-items-center text-xs text-muted-foreground">{{ t('admin.announcementForm.preview') }}</div>
+          </div>
+        </div>
       </div>
 
       <!-- Type Select -->
@@ -171,23 +191,11 @@ onMounted(async () => {
       <div class="grid grid-cols-1 gap-3 sm:grid-cols-2">
         <label class="block">
           <span class="mb-1 block text-xs font-medium text-ink-2">{{ t('admin.announcementForm.startsAtLabel') }}</span>
-          <input
-            type="datetime-local"
-            data-testid="ann-starts-at"
-            class="h-10 w-full rounded-xl border border-input bg-transparent px-3 text-sm outline-none focus-visible:ring-2 focus-visible:ring-ring"
-            :value="form.startsAt"
-            @change="(e) => form.startsAt = (e.target as HTMLInputElement).value"
-          />
+          <DateTimePicker v-model="form.startsAt" :placeholder="t('admin.announcementForm.startsAtLabel')" />
         </label>
         <label class="block">
           <span class="mb-1 block text-xs font-medium text-ink-2">{{ t('admin.announcementForm.endsAtLabel') }}</span>
-          <input
-            type="datetime-local"
-            data-testid="ann-ends-at"
-            class="h-10 w-full rounded-xl border border-input bg-transparent px-3 text-sm outline-none focus-visible:ring-2 focus-visible:ring-ring"
-            :value="form.endsAt"
-            @change="(e) => form.endsAt = (e.target as HTMLInputElement).value"
-          />
+          <DateTimePicker v-model="form.endsAt" :placeholder="t('admin.announcementForm.endsAtLabel')" />
         </label>
       </div>
     </div>

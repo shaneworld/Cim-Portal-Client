@@ -178,6 +178,8 @@ export default {
       activeLabel: '启用',
       startsAtLabel: '开始时间（可选）',
       endsAtLabel: '结束时间（可选）',
+      markdownHint: '支持 Markdown(含表格)',
+      preview: '预览',
     },
     dutyLines: {
       title: '值班电话管理',
