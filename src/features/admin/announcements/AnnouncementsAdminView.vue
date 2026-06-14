@@ -19,6 +19,11 @@ import AnnouncementFormModal from './AnnouncementFormModal.vue'
 const { t, pick, locale } = useLocale()
 const toast = useToastStore()
 
+const TABS = [
+  { code: 'active' as const, labelKey: 'admin.announcements.tabActive', testid: 'ann-tab-active' },
+  { code: 'history' as const, labelKey: 'admin.announcements.tabHistory', testid: 'ann-tab-history' },
+]
+
 const items = ref<Announcement[]>([])
 const tab = ref<'active' | 'history'>('active')
 const visible = computed(() =>
@@ -89,15 +94,18 @@ onMounted(load)
       <Button v-if="tab === 'active'" @click="openCreate"><Plus class="size-4" /> {{ t('admin.announcements.new') }}</Button>
     </template>
 
-    <div class="mb-4 flex gap-6 border-b border-border" role="tablist">
-      <button type="button" role="tab" :aria-selected="tab === 'active'" data-testid="ann-tab-active"
-        class="-mb-px border-b-2 pb-2 text-sm transition"
-        :class="tab === 'active' ? 'border-primary font-semibold text-foreground' : 'border-transparent text-ink-3 hover:text-foreground'"
-        @click="tab = 'active'">{{ t('admin.announcements.tabActive') }}</button>
-      <button type="button" role="tab" :aria-selected="tab === 'history'" data-testid="ann-tab-history"
-        class="-mb-px border-b-2 pb-2 text-sm transition"
-        :class="tab === 'history' ? 'border-primary font-semibold text-foreground' : 'border-transparent text-ink-3 hover:text-foreground'"
-        @click="tab = 'history'">{{ t('admin.announcements.tabHistory') }}</button>
+    <div class="mb-4 flex flex-wrap gap-1.5" role="tablist">
+      <button
+        v-for="tb in TABS"
+        :key="tb.code"
+        type="button"
+        role="tab"
+        :aria-selected="tab === tb.code"
+        :data-testid="tb.testid"
+        class="rounded-xl px-3 py-1.5 text-sm font-medium transition"
+        :class="tab === tb.code ? 'bg-brand text-white shadow' : 'glass-strong text-ink-2 hover:text-[hsl(var(--ink))]'"
+        @click="tab = tb.code"
+      >{{ t(tb.labelKey) }}</button>
     </div>
 
     <div v-if="loading" class="space-y-2 p-4"><Skeleton v-for="n in 5" :key="n" /></div>
