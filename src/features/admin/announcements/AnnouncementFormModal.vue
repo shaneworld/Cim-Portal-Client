@@ -128,6 +128,35 @@ onMounted(async () => {
         </label>
       </div>
 
+      <!-- Type + Pinned + Enable on one line -->
+      <div class="flex flex-wrap items-end gap-x-6 gap-y-3">
+        <label class="block min-w-[14rem] flex-1">
+          <span class="mb-1 block text-xs font-medium text-ink-2">{{ t('admin.announcementForm.typeLabel') }}</span>
+          <Select data-testid="ann-type" :model-value="form.typeCode" :options="typeOptions()" @update:model-value="(v) => form.typeCode = v" />
+          <span v-if="fieldErrors.typeCode" class="mt-1 block text-xs text-rose-500">{{ fieldErrors.typeCode }}</span>
+        </label>
+        <label class="flex h-10 items-center gap-2">
+          <Switch :model-value="form.pinned" @update:model-value="(v) => form.pinned = v" data-testid="ann-pinned" />
+          <span class="text-sm text-ink-2">{{ t('admin.announcementForm.pinnedLabel') }}</span>
+        </label>
+        <label class="flex h-10 items-center gap-2">
+          <Switch :model-value="form.active" @update:model-value="(v) => form.active = v" data-testid="ann-active" />
+          <span class="text-sm text-ink-2">{{ t('admin.announcementForm.activeLabel') }}</span>
+        </label>
+      </div>
+
+      <!-- Date window -->
+      <div class="grid grid-cols-1 gap-3 sm:grid-cols-2">
+        <label class="block">
+          <span class="mb-1 block text-xs font-medium text-ink-2">{{ t('admin.announcementForm.startsAtLabel') }}</span>
+          <DateTimePicker v-model="form.startsAt" :placeholder="t('admin.announcementForm.startsAtLabel')" />
+        </label>
+        <label class="block">
+          <span class="mb-1 block text-xs font-medium text-ink-2">{{ t('admin.announcementForm.endsAtLabel') }}</span>
+          <DateTimePicker v-model="form.endsAt" :placeholder="t('admin.announcementForm.endsAtLabel')" />
+        </label>
+      </div>
+
       <!-- Body ZH -->
       <div class="space-y-1">
         <div class="flex items-baseline justify-between gap-2">
@@ -168,37 +197,6 @@ onMounted(async () => {
             <div v-else class="grid h-full place-items-center text-xs text-muted-foreground">{{ t('admin.announcementForm.preview') }}</div>
           </div>
         </div>
-      </div>
-
-      <!-- Type Select -->
-      <label class="block">
-        <span class="mb-1 block text-xs font-medium text-ink-2">{{ t('admin.announcementForm.typeLabel') }}</span>
-        <Select data-testid="ann-type" :model-value="form.typeCode" :options="typeOptions()" @update:model-value="(v) => form.typeCode = v" />
-        <span v-if="fieldErrors.typeCode" class="mt-1 block text-xs text-rose-500">{{ fieldErrors.typeCode }}</span>
-      </label>
-
-      <!-- Pinned + Active -->
-      <div class="grid grid-cols-1 gap-3 sm:grid-cols-2">
-        <label class="flex items-center gap-2">
-          <Switch :model-value="form.pinned" @update:model-value="(v) => form.pinned = v" data-testid="ann-pinned" />
-          <span class="text-sm text-ink-2">{{ t('admin.announcementForm.pinnedLabel') }}</span>
-        </label>
-        <label class="flex items-center gap-2">
-          <Switch :model-value="form.active" @update:model-value="(v) => form.active = v" data-testid="ann-active" />
-          <span class="text-sm text-ink-2">{{ t('admin.announcementForm.activeLabel') }}</span>
-        </label>
-      </div>
-
-      <!-- Date window -->
-      <div class="grid grid-cols-1 gap-3 sm:grid-cols-2">
-        <label class="block">
-          <span class="mb-1 block text-xs font-medium text-ink-2">{{ t('admin.announcementForm.startsAtLabel') }}</span>
-          <DateTimePicker v-model="form.startsAt" :placeholder="t('admin.announcementForm.startsAtLabel')" />
-        </label>
-        <label class="block">
-          <span class="mb-1 block text-xs font-medium text-ink-2">{{ t('admin.announcementForm.endsAtLabel') }}</span>
-          <DateTimePicker v-model="form.endsAt" :placeholder="t('admin.announcementForm.endsAtLabel')" />
-        </label>
       </div>
     </div>
 
