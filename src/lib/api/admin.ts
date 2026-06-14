@@ -44,8 +44,6 @@ export interface SecuritySettings {
   usernameClaim: string
   heroEnabled?: boolean
   infoPanelEnabled?: boolean
-  dutyApiBaseUrl?: string | null
-  dutyApiKeyConfigured?: boolean
   updatedAt?: string
 }
 
@@ -58,8 +56,6 @@ export interface SecuritySettingsInput {
   heroEnabled?: boolean
   infoPanelEnabled?: boolean
   initialPassword?: string
-  dutyApiBaseUrl?: string
-  dutyApiKey?: string
 }
 
 export const getSecuritySettings = () => request<SecuritySettings>('GET', '/api/admin/security-settings')

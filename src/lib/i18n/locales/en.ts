@@ -118,12 +118,6 @@ export default {
       usernameClaim: 'Username Claim',
       initialPassword: 'Initial Password',
       initialPasswordHint: 'Leave blank to keep unchanged',
-      dutyApiSection: 'Duty system integration',
-      dutyApiBaseUrl: 'API base URL',
-      dutyApiKey: 'API key',
-      dutyApiKeyHint: 'Used to call the external duty system; stored server-side only, never sent to the browser',
-      dutyApiKeyConfigured: 'Configured — leave blank to keep',
-      dutyApiKeyUnset: 'Not configured',
       save: 'Save Settings',
     },
     dutySettings: {

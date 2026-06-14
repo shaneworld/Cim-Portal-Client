@@ -118,12 +118,6 @@ export default {
       usernameClaim: '用户名 Claim',
       initialPassword: '初始密码',
       initialPasswordHint: '留空则不变',
-      dutyApiSection: '值班系统对接',
-      dutyApiBaseUrl: '接口地址',
-      dutyApiKey: 'API 密钥',
-      dutyApiKeyHint: '用于调用外部值班系统;仅后端保存,不会下发',
-      dutyApiKeyConfigured: '已配置,留空不修改',
-      dutyApiKeyUnset: '未配置',
       save: '保存配置',
     },
     dutySettings: {
