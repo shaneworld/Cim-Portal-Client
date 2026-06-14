@@ -20,7 +20,8 @@ const emit = defineEmits<{ 'update:open': [boolean]; saved: [] }>()
 const toast = useToastStore()
 const { t } = useLocale()
 
-const isAnnouncementType = computed(() => props.category === 'ANNOUNCEMENT_TYPE')
+const showColor = computed(() => props.category === 'ANNOUNCEMENT_TYPE' || props.category === 'LINK_ENV')
+const showIcon = computed(() => props.category === 'ANNOUNCEMENT_TYPE')
 const colorOptions = ANNOUNCEMENT_COLORS.map((c) => ({ value: c, label: c }))
 
 interface ExtendedInput extends EnumValueInput {
@@ -55,10 +56,8 @@ function validate(): boolean {
   if (!form.code.trim()) e.code = t('common.required')
   if (!form.labelZh.trim()) e.labelZh = t('common.required')
   if (!form.labelEn.trim()) e.labelEn = t('common.required')
-  if (isAnnouncementType.value) {
-    if (!form.color) e.color = t('common.mustSelect')
-    if (!form.icon) e.icon = t('common.mustSelect')
-  }
+  if (showColor.value && !form.color) e.color = t('common.mustSelect')
+  if (showIcon.value && !form.icon) e.icon = t('common.mustSelect')
   fieldErrors.value = e
   return Object.keys(e).length === 0
 }
@@ -73,7 +72,8 @@ async function save() {
       labelEn: form.labelEn,
       sortOrder: Number(form.sortOrder),
       active: form.active,
-      ...(isAnnouncementType.value ? { color: form.color, icon: form.icon } : {}),
+      ...(showColor.value ? { color: form.color } : {}),
+      ...(showIcon.value ? { icon: form.icon } : {}),
     }
     if (props.value) await updateEnumValue(props.category, props.value.id, input)
     else await createEnumValue(props.category, input)
@@ -86,7 +86,7 @@ async function save() {
 }
 </script>
 <template>
-  <Modal :size="isAnnouncementType ? 'lg' : 'md'" :open="open" :title="value ? t('admin.enumForm.editTitle') : t('admin.enumForm.createTitle')" @update:open="(v) => emit('update:open', v)">
+  <Modal :size="showIcon ? 'lg' : 'md'" :open="open" :title="value ? t('admin.enumForm.editTitle') : t('admin.enumForm.createTitle')" @update:open="(v) => emit('update:open', v)">
     <div class="space-y-3">
       <label class="block"><span class="mb-1 block text-xs font-medium text-ink-2">{{ t('admin.enumForm.codeLabel') }}</span>
         <Input data-testid="e-code" :model-value="form.code" :disabled="!!value" :placeholder="t('admin.enumForm.codePlaceholder')" @update:model-value="(v) => form.code = v" />
@@ -105,35 +105,35 @@ async function save() {
         <label class="flex items-end gap-2 pb-1"><Switch :model-value="form.active" @update:model-value="(v) => form.active = v" /> <span class="text-sm text-ink-2">{{ t('admin.enumForm.enabledLabel') }}</span></label>
       </div>
 
-      <!-- Color + Icon — only for ANNOUNCEMENT_TYPE -->
-      <template v-if="isAnnouncementType">
-        <label class="block">
-          <span class="mb-1 block text-xs font-medium text-ink-2">{{ t('admin.enumForm.colorLabel') }}</span>
-          <div class="flex items-center gap-2">
-            <span class="size-5 shrink-0 rounded" :class="colorClasses(form.color ?? 'slate').chip" />
-            <Select data-testid="e-color" :model-value="form.color ?? 'slate'" :options="colorOptions" @update:model-value="(v) => form.color = v" />
-          </div>
-          <span v-if="fieldErrors.color" class="mt-1 block text-xs text-rose-500">{{ fieldErrors.color }}</span>
-        </label>
-        <div>
-          <span class="mb-1.5 block text-xs font-medium text-ink-2">{{ t('admin.enumForm.iconLabel') }}</span>
-          <div class="grid gap-1.5 [grid-template-columns:repeat(auto-fill,minmax(2.75rem,1fr))]">
-            <button
-              v-for="ic in ICON_KEYS"
-              :key="ic"
-              type="button"
-              :title="ic"
-              :data-testid="`icon-pick-${ic}`"
-              class="grid aspect-square place-items-center rounded-lg border transition"
-              :class="form.icon === ic ? 'border-transparent bg-brand text-white shadow' : 'border-border text-ink-2 hover:bg-[hsl(var(--primary)/0.1)]'"
-              @click="form.icon = ic"
-            >
-              <AppIcon :name="ic" class="size-6" />
-            </button>
-          </div>
-          <span v-if="fieldErrors.icon" class="mt-1 block text-xs text-rose-500">{{ fieldErrors.icon }}</span>
+      <!-- Color — ANNOUNCEMENT_TYPE + LINK_ENV -->
+      <label v-if="showColor" class="block">
+        <span class="mb-1 block text-xs font-medium text-ink-2">{{ t('admin.enumForm.colorLabel') }}</span>
+        <div class="flex items-center gap-2">
+          <span class="size-5 shrink-0 rounded" :class="colorClasses(form.color ?? 'slate').chip" />
+          <Select data-testid="e-color" :model-value="form.color ?? 'slate'" :options="colorOptions" @update:model-value="(v) => form.color = v" />
         </div>
-      </template>
+        <span v-if="fieldErrors.color" class="mt-1 block text-xs text-rose-500">{{ fieldErrors.color }}</span>
+      </label>
+
+      <!-- Icon — only for ANNOUNCEMENT_TYPE -->
+      <div v-if="showIcon">
+        <span class="mb-1.5 block text-xs font-medium text-ink-2">{{ t('admin.enumForm.iconLabel') }}</span>
+        <div class="grid gap-1.5 [grid-template-columns:repeat(auto-fill,minmax(2.75rem,1fr))]">
+          <button
+            v-for="ic in ICON_KEYS"
+            :key="ic"
+            type="button"
+            :title="ic"
+            :data-testid="`icon-pick-${ic}`"
+            class="grid aspect-square place-items-center rounded-lg border transition"
+            :class="form.icon === ic ? 'border-transparent bg-brand text-white shadow' : 'border-border text-ink-2 hover:bg-[hsl(var(--primary)/0.1)]'"
+            @click="form.icon = ic"
+          >
+            <AppIcon :name="ic" class="size-6" />
+          </button>
+        </div>
+        <span v-if="fieldErrors.icon" class="mt-1 block text-xs text-rose-500">{{ fieldErrors.icon }}</span>
+      </div>
     </div>
     <template #footer>
       <Button variant="ghost" @click="emit('update:open', false)">{{ t('common.cancel') }}</Button>

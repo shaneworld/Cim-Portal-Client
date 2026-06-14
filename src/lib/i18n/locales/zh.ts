@@ -92,6 +92,7 @@ export default {
         role: '角色',
         linkCategory: '链接分类',
         linkStatus: '链接状态',
+        linkEnv: '环境',
         announcementType: '公告类型',
       },
     },

@@ -10,7 +10,7 @@ import LinkFormModal from './LinkFormModal.vue'
 const BASE = 'http://localhost:8080'
 beforeEach(() => { setActivePinia(createPinia()); i18n.global.locale.value = 'zh'
   configureClient({ baseUrl: BASE, getToken: () => 't', getLocale: () => 'zh', onUnauthorized: () => {} })
-  const m: Record<string,string> = { LINK_CATEGORY: 'MES', LINK_STATUS: 'ACTIVE', DEPARTMENT: 'FAB1-PROD', ROLE: 'OPERATOR' }
+  const m: Record<string,string> = { LINK_CATEGORY: 'MES', LINK_STATUS: 'ACTIVE', LINK_ENV: 'UAT', DEPARTMENT: 'FAB1-PROD', ROLE: 'OPERATOR' }
   for (const c of Object.keys(m))
     server.use(http.get(`${BASE}/api/enums/${c}`, () => HttpResponse.json([{ id: 1, category: c, code: m[c], labelZh: '项', labelEn: 'x', sortOrder: 1, active: true }])))
   server.use(http.get(`${BASE}/api/admin/permission-groups`, () => HttpResponse.json([])))
@@ -59,7 +59,10 @@ describe('LinkFormModal', () => {
     // The env select is the last Select before the category/status selects; find it among all Selects
     const allSelects = w.findAllComponents(SelectComp)
     // env select is the one whose modelValue starts as '__none__'; emit UAT
-    const envSelect = allSelects.find((s) => ['__none__', 'DEV', 'UAT', 'RELEASE'].includes((s.props('modelValue') as string)))
+    const envSelect = allSelects.find((s) => (s.props('modelValue') as string) === '__none__')
+    // options come from listEnum('LINK_ENV') + None, not a hardcoded list
+    const envOptions = envSelect!.props('options') as { value: string; label: string }[]
+    expect(envOptions.map((o) => o.value)).toEqual(['__none__', 'UAT'])
     envSelect!.vm.$emit('update:modelValue', 'UAT')
     await flushPromises()
     const save = [...document.body.querySelectorAll('button')].find((b) => /保存/.test(b.textContent || ''))!

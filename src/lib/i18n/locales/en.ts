@@ -92,6 +92,7 @@ export default {
         role: 'Role',
         linkCategory: 'Link Category',
         linkStatus: 'Link Status',
+        linkEnv: 'Environment',
         announcementType: 'Announcement Type',
       },
     },

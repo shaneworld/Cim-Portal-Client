@@ -37,6 +37,15 @@ describe('EnumFormModal', () => {
     w.unmount()
   })
 
+  it('LINK_ENV shows color swatch but no icon picker', async () => {
+    const w = mount(EnumFormModal, { props: { open: true, category: 'LINK_ENV', value: null }, global: { plugins: [i18n] }, attachTo: document.body })
+    await flushPromises()
+    // Color label present, icon picker absent
+    expect(document.body.textContent).toContain('颜色')
+    expect(document.body.querySelectorAll('[data-testid^="icon-pick-"]').length).toBe(0)
+    w.unmount()
+  })
+
   it('non-ANNOUNCEMENT_TYPE does not show color/icon fields', async () => {
     const w = mount(EnumFormModal, { props: { open: true, category: 'DEPARTMENT', value: null }, global: { plugins: [i18n] }, attachTo: document.body })
     await flushPromises()

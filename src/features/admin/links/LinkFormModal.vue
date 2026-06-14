@@ -10,6 +10,7 @@ import Switch from '@/lib/ui/Switch.vue'
 import AppIcon from '@/lib/ui/AppIcon.vue'
 import { ICON_KEYS } from '@/lib/ui/iconMap'
 import { listEnum } from '@/lib/api/enums'
+import type { EnumValue } from '@/lib/api/types'
 import { createLink, updateLink, replaceGrants, getLink, uploadIcon, type AdminLink, type LinkInput, type GrantInput, type GrantType } from '@/lib/api/admin'
 import { listGroups, type Group } from '@/lib/api/permissionGroups'
 import { ApiError } from '@/lib/api/client'
@@ -31,12 +32,11 @@ const grantTypeOpts: Opt[] = [
 ]
 
 const ENV_NONE = '__none__'
-const envOpts: Opt[] = [
+const envEnums = ref<EnumValue[]>([])
+const envOpts = computed<Opt[]>(() => [
   { value: ENV_NONE, label: t('common.none') },
-  { value: 'DEV', label: 'DEV' },
-  { value: 'UAT', label: 'UAT' },
-  { value: 'RELEASE', label: 'RELEASE' },
-]
+  ...envEnums.value.filter((e) => e.active).map((e) => ({ value: e.code, label: pick(e as unknown as { labelZh: string; labelEn: string } & Record<string, string>, 'label') })),
+])
 
 const form = reactive<{
   nameZh: string; nameEn: string; icon: string; categoryCode: string; statusCode: string; sortOrder: number; openInNewTab: boolean
@@ -74,8 +74,8 @@ function codesFor(grantType: GrantType): Opt[] {
 async function loadEnums() {
   const toOpt = (e: { code: string; labelZh: string; labelEn: string }) => ({ value: e.code, label: pick(e as { labelZh: string; labelEn: string } & Record<string, string>, 'label') })
   const toGroupOpt = (g: Group) => ({ value: g.code, label: `${g.code} — ${pick(g as unknown as Record<string, string>, 'name')}` })
-  const [cat, st, dept, role, grps] = await Promise.all([listEnum('LINK_CATEGORY'), listEnum('LINK_STATUS'), listEnum('DEPARTMENT'), listEnum('ROLE'), listGroups()])
-  catOpts.value = cat.map(toOpt); statusOpts.value = st.map(toOpt); deptOpts.value = dept.map(toOpt); roleOpts.value = role.map(toOpt)
+  const [cat, st, env, dept, role, grps] = await Promise.all([listEnum('LINK_CATEGORY'), listEnum('LINK_STATUS'), listEnum('LINK_ENV'), listEnum('DEPARTMENT'), listEnum('ROLE'), listGroups()])
+  catOpts.value = cat.map(toOpt); statusOpts.value = st.map(toOpt); envEnums.value = env; deptOpts.value = dept.map(toOpt); roleOpts.value = role.map(toOpt)
   groupOpts.value = grps.filter((g) => g.active).map(toGroupOpt)
   if (!props.link) {
     if (!form.categoryCode && catOpts.value[0]) form.categoryCode = catOpts.value[0].value
@@ -130,7 +130,7 @@ async function save() {
       url: form.url,
       launchApp: launchApp.value,
       ...(launchApp.value ? { downloadUrl: form.downloadUrl } : {}),
-      ...(form.environment && form.environment !== ENV_NONE ? { environment: form.environment as 'DEV' | 'UAT' | 'RELEASE' } : {}),
+      ...(form.environment && form.environment !== ENV_NONE ? { environment: form.environment } : {}),
     }
     const saved = props.link ? await updateLink(props.link.id, input) : await createLink(input)
     await replaceGrants(saved.id, grants.value.filter((g) => g.grantCode))
