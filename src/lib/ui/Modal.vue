@@ -35,20 +35,22 @@ const contentStyle = computed(() => ({
           <div
             data-testid="modal-content"
             :style="contentStyle"
-            class="anim-fade relative rounded-2xl border border-border bg-white p-5 shadow-2xl max-h-[90vh] overflow-y-auto dark:bg-[#141b2e]"
+            class="anim-fade relative flex max-h-[90vh] flex-col overflow-hidden rounded-2xl border border-border bg-white shadow-2xl dark:bg-[#141b2e]"
           >
             <button
               type="button"
               data-testid="modal-close"
               :aria-label="t('common.close')"
-              class="absolute right-3 top-3 rounded-lg p-1 text-muted-foreground transition hover:bg-muted hover:text-foreground"
+              class="absolute right-3 top-3 z-10 grid size-8 place-items-center rounded-full glass-strong text-muted-foreground transition hover:text-foreground"
               @click="emit('update:open', false)"
             >
               <X class="h-4 w-4" />
             </button>
-            <DialogTitle v-if="title" class="mb-4 pr-8 text-lg font-bold">{{ title }}</DialogTitle>
-            <slot />
-            <div v-if="slots.footer" class="mt-5 flex justify-end gap-2"><slot name="footer" /></div>
+            <div class="overflow-y-auto px-6 py-5">
+              <DialogTitle v-if="title" class="mb-4 pr-8 text-lg font-bold">{{ title }}</DialogTitle>
+              <slot />
+              <div v-if="slots.footer" class="mt-5 flex justify-end gap-2"><slot name="footer" /></div>
+            </div>
           </div>
         </DialogContent>
       </template>
