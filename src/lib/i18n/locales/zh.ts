@@ -287,4 +287,13 @@ export default {
       failed: '发送失败,请稍后再试',
     },
   },
+  feedback: {
+    link: '意见反馈',
+    title: '意见反馈',
+    placeholder: '请输入您的意见或问题…',
+    submit: '提交',
+    sent: '反馈已发送,谢谢!',
+    failed: '发送失败,请稍后再试',
+    required: '请输入内容',
+  },
 }

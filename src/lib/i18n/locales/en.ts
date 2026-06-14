@@ -287,4 +287,13 @@ export default {
       failed: 'Failed to send, please try again',
     },
   },
+  feedback: {
+    link: 'Feedback',
+    title: 'Send feedback',
+    placeholder: 'Your feedback…',
+    submit: 'Submit',
+    sent: 'Thanks, your feedback was sent!',
+    failed: 'Failed to send, please try again',
+    required: 'Please enter your feedback',
+  },
 }
