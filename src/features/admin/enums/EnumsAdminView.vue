@@ -108,7 +108,7 @@ onMounted(load)
       </div>
     </template>
 
-    <div v-if="loading" class="space-y-2 p-4"><Skeleton v-for="n in 5" :key="n" /></div>
+    <div v-if="loading" class="space-y-2 px-5 py-4"><Skeleton v-for="n in 5" :key="n" /></div>
     <div v-else-if="error" class="p-8 text-center">
       <AlertTriangle class="mx-auto size-9 text-rose-500" />
       <p class="mt-2 text-rose-500">{{ t('dashboard.error') }}</p>
@@ -116,7 +116,7 @@ onMounted(load)
     </div>
     <template v-else>
       <div class="divide-y divide-border/60">
-        <div v-for="v in paged" :key="v.id" class="flex h-16 items-center gap-3 px-3.5">
+        <div v-for="v in paged" :key="v.id" class="flex h-16 items-center gap-3 px-5">
           <span class="w-32 shrink-0 truncate font-mono text-xs text-ink-2">{{ v.code }}</span>
           <span class="min-w-0 flex-1 truncate text-sm">
             {{ v.labelZh }} <span class="text-ink-3">/ {{ v.labelEn }}</span>

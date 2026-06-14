@@ -40,14 +40,14 @@ onMounted(load)
       <Button @click="openCreate"><Plus class="size-4" /> {{ t('admin.links.new') }}</Button>
     </template>
 
-    <div v-if="loading" class="space-y-2 p-4"><Skeleton v-for="n in 6" :key="n" /></div>
+    <div v-if="loading" class="space-y-2 px-5 py-4"><Skeleton v-for="n in 6" :key="n" /></div>
     <div v-else-if="error" class="p-8 text-center">
       <AlertTriangle class="mx-auto size-9 text-rose-500" /><p class="mt-2 text-rose-500">{{ t('dashboard.error') }}</p>
       <Button class="mx-auto mt-3" @click="load"><RotateCw class="size-4" /> {{ t('common.retry') }}</Button>
     </div>
     <template v-else>
       <div class="divide-y divide-border/60">
-        <div v-for="l in paged" :key="l.id" class="flex h-16 items-center gap-3 px-3.5">
+        <div v-for="l in paged" :key="l.id" class="flex h-16 items-center gap-3 px-5">
           <span class="min-w-0 flex-1">
             <span class="block truncate font-semibold">{{ pick(l, 'name') }}<span v-if="l.launchApp" class="ml-1.5 inline-flex shrink-0 items-center rounded-full px-2 py-0.5 align-middle text-[10px] font-semibold uppercase tracking-wide ring-1 ring-inset bg-[hsl(var(--primary)/0.12)] text-[hsl(var(--primary))] ring-[hsl(var(--primary)/0.25)]">APP</span><span v-if="l.environment" :class="['ml-1.5 inline-flex items-center gap-1 rounded-full px-2 py-0.5 align-middle text-[10px] font-semibold uppercase tracking-wide ring-1 ring-inset', LINK_ENVS[l.environment].badge]"><span :class="['size-1.5 rounded-full', LINK_ENVS[l.environment].dot]"></span>{{ l.environment }}</span></span>
           </span>

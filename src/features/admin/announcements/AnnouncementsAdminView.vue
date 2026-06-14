@@ -110,7 +110,7 @@ onMounted(load)
       </div>
     </template>
 
-    <div v-if="loading" class="space-y-2 p-4"><Skeleton v-for="n in 5" :key="n" /></div>
+    <div v-if="loading" class="space-y-2 px-5 py-4"><Skeleton v-for="n in 5" :key="n" /></div>
     <div v-else-if="error" class="p-8 text-center">
       <AlertTriangle class="mx-auto size-9 text-rose-500" />
       <p class="mt-2 text-rose-500">{{ t('dashboard.error') }}</p>
@@ -121,7 +121,7 @@ onMounted(load)
         <div
           v-for="a in paged"
           :key="a.id"
-          class="flex min-h-[3.5rem] items-center gap-3 px-3.5 py-2"
+          class="flex min-h-[3.5rem] items-center gap-3 px-5 py-2"
         >
           <!-- type colored tag -->
           <span
