@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue'
+import { storeToRefs } from 'pinia'
 import { useRouter } from 'vue-router'
 import { completeSso } from '@/lib/auth/sso'
 import { useAuthStore } from '@/stores/auth'
@@ -7,12 +8,12 @@ import { useConfigStore } from '@/stores/config'
 
 const router = useRouter()
 const auth = useAuthStore()
-const { config } = useConfigStore()
+const { config } = storeToRefs(useConfigStore())
 const status = ref<'pending' | 'error'>('pending')
 
 onMounted(async () => {
   try {
-    const token = await completeSso(config)
+    const token = await completeSso(config.value)
     auth.setToken(token)
     await auth.hydrateUser()
     router.replace('/')

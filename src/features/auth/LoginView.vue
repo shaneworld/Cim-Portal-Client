@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
+import { storeToRefs } from 'pinia'
 import { useRouter } from 'vue-router'
 import { ShieldCheck, Eye, EyeOff } from 'lucide-vue-next'
 import { useAuthStore } from '@/stores/auth'
@@ -14,7 +15,7 @@ import { useLocale } from '@/lib/i18n/useLocale'
 
 const router = useRouter()
 const auth = useAuthStore()
-const { config } = useConfigStore()
+const { config } = storeToRefs(useConfigStore())
 const { t } = useLocale()
 
 const employeeId = ref('')
@@ -30,11 +31,11 @@ onMounted(async () => {
   if (auth.isAuthenticated) { router.replace('/'); return }
   // Auto-initiate SSO at most ONCE per browser session. The flag is set BEFORE redirecting
   // (not only on failure), so anything that returns to /login can't re-trigger an SSO loop.
-  if (config.ssoEnabled && !sessionStorage.getItem('sso_attempted')) {
+  if (config.value.ssoEnabled && !sessionStorage.getItem('sso_attempted')) {
     sessionStorage.setItem('sso_attempted', '1')
     redirecting.value = true
     try {
-      await startSso(config)
+      await startSso(config.value)
     } catch {
       redirecting.value = false
       error.value = t('auth.login.ssoFailed')
@@ -62,7 +63,7 @@ async function ssoRetry() {
   error.value = ''
   redirecting.value = true
   try {
-    await startSso(config)
+    await startSso(config.value)
   } catch {
     redirecting.value = false
     error.value = t('auth.login.ssoFailed')

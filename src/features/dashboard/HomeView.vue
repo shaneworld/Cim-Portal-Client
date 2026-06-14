@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue'
+import { storeToRefs } from 'pinia'
 import { Inbox, AlertTriangle, RotateCw, SearchX } from 'lucide-vue-next'
 import type { HomeCategory, HomeLink } from '@/lib/api/types'
 import { getHome } from '@/lib/api/portal'
@@ -18,7 +19,7 @@ import DutyLinesPanel from './DutyLinesPanel.vue'
 
 const { pick, t } = useLocale()
 const configStore = useConfigStore()
-const { config } = configStore
+const { config } = storeToRefs(configStore)
 const categories = ref<HomeCategory[]>([])
 const loading = ref(true); const error = ref(false); const query = ref('')
 
