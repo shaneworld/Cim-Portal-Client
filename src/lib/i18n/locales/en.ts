@@ -44,7 +44,7 @@ export default {
       enums: 'Enums',
       groups: 'Groups',
       users: 'Users',
-      security: 'Security',
+      security: 'SSO',
       feishu: 'Feishu',
       announcements: 'Announcements',
       dutyLines: 'Duty Lines',
@@ -110,7 +110,7 @@ export default {
       iconLabel: 'Icon',
     },
     security: {
-      title: 'Security / SSO Settings',
+      title: 'SSO Settings',
       ssoEnabled: 'Enable SSO',
       issuerUri: 'Issuer URI',
       clientId: 'Client ID',
@@ -125,6 +125,14 @@ export default {
       dutyApiKeyConfigured: 'Configured — leave blank to keep',
       dutyApiKeyUnset: 'Not configured',
       save: 'Save Settings',
+    },
+    dutySettings: {
+      title: 'API Settings',
+      baseUrl: 'API base URL',
+      apiKey: 'API key',
+      apiKeyConfigured: 'Configured — leave blank to keep',
+      apiKeyUnset: 'Not configured',
+      apiKeyHint: 'Used to call the external duty system; stored server-side only, never sent to the browser',
     },
     feishu: {
       title: 'Feishu Integration',

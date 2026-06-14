@@ -14,6 +14,7 @@ import ConfirmDialog from '@/lib/ui/ConfirmDialog.vue'
 import Pagination from '@/lib/ui/Pagination.vue'
 import AdminPanel from '@/features/admin/AdminPanel.vue'
 import DutyLineFormModal from './DutyLineFormModal.vue'
+import DutySettingsForm from './DutySettingsForm.vue'
 
 const { t, pick } = useLocale()
 const toast = useToastStore()
@@ -62,7 +63,9 @@ onMounted(load)
 </script>
 
 <template>
-  <AdminPanel :title="t('admin.dutyLines.title')" v-model:page-size="rowsPerPage">
+  <div class="flex h-full flex-col gap-4">
+    <DutySettingsForm />
+    <AdminPanel class="min-h-0 flex-1" :title="t('admin.dutyLines.title')" v-model:page-size="rowsPerPage">
     <template #actions>
       <Button @click="openCreate"><Plus class="size-4" /> {{ t('admin.dutyLines.new') }}</Button>
     </template>
@@ -103,7 +106,8 @@ onMounted(load)
     <template v-if="total > pageSize" #footer>
       <Pagination :page="page" :total="total" :page-size="pageSize" @update:page="page = $event" />
     </template>
-  </AdminPanel>
+    </AdminPanel>
+  </div>
 
   <DutyLineFormModal v-model:open="formOpen" :value="editing" @saved="load" />
   <ConfirmDialog

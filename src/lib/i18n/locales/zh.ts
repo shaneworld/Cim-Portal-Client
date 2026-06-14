@@ -44,7 +44,7 @@ export default {
       enums: '枚举',
       groups: '权限组',
       users: '用户',
-      security: '安全',
+      security: 'SSO',
       feishu: '飞书',
       announcements: '公告',
       dutyLines: '值班电话',
@@ -110,7 +110,7 @@ export default {
       iconLabel: '图标',
     },
     security: {
-      title: '安全／SSO 配置',
+      title: 'SSO 设置',
       ssoEnabled: '启用 SSO',
       issuerUri: 'Issuer URI（颁发者地址）',
       clientId: '客户端 ID',
@@ -125,6 +125,14 @@ export default {
       dutyApiKeyConfigured: '已配置,留空不修改',
       dutyApiKeyUnset: '未配置',
       save: '保存配置',
+    },
+    dutySettings: {
+      title: '接口设置',
+      baseUrl: '接口地址',
+      apiKey: 'API 密钥',
+      apiKeyConfigured: '已配置,留空不修改',
+      apiKeyUnset: '未配置',
+      apiKeyHint: '用于调用外部值班系统;仅后端保存,不会下发',
     },
     feishu: {
       title: '飞书集成',
