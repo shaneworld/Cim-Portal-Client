@@ -50,7 +50,7 @@ function populate(s: SecuritySettings) {
   form.larkAppId = s.larkAppId ?? ''
   form.larkAppSecret = ''
   form.larkReceiverId = s.larkReceiverId ?? ''
-  form.larkReceiverIdType = s.larkReceiverIdType ?? 'open_id'
+  form.larkReceiverIdType = s.larkReceiverIdType ?? 'email'
   larkAppSecretConfigured.value = !!s.larkAppSecretConfigured
 }
 
