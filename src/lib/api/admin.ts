@@ -46,11 +46,6 @@ export interface SecuritySettings {
   infoPanelEnabled?: boolean
   dutyApiBaseUrl?: string | null
   dutyApiKeyConfigured?: boolean
-  larkBaseUrl?: string | null
-  larkAppId?: string | null
-  larkReceiverId?: string | null
-  larkReceiverIdType?: string | null
-  larkAppSecretConfigured?: boolean
   updatedAt?: string
 }
 
@@ -65,11 +60,6 @@ export interface SecuritySettingsInput {
   initialPassword?: string
   dutyApiBaseUrl?: string
   dutyApiKey?: string
-  larkBaseUrl?: string
-  larkAppId?: string
-  larkAppSecret?: string
-  larkReceiverId?: string
-  larkReceiverIdType?: string
 }
 
 export const getSecuritySettings = () => request<SecuritySettings>('GET', '/api/admin/security-settings')

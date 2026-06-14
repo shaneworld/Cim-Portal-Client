@@ -7,7 +7,6 @@ import AdminPanel from '@/features/admin/AdminPanel.vue'
 import Input from '@/lib/ui/Input.vue'
 import Switch from '@/lib/ui/Switch.vue'
 import Button from '@/lib/ui/Button.vue'
-import Select from '@/lib/ui/Select.vue'
 
 const { t } = useLocale()
 const toast = useToastStore()
@@ -24,17 +23,9 @@ const form = reactive({
   initialPassword: '',
   dutyApiBaseUrl: '',
   dutyApiKey: '',
-  larkBaseUrl: '',
-  larkAppId: '',
-  larkAppSecret: '',
-  larkReceiverId: '',
-  larkReceiverIdType: 'email',
 })
 
 const dutyApiKeyConfigured = ref(false)
-const larkAppSecretConfigured = ref(false)
-
-const receiverIdTypeOptions = ['open_id', 'user_id', 'union_id', 'email', 'chat_id'].map((v) => ({ value: v, label: v }))
 
 function populate(s: SecuritySettings) {
   form.ssoEnabled = s.ssoEnabled
@@ -46,12 +37,6 @@ function populate(s: SecuritySettings) {
   form.dutyApiBaseUrl = s.dutyApiBaseUrl ?? ''
   form.dutyApiKey = ''
   dutyApiKeyConfigured.value = !!s.dutyApiKeyConfigured
-  form.larkBaseUrl = s.larkBaseUrl ?? ''
-  form.larkAppId = s.larkAppId ?? ''
-  form.larkAppSecret = ''
-  form.larkReceiverId = s.larkReceiverId ?? ''
-  form.larkReceiverIdType = s.larkReceiverIdType ?? 'email'
-  larkAppSecretConfigured.value = !!s.larkAppSecretConfigured
 }
 
 onMounted(async () => {
@@ -72,13 +57,8 @@ async function save() {
       scopes: form.scopes,
       usernameClaim: form.usernameClaim,
       dutyApiBaseUrl: form.dutyApiBaseUrl || undefined,
-      larkBaseUrl: form.larkBaseUrl || undefined,
-      larkAppId: form.larkAppId || undefined,
-      larkReceiverId: form.larkReceiverId || undefined,
-      larkReceiverIdType: form.larkReceiverIdType || undefined,
       ...(form.initialPassword ? { initialPassword: form.initialPassword } : {}),
       ...(form.dutyApiKey ? { dutyApiKey: form.dutyApiKey } : {}),
-      ...(form.larkAppSecret ? { larkAppSecret: form.larkAppSecret } : {}),
     }
     populate(await updateSecuritySettings(body))
     toast.push({ type: 'success', message: t('common.updated') })
@@ -153,48 +133,6 @@ async function save() {
                 :placeholder="dutyApiKeyConfigured ? t('admin.security.dutyApiKeyConfigured') : t('admin.security.dutyApiKeyUnset')"
               />
               <span class="mt-1 block text-xs text-ink-3">{{ t('admin.security.dutyApiKeyHint') }}</span>
-            </label>
-          </div>
-        </div>
-
-        <!-- Lark (Feishu) integration -->
-        <div class="border-t border-border pt-5">
-          <h3 class="mb-3 text-sm font-semibold text-ink-1">{{ t('admin.security.lark.title') }}</h3>
-          <div class="space-y-5">
-            <!-- Lark base URL -->
-            <label class="block">
-              <span class="mb-1 block text-xs font-medium text-ink-2">{{ t('admin.security.lark.baseUrl') }}</span>
-              <Input v-model="form.larkBaseUrl" data-testid="lark-base-url" placeholder="https://open.feishu.cn" />
-            </label>
-
-            <!-- Lark App ID -->
-            <label class="block">
-              <span class="mb-1 block text-xs font-medium text-ink-2">{{ t('admin.security.lark.appId') }}</span>
-              <Input v-model="form.larkAppId" data-testid="lark-app-id" />
-            </label>
-
-            <!-- Lark App Secret (write-only) -->
-            <label class="block">
-              <span class="mb-1 block text-xs font-medium text-ink-2">{{ t('admin.security.lark.appSecret') }}</span>
-              <Input
-                v-model="form.larkAppSecret"
-                data-testid="lark-app-secret"
-                type="password"
-                :placeholder="larkAppSecretConfigured ? t('admin.security.lark.appSecretConfigured') : t('admin.security.lark.appSecretUnset')"
-              />
-              <span class="mt-1 block text-xs text-ink-3">{{ t('admin.security.lark.appSecretHint') }}</span>
-            </label>
-
-            <!-- Lark Receiver ID -->
-            <label class="block">
-              <span class="mb-1 block text-xs font-medium text-ink-2">{{ t('admin.security.lark.receiverId') }}</span>
-              <Input v-model="form.larkReceiverId" data-testid="lark-receiver-id" />
-            </label>
-
-            <!-- Lark Receiver ID Type -->
-            <label class="block">
-              <span class="mb-1 block text-xs font-medium text-ink-2">{{ t('admin.security.lark.receiverIdType') }}</span>
-              <Select v-model="form.larkReceiverIdType" :options="receiverIdTypeOptions" />
             </label>
           </div>
         </div>

@@ -124,17 +124,6 @@ export default {
       dutyApiKeyHint: 'Used to call the external duty system; stored server-side only, never sent to the browser',
       dutyApiKeyConfigured: 'Configured — leave blank to keep',
       dutyApiKeyUnset: 'Not configured',
-      lark: {
-        title: 'Lark (Feishu) Integration',
-        baseUrl: 'API Base URL',
-        appId: 'App ID',
-        appSecret: 'App Secret',
-        appSecretConfigured: 'Configured — leave blank to keep',
-        appSecretUnset: 'Not configured',
-        appSecretHint: 'Stored on the server only; never sent to the browser',
-        receiverId: 'Receiver ID',
-        receiverIdType: 'Receiver ID Type',
-      },
       save: 'Save Settings',
     },
     feishu: {
