@@ -94,19 +94,21 @@ onMounted(load)
       <Button v-if="tab === 'active'" @click="openCreate"><Plus class="size-4" /> {{ t('admin.announcements.new') }}</Button>
     </template>
 
-    <div class="mb-4 flex flex-wrap gap-1.5" role="tablist">
-      <button
-        v-for="tb in TABS"
-        :key="tb.code"
-        type="button"
-        role="tab"
-        :aria-selected="tab === tb.code"
-        :data-testid="tb.testid"
-        class="rounded-xl px-3 py-1.5 text-sm font-medium transition"
-        :class="tab === tb.code ? 'bg-brand text-white shadow' : 'glass-strong text-ink-2 hover:text-[hsl(var(--ink))]'"
-        @click="tab = tb.code"
-      >{{ t(tb.labelKey) }}</button>
-    </div>
+    <template #toolbar>
+      <div class="flex flex-wrap gap-1.5" role="tablist">
+        <button
+          v-for="tb in TABS"
+          :key="tb.code"
+          type="button"
+          role="tab"
+          :aria-selected="tab === tb.code"
+          :data-testid="tb.testid"
+          class="rounded-xl border border-transparent px-3 py-1.5 text-sm font-medium transition"
+          :class="tab === tb.code ? 'bg-brand text-white shadow' : 'glass-strong text-ink-2 hover:text-[hsl(var(--ink))]'"
+          @click="tab = tb.code"
+        >{{ t(tb.labelKey) }}</button>
+      </div>
+    </template>
 
     <div v-if="loading" class="space-y-2 p-4"><Skeleton v-for="n in 5" :key="n" /></div>
     <div v-else-if="error" class="p-8 text-center">

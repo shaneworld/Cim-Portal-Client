@@ -101,7 +101,7 @@ onMounted(load)
           v-for="c in CATEGORIES"
           :key="c.code"
           type="button"
-          class="rounded-xl px-3 py-1.5 text-sm font-medium transition"
+          class="rounded-xl border border-transparent px-3 py-1.5 text-sm font-medium transition"
           :class="active === c.code ? 'bg-brand text-white shadow' : 'glass-strong text-ink-2 hover:text-[hsl(var(--ink))]'"
           @click="switchTo(c.code)"
         >{{ t(c.labelKey) }}</button>
