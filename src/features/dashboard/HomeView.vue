@@ -60,7 +60,7 @@ async function load() {
 onMounted(load)
 </script>
 <template>
-  <div class="min-h-screen py-4 sm:py-6 px-[max(1rem,7vw)]">
+  <div class="flex-1 py-4 sm:py-6 px-[max(1rem,7vw)]">
     <div class="mx-auto max-w-[1600px] space-y-6">
       <AppHeader />
       <template v-if="loading">

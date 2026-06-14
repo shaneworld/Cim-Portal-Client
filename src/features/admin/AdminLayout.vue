@@ -18,7 +18,7 @@ const nav = [
 ]
 </script>
 <template>
-  <div class="flex h-[100dvh] flex-col py-4 sm:py-6 px-[max(1rem,7vw)]">
+  <div class="flex min-h-0 flex-1 flex-col py-4 sm:py-6 px-[max(1rem,7vw)]">
     <div class="flex min-h-0 w-full flex-1 flex-col gap-4">
       <AppHeader />
       <div class="flex min-h-0 flex-1 flex-col gap-4 md:flex-row">
