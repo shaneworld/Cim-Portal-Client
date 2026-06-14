@@ -123,6 +123,17 @@ export default {
       dutyApiKeyHint: '用于调用外部值班系统;仅后端保存,不会下发',
       dutyApiKeyConfigured: '已配置,留空不修改',
       dutyApiKeyUnset: '未配置',
+      lark: {
+        title: 'Lark(飞书)集成',
+        baseUrl: '接口地址',
+        appId: 'App ID',
+        appSecret: 'App Secret',
+        appSecretConfigured: '已配置,留空不修改',
+        appSecretUnset: '未配置',
+        appSecretHint: '仅后端保存,不会下发',
+        receiverId: '接收者 ID',
+        receiverIdType: '接收者 ID 类型',
+      },
       save: '保存配置',
     },
     display: {

@@ -24,6 +24,11 @@ describe('SecurityAdminView', () => {
     usernameClaim: 'preferred_username',
     heroEnabled: true,
     infoPanelEnabled: true,
+    larkBaseUrl: 'https://open.feishu.cn',
+    larkAppId: 'cli_app',
+    larkReceiverId: 'oc_chat',
+    larkReceiverIdType: 'open_id',
+    larkAppSecretConfigured: true,
     updatedAt: '2024-01-01T00:00:00Z',
   }
 
@@ -43,6 +48,56 @@ describe('SecurityAdminView', () => {
     expect((document.body.querySelector('[data-testid="client-id"]') as HTMLInputElement).value).toBe('cim-portal')
     expect((document.body.querySelector('[data-testid="scopes"]') as HTMLInputElement).value).toBe('openid profile')
     expect((document.body.querySelector('[data-testid="username-claim"]') as HTMLInputElement).value).toBe('preferred_username')
+
+    w.unmount(); document.body.innerHTML = ''
+  })
+
+  it('loads and binds lark fields on mount', async () => {
+    server.use(http.get(`${BASE}/api/admin/security-settings`, () => HttpResponse.json(mockSettings)))
+
+    const w = mount(SecurityAdminView, { global: { plugins: [i18n] }, attachTo: document.body })
+    await flushPromises()
+
+    expect((document.body.querySelector('[data-testid="lark-base-url"]') as HTMLInputElement).value).toBe('https://open.feishu.cn')
+    expect((document.body.querySelector('[data-testid="lark-app-id"]') as HTMLInputElement).value).toBe('cli_app')
+    expect((document.body.querySelector('[data-testid="lark-receiver-id"]') as HTMLInputElement).value).toBe('oc_chat')
+    // secret is write-only: input is empty regardless of configured state
+    expect((document.body.querySelector('[data-testid="lark-app-secret"]') as HTMLInputElement).value).toBe('')
+
+    w.unmount(); document.body.innerHTML = ''
+  })
+
+  it('save sends larkAppSecret only when the input has a value', async () => {
+    let capturedBody: Record<string, unknown> = {}
+    server.use(
+      http.get(`${BASE}/api/admin/security-settings`, () => HttpResponse.json(mockSettings)),
+      http.put(`${BASE}/api/admin/security-settings`, async ({ request }) => {
+        capturedBody = (await request.json()) as Record<string, unknown>
+        return HttpResponse.json(mockSettings)
+      }),
+    )
+
+    const w = mount(SecurityAdminView, { global: { plugins: [i18n] }, attachTo: document.body })
+    await flushPromises()
+
+    const saveBtn = () => [...document.body.querySelectorAll('button')].find((b) => /保存/.test(b.textContent || ''))!
+
+    // blank secret -> omitted; other lark fields still sent
+    saveBtn().click()
+    await flushPromises()
+    expect(capturedBody.larkAppSecret).toBeUndefined()
+    expect(capturedBody).toMatchObject({
+      larkBaseUrl: 'https://open.feishu.cn',
+      larkAppId: 'cli_app',
+      larkReceiverId: 'oc_chat',
+      larkReceiverIdType: 'open_id',
+    })
+
+    // non-empty secret -> included
+    setVal('lark-app-secret', 'super-secret')
+    saveBtn().click()
+    await flushPromises()
+    expect(capturedBody.larkAppSecret).toBe('super-secret')
 
     w.unmount(); document.body.innerHTML = ''
   })
