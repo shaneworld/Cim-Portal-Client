@@ -6,7 +6,8 @@ import GlassCard from '@/lib/ui/GlassCard.vue'
 import AppIcon from '@/lib/ui/AppIcon.vue'
 import StatusDot from '@/lib/ui/StatusDot.vue'
 import { Lock, Star } from 'lucide-vue-next'
-import { LINK_STATUS, LINK_ENVS } from '@/constants'
+import { LINK_STATUS } from '@/constants'
+import { envColorClasses } from '@/lib/ui/envColor'
 import { launchOrDownload } from '@/lib/composables/useAppLaunch'
 import { toggleFavorite } from '@/lib/api/portal'
 import { useToastStore } from '@/stores/toast'
@@ -68,9 +69,9 @@ async function onStarClick(e: MouseEvent) {
       <span v-if="link.launchApp" class="inline-flex shrink-0 items-center rounded-full px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide ring-1 ring-inset bg-[hsl(var(--primary)/0.12)] text-[hsl(var(--primary))] ring-[hsl(var(--primary)/0.25)]">APP</span>
       <span
         v-if="link.environment"
-        :class="['inline-flex shrink-0 items-center gap-1.5 rounded-full px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wide ring-1 ring-inset', LINK_ENVS[link.environment as keyof typeof LINK_ENVS]?.badge]"
+        :class="['inline-flex shrink-0 items-center gap-1.5 rounded-full px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wide ring-1 ring-inset', envColorClasses(link.envColor).badge]"
       >
-        <span :class="['size-1.5 rounded-full', LINK_ENVS[link.environment as keyof typeof LINK_ENVS]?.dot]"></span>{{ link.environment }}
+        <span :class="['size-1.5 rounded-full', envColorClasses(link.envColor).dot]"></span>{{ link.environment }}
       </span>
       <button
         v-if="!locked"

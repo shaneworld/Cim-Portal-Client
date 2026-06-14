@@ -5,7 +5,8 @@ import { listLinks, deleteLink, type AdminLink } from '@/lib/api/admin'
 import { useLocale } from '@/lib/i18n/useLocale'
 import { useToastStore } from '@/stores/toast'
 import { usePagination } from '@/lib/composables/usePagination'
-import { DEFAULT_PAGE_SIZE, LINK_ENVS } from '@/constants'
+import { DEFAULT_PAGE_SIZE } from '@/constants'
+import { envColorClasses } from '@/lib/ui/envColor'
 import Button from '@/lib/ui/Button.vue'
 import StatusDot from '@/lib/ui/StatusDot.vue'
 import Skeleton from '@/lib/ui/Skeleton.vue'
@@ -49,7 +50,7 @@ onMounted(load)
       <div class="divide-y divide-border/60">
         <div v-for="l in paged" :key="l.id" class="flex h-16 items-center gap-3 px-5">
           <span class="min-w-0 flex-1">
-            <span class="block truncate font-semibold">{{ pick(l, 'name') }}<span v-if="l.launchApp" class="ml-1.5 inline-flex shrink-0 items-center rounded-full px-2 py-0.5 align-middle text-[10px] font-semibold uppercase tracking-wide ring-1 ring-inset bg-[hsl(var(--primary)/0.12)] text-[hsl(var(--primary))] ring-[hsl(var(--primary)/0.25)]">APP</span><span v-if="l.environment" :class="['ml-1.5 inline-flex items-center gap-1 rounded-full px-2 py-0.5 align-middle text-[10px] font-semibold uppercase tracking-wide ring-1 ring-inset', LINK_ENVS[l.environment as keyof typeof LINK_ENVS]?.badge]"><span :class="['size-1.5 rounded-full', LINK_ENVS[l.environment as keyof typeof LINK_ENVS]?.dot]"></span>{{ l.environment }}</span></span>
+            <span class="block truncate font-semibold">{{ pick(l, 'name') }}<span v-if="l.launchApp" class="ml-1.5 inline-flex shrink-0 items-center rounded-full px-2 py-0.5 align-middle text-[10px] font-semibold uppercase tracking-wide ring-1 ring-inset bg-[hsl(var(--primary)/0.12)] text-[hsl(var(--primary))] ring-[hsl(var(--primary)/0.25)]">APP</span><span v-if="l.environment" :class="['ml-1.5 inline-flex items-center gap-1 rounded-full px-2 py-0.5 align-middle text-[10px] font-semibold uppercase tracking-wide ring-1 ring-inset', envColorClasses(l.envColor).badge]"><span :class="['size-1.5 rounded-full', envColorClasses(l.envColor).dot]"></span>{{ l.environment }}</span></span>
           </span>
           <span class="hidden w-24 shrink-0 text-xs text-ink-2 sm:block">{{ l.categoryCode }}</span>
           <span class="hidden w-28 shrink-0 items-center gap-1.5 text-xs text-ink-2 sm:flex"><StatusDot :status="l.statusCode" /> {{ l.statusCode }}</span>
