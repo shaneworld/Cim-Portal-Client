@@ -39,15 +39,12 @@ const windowText = computed(() => {
       <!-- header row -->
       <div class="flex flex-wrap items-center gap-2">
         <span
-          class="grid size-8 shrink-0 place-items-center rounded-lg"
+          class="inline-flex h-7 items-center gap-1.5 rounded-lg px-2 text-xs font-medium"
           :class="colorClasses(announcement.typeColor).chip"
         >
-          <AppIcon :name="announcement.typeIcon" class="size-[18px]" />
+          <AppIcon :name="announcement.typeIcon" class="size-4" />
+          {{ pick(announcement, 'typeLabel') }}
         </span>
-        <span
-          class="rounded px-2 py-0.5 text-xs font-medium"
-          :class="colorClasses(announcement.typeColor).tag"
-        >{{ pick(announcement, 'typeLabel') }}</span>
         <span v-if="announcement.pinned" class="flex items-center gap-1 text-xs text-ink-3">
           <Pin class="size-3.5" />{{ t('dashboard.announcements.pinned') }}
         </span>

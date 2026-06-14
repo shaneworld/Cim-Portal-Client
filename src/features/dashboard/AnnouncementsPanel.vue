@@ -46,16 +46,16 @@ onMounted(async () => {
         :key="a.id"
         type="button"
         :data-testid="`announcement-row-${a.id}`"
-        class="flex w-full items-start gap-3 rounded-xl border p-3 text-left transition hover:bg-muted/40"
+        class="flex w-full items-center gap-3 rounded-xl border p-3 text-left transition hover:bg-muted/40"
         :class="colorClasses(a.typeColor).wrap"
         @click="openDetail(a)"
       >
         <!-- icon chip -->
         <span
-          class="mt-0.5 flex size-7 shrink-0 items-center justify-center rounded-lg"
+          class="flex size-8 shrink-0 items-center justify-center rounded-lg"
           :class="colorClasses(a.typeColor).chip"
         >
-          <AppIcon :name="a.typeIcon" class="size-4" />
+          <AppIcon :name="a.typeIcon" class="size-[18px]" />
         </span>
 
         <div class="min-w-0 flex-1">
