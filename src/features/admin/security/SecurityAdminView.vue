@@ -28,7 +28,7 @@ const form = reactive({
   larkAppId: '',
   larkAppSecret: '',
   larkReceiverId: '',
-  larkReceiverIdType: 'open_id',
+  larkReceiverIdType: 'email',
 })
 
 const dutyApiKeyConfigured = ref(false)
