@@ -51,7 +51,7 @@ async function submit() {
           v-model="reason"
           rows="3"
           :placeholder="t('dashboard.accessRequest.reasonPlaceholder')"
-          class="w-full resize-none rounded-xl border border-border bg-transparent px-3 py-2 text-sm outline-none focus:border-brand"
+          class="w-full resize-none rounded-xl border border-input bg-transparent px-3 py-2 text-sm outline-none focus-visible:ring-2 focus-visible:ring-ring"
         ></textarea>
       </label>
     </div>
