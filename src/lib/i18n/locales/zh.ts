@@ -33,6 +33,8 @@ export default {
   },
   header: {
     admin: '管理',
+    architecture: '架构图',
+    apiDocs: 'API 文档',
   },
   admin: {
     backToPortal: '返回门户',

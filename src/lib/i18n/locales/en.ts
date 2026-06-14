@@ -33,6 +33,8 @@ export default {
   },
   header: {
     admin: 'Admin',
+    architecture: 'Architecture',
+    apiDocs: 'API Docs',
   },
   admin: {
     backToPortal: 'Back to Portal',
