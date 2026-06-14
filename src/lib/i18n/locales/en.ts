@@ -277,5 +277,14 @@ export default {
     myLinks: 'My links',
     favoriteAdd: 'Add to favorites',
     favoriteRemove: 'Remove from favorites',
+    accessRequest: {
+      title: 'Request access',
+      systemLabel: 'System',
+      reasonLabel: 'Reason (optional)',
+      reasonPlaceholder: 'Briefly describe why you need access…',
+      submit: 'Request',
+      sent: 'Request sent',
+      failed: 'Failed to send, please try again',
+    },
   },
 }

@@ -277,5 +277,14 @@ export default {
     myLinks: '我的收藏',
     favoriteAdd: '收藏',
     favoriteRemove: '取消收藏',
+    accessRequest: {
+      title: '申请访问',
+      systemLabel: '系统',
+      reasonLabel: '申请说明(可选)',
+      reasonPlaceholder: '请简要说明申请理由…',
+      submit: '提交申请',
+      sent: '申请已发送',
+      failed: '发送失败,请稍后再试',
+    },
   },
 }

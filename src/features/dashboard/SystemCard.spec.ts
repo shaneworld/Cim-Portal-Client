@@ -149,6 +149,14 @@ describe('SystemCard', () => {
     expect(w.find('button').classes()).not.toContain('text-amber-400')
   })
 
+  it('locked card click emits access-request with the link', async () => {
+    const w = mount(SystemCard, { props: { link: lockedLink }, global: { plugins: [i18n] } })
+    await w.find('a').trigger('click')
+    const emitted = w.emitted('access-request')
+    expect(emitted).toBeTruthy()
+    expect((emitted![0][0] as { id: number }).id).toBe(4)
+  })
+
   it('env badge still renders alongside star on accessible env card (parity check)', () => {
     const w = mount(SystemCard, { props: { link: { ...accessibleWithEnv, environment: 'UAT' as const } }, global: { plugins: [i18n] } })
     expect(w.text()).toContain('UAT')

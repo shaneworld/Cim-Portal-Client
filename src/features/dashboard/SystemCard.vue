@@ -12,7 +12,7 @@ import { launchOrDownload } from '@/lib/composables/useAppLaunch'
 import { toggleFavorite } from '@/lib/api/portal'
 import { useToastStore } from '@/stores/toast'
 const props = defineProps<{ link: HomeLink }>()
-const emit = defineEmits<{ blocked: [HomeLink]; 'favorite-changed': [{ id: number; favorite: boolean }] }>()
+const emit = defineEmits<{ blocked: [HomeLink]; 'access-request': [HomeLink]; 'favorite-changed': [{ id: number; favorite: boolean }] }>()
 const { pick, t } = useLocale()
 const toast = useToastStore()
 const name = computed(() => pick(props.link, 'name'))
@@ -30,7 +30,7 @@ watch(() => props.link.favorite, (v) => { localFavorite.value = v })
 // Active launch links use the scheme to trigger the native app prompt.
 // Locked (inaccessible) links are hard-blocked before any other logic.
 function onClick(e: MouseEvent) {
-  if (locked.value) { e.preventDefault(); return }
+  if (locked.value) { e.preventDefault(); emit('access-request', props.link); return }
   if (props.link.statusCode !== LINK_STATUS.ACTIVE) { e.preventDefault(); emit('blocked', props.link); return }
   if (props.link.launchApp) { e.preventDefault(); launchOrDownload(props.link.url!, props.link.downloadUrl ?? props.link.url!) }
 }
