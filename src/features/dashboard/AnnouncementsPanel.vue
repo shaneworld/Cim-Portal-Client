@@ -46,7 +46,7 @@ onMounted(async () => {
         :key="a.id"
         type="button"
         :data-testid="`announcement-row-${a.id}`"
-        class="flex w-full items-center gap-3 rounded-xl border p-3 text-left transition hover:bg-muted/40"
+        class="flex w-full items-start gap-3 rounded-xl border p-3 text-left transition hover:bg-muted/40"
         :class="colorClasses(a.typeColor).wrap"
         @click="openDetail(a)"
       >
