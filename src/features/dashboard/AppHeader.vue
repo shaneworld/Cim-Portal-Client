@@ -33,12 +33,12 @@ function logout() { auth.logout(); try { router.push('/login') } catch { /* no r
       <RouterLink v-if="auth.isAdmin" to="/admin" class="mr-1 inline-flex h-9 shrink-0 items-center rounded-xl bg-brand px-3 text-sm font-semibold text-white">{{ t('header.admin') }}</RouterLink>
       <a v-if="auth.isAdmin && archUrl" :href="archUrl" target="_blank" rel="noopener noreferrer"
          data-testid="header-arch-link" :title="t('header.architecture')" :aria-label="t('header.architecture')"
-         class="inline-flex size-9 shrink-0 items-center justify-center rounded-xl text-ink-2 transition hover:bg-muted hover:text-foreground">
+         class="inline-flex shrink-0 items-center justify-center size-9 rounded-xl glass-strong text-ink-2 hover:text-[hsl(var(--ink))] transition">
         <Network class="size-4" />
       </a>
       <a v-if="auth.isAdmin && swaggerUrl" :href="swaggerUrl" target="_blank" rel="noopener noreferrer"
          data-testid="header-api-link" :title="t('header.apiDocs')" :aria-label="t('header.apiDocs')"
-         class="inline-flex size-9 shrink-0 items-center justify-center rounded-xl text-ink-2 transition hover:bg-muted hover:text-foreground">
+         class="inline-flex shrink-0 items-center justify-center size-9 rounded-xl glass-strong text-ink-2 hover:text-[hsl(var(--ink))] transition">
         <BookText class="size-4" />
       </a>
       <span class="hidden max-w-[40vw] shrink items-center gap-1.5 rounded-full glass-strong py-1 pl-1 pr-3 sm:flex">
