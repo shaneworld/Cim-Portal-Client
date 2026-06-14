@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue'
+import { computed, ref, watch } from 'vue'
 import type { HomeLink } from '@/lib/api/types'
 import { useLocale } from '@/lib/i18n/useLocale'
 import GlassCard from '@/lib/ui/GlassCard.vue'
@@ -21,6 +21,9 @@ const href = computed(() => locked.value ? undefined : props.link.launchApp ? (p
 
 // Local mirror of favorite for optimistic UI
 const localFavorite = ref(props.link.favorite)
+// Keep the optimistic star in sync when the favorite state changes externally
+// (e.g. the same link unfavorited from its other card instance).
+watch(() => props.link.favorite, (v) => { localFavorite.value = v })
 
 // Non-active systems warn the user before opening (maintenance/deprecated).
 // Active launch links use the scheme to trigger the native app prompt.

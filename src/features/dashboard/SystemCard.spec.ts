@@ -135,6 +135,20 @@ describe('SystemCard', () => {
     expect(w.find('button svg').classes()).not.toContain('fill-current')
   })
 
+  it('syncs star with prop: prop favorite true→false deactivates the star', async () => {
+    // Regression: a link can be rendered as two SystemCard instances bound to the
+    // same link object. When favorite is toggled off elsewhere, this card's star
+    // must follow the prop instead of staying stale/active.
+    const w = mount(SystemCard, { props: { link: favoriteLink }, global: { plugins: [i18n] } })
+    expect(w.find('button svg').classes()).toContain('fill-current')
+    expect(w.find('button').classes()).toContain('text-amber-400')
+
+    await w.setProps({ link: { ...favoriteLink, favorite: false } })
+
+    expect(w.find('button svg').classes()).not.toContain('fill-current')
+    expect(w.find('button').classes()).not.toContain('text-amber-400')
+  })
+
   it('env badge still renders alongside star on accessible env card (parity check)', () => {
     const w = mount(SystemCard, { props: { link: { ...accessibleWithEnv, environment: 'UAT' as const } }, global: { plugins: [i18n] } })
     expect(w.text()).toContain('UAT')
