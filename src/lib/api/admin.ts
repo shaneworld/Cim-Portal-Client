@@ -84,6 +84,18 @@ export const getLarkSettings = () => request<LarkSettings>('GET', '/api/admin/la
 export const updateLarkSettings = (body: LarkSettingsInput) =>
   request<LarkSettings>('PUT', '/api/admin/lark-settings', body)
 
+export interface DutySettings {
+  dutyApiBaseUrl?: string | null
+  dutyApiKeyConfigured?: boolean
+}
+export interface DutySettingsInput {
+  dutyApiBaseUrl?: string
+  dutyApiKey?: string
+}
+export const getDutySettings = () => request<DutySettings>('GET', '/api/admin/duty-settings')
+export const updateDutySettings = (body: DutySettingsInput) =>
+  request<DutySettings>('PUT', '/api/admin/duty-settings', body)
+
 export interface IconUploadResponse { id: number; ref: string }
 export function uploadIcon(file: File): Promise<IconUploadResponse> {
   const fd = new FormData()
