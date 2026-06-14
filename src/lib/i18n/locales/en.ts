@@ -168,6 +168,7 @@ export default {
       deleteMessage: 'Delete "{title}"?',
       tabActive: 'Active',
       tabHistory: 'History',
+      scheduled: 'Scheduled',
       closedExpired: 'Expired',
       closedDisabled: 'Disabled',
       closedAtLabel: 'Closed at',

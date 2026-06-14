@@ -76,6 +76,10 @@ function fmtClosed(s?: string | null) {
   return s ? new Date(s).toLocaleString(locale.value === 'zh' ? 'zh-CN' : 'en-US') : ''
 }
 
+function isScheduled(a: Announcement) {
+  return a.active && !!a.startsAt && new Date(a.startsAt).getTime() > Date.now()
+}
+
 onMounted(load)
 </script>
 
@@ -85,9 +89,15 @@ onMounted(load)
       <Button v-if="tab === 'active'" @click="openCreate"><Plus class="size-4" /> {{ t('admin.announcements.new') }}</Button>
     </template>
 
-    <div class="mb-3 inline-flex rounded-xl border border-border p-0.5 text-sm">
-      <button type="button" class="rounded-lg px-3 py-1 transition" :class="tab==='active' ? 'bg-primary text-white' : 'text-ink-2 hover:text-foreground'" data-testid="ann-tab-active" @click="tab='active'">{{ t('admin.announcements.tabActive') }}</button>
-      <button type="button" class="rounded-lg px-3 py-1 transition" :class="tab==='history' ? 'bg-primary text-white' : 'text-ink-2 hover:text-foreground'" data-testid="ann-tab-history" @click="tab='history'">{{ t('admin.announcements.tabHistory') }}</button>
+    <div class="mb-4 flex gap-6 border-b border-border" role="tablist">
+      <button type="button" role="tab" :aria-selected="tab === 'active'" data-testid="ann-tab-active"
+        class="-mb-px border-b-2 pb-2 text-sm transition"
+        :class="tab === 'active' ? 'border-primary font-semibold text-foreground' : 'border-transparent text-ink-3 hover:text-foreground'"
+        @click="tab = 'active'">{{ t('admin.announcements.tabActive') }}</button>
+      <button type="button" role="tab" :aria-selected="tab === 'history'" data-testid="ann-tab-history"
+        class="-mb-px border-b-2 pb-2 text-sm transition"
+        :class="tab === 'history' ? 'border-primary font-semibold text-foreground' : 'border-transparent text-ink-3 hover:text-foreground'"
+        @click="tab = 'history'">{{ t('admin.announcements.tabHistory') }}</button>
     </div>
 
     <div v-if="loading" class="space-y-2 p-4"><Skeleton v-for="n in 5" :key="n" /></div>
@@ -122,6 +132,7 @@ onMounted(load)
             <span v-if="a.closedAt" class="ml-2 hidden md:inline">{{ t('admin.announcements.closedAtLabel') }}: {{ fmtClosed(a.closedAt) }}</span>
           </span>
           <!-- active -->
+          <Badge v-else-if="isScheduled(a)" tone="caution">{{ t('admin.announcements.scheduled') }}</Badge>
           <Badge v-else :tone="a.active ? 'go' : 'muted'">{{ a.active ? t('common.enabled') : t('common.disabled') }}</Badge>
           <!-- actions -->
           <span class="flex shrink-0 gap-1">

@@ -168,6 +168,7 @@ export default {
       deleteMessage: '确认删除「{title}」？',
       tabActive: '当前',
       tabHistory: '历史',
+      scheduled: '计划发布',
       closedExpired: '已到期',
       closedDisabled: '已停用',
       closedAtLabel: '关闭时间',
