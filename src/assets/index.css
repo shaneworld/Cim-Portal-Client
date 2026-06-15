@@ -1,11 +1,10 @@
-@import './fonts.css';
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 @layer base {
   :root {
+    color-scheme: light;
     --background: 222 47% 11%; --foreground: 222 47% 11%;
     --primary: 243 75% 59%; --primary-foreground: 0 0% 100%;
     --muted: 215 20% 96%; --muted-foreground: 215 16% 47%;
@@ -18,6 +17,7 @@
     --r: 18px;
   }
   .dark {
+    color-scheme: dark;
     --foreground: 213 31% 91%; --muted: 217 33% 16%; --muted-foreground: 215 20% 65%;
     --border: 217 33% 22%; --input: 217 33% 22%;
     --ink: 213 31% 91%; --ink-2: 215 20% 72%; --ink-3: 215 16% 55%;

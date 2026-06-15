@@ -46,7 +46,7 @@ const contentStyle = computed(() => ({
             >
               <X class="h-4 w-4" />
             </button>
-            <div class="overflow-y-auto px-6 py-5">
+            <div class="overflow-y-auto scroll-slim px-6 py-5">
               <DialogTitle v-if="title" class="mb-4 pr-8 text-lg font-bold">{{ title }}</DialogTitle>
               <slot />
               <div v-if="slots.footer" class="mt-5 flex justify-end gap-2"><slot name="footer" /></div>
