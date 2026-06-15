@@ -1,12 +1,11 @@
 <script setup lang="ts">
-import { reactive, ref, watch, onMounted } from 'vue'
+import { reactive, ref, watch, computed, onMounted } from 'vue'
 import Modal from '@/lib/ui/Modal.vue'
 import Input from '@/lib/ui/Input.vue'
 import Switch from '@/lib/ui/Switch.vue'
 import Button from '@/lib/ui/Button.vue'
 import Select from '@/lib/ui/Select.vue'
 import DateTimePicker from '@/lib/ui/DateTimePicker.vue'
-import { renderMarkdown } from '@/lib/ui/markdown'
 import { createAnnouncement, updateAnnouncement, type AnnouncementInput, type Announcement } from '@/lib/api/announcements'
 import { listEnum } from '@/lib/api/enums'
 import type { EnumValue } from '@/lib/api/types'
@@ -33,6 +32,12 @@ const saving = ref(false)
 const types = ref<EnumValue[]>([])
 
 const typeOptions = () => types.value.filter((t) => t.active).map((t) => ({ value: t.code, label: pick(t, 'label') }))
+
+// Lazy-load the full markdown renderer (markdown-it + DOMPurify) only when the
+// admin opens the form — keeps it off the critical-path bundles.
+const renderFn = ref<((s: string) => string) | null>(null)
+const previewZh = computed(() => (renderFn.value ? renderFn.value(form.bodyZh) : ''))
+const previewEn = computed(() => (renderFn.value ? renderFn.value(form.bodyEn) : ''))
 
 function toLocalDatetime(iso?: string): string {
   if (!iso) return ''
@@ -107,6 +112,7 @@ async function save() {
 }
 
 onMounted(async () => {
+  import('@/lib/ui/markdown').then((m) => { renderFn.value = m.renderMarkdown })
   try { types.value = await listEnum('ANNOUNCEMENT_TYPE') } catch { /* ignore */ }
 })
 </script>
@@ -172,7 +178,7 @@ onMounted(async () => {
             @input="(e) => form.bodyZh = (e.target as HTMLTextAreaElement).value"
           />
           <div class="markdown-body max-h-[14rem] overflow-y-auto scroll-slim rounded-xl border border-input p-2">
-            <div v-if="form.bodyZh.trim()" v-html="renderMarkdown(form.bodyZh)" />
+            <div v-if="form.bodyZh.trim()" v-html="previewZh" />
             <div v-else class="grid h-full place-items-center text-xs text-muted-foreground">{{ t('admin.announcementForm.preview') }}</div>
           </div>
         </div>
@@ -193,7 +199,7 @@ onMounted(async () => {
             @input="(e) => form.bodyEn = (e.target as HTMLTextAreaElement).value"
           />
           <div class="markdown-body max-h-[14rem] overflow-y-auto scroll-slim rounded-xl border border-input p-2">
-            <div v-if="form.bodyEn.trim()" v-html="renderMarkdown(form.bodyEn)" />
+            <div v-if="form.bodyEn.trim()" v-html="previewEn" />
             <div v-else class="grid h-full place-items-center text-xs text-muted-foreground">{{ t('admin.announcementForm.preview') }}</div>
           </div>
         </div>

@@ -94,6 +94,10 @@ describe('AnnouncementsPanel', () => {
     // card preview shows plain text, not raw Markdown table markup
     expect(row.find('p.line-clamp-1').text()).not.toContain('|')
     await row.trigger('click')
+    // renderMarkdown is now lazy-loaded via dynamic import(); ensure the module
+    // is loaded, then flush for the watch-driven DOM update.
+    await import('@/lib/ui/markdown')
+    await flushPromises()
     await flushPromises()
 
     // Modal teleports its content into document.body

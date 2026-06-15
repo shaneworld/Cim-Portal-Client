@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, ref, watch } from 'vue'
 import { Pin } from 'lucide-vue-next'
 import { DialogTitle } from 'reka-ui'
 import Modal from '@/lib/ui/Modal.vue'
@@ -7,12 +7,20 @@ import AppIcon from '@/lib/ui/AppIcon.vue'
 import type { Announcement } from '@/lib/api/announcements'
 import { useLocale } from '@/lib/i18n/useLocale'
 import { colorClasses } from '@/lib/ui/announcementColor'
-import { renderMarkdown } from '@/lib/ui/markdown'
 
 const props = defineProps<{ open: boolean; announcement: Announcement | null }>()
 const emit = defineEmits<{ 'update:open': [boolean] }>()
 
 const { locale, pick, t } = useLocale()
+
+// Lazy-load the full markdown renderer (markdown-it + DOMPurify) only when an
+// announcement is shown — keeps it off the dashboard's critical-path bundle.
+const html = ref('')
+watch([() => props.announcement, locale], async ([a]) => {
+  if (!a) { html.value = ''; return }
+  const { renderMarkdown } = await import('@/lib/ui/markdown')
+  html.value = renderMarkdown(pick(a, 'body'))
+}, { immediate: true })
 
 function fmt(s?: string | null) {
   if (!s) return ''
@@ -61,7 +69,7 @@ const windowText = computed(() => {
       <hr class="my-4 border-border" />
 
       <!-- body -->
-      <div class="markdown-body markdown-body-lg" v-html="renderMarkdown(pick(announcement, 'body'))"></div>
+      <div class="markdown-body markdown-body-lg" v-html="html"></div>
     </div>
   </Modal>
 </template>

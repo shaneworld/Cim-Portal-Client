@@ -6,7 +6,7 @@ import type { Announcement } from '@/lib/api/announcements'
 import { useConfigStore } from '@/stores/config'
 import { useLocale } from '@/lib/i18n/useLocale'
 import { colorClasses } from '@/lib/ui/announcementColor'
-import { markdownToText } from '@/lib/ui/markdown'
+import { stripMarkdown } from '@/lib/ui/markdownText'
 import GlassCard from '@/lib/ui/GlassCard.vue'
 import AppIcon from '@/lib/ui/AppIcon.vue'
 import AnnouncementDetailModal from './AnnouncementDetailModal.vue'
@@ -71,7 +71,7 @@ onMounted(async () => {
             </span>
           </div>
           <p class="mt-1 text-sm font-medium">{{ pick(a, 'title') }}</p>
-          <p class="mt-0.5 line-clamp-1 text-xs text-ink-3">{{ markdownToText(pick(a, 'body')) }}</p>
+          <p class="mt-0.5 line-clamp-1 text-xs text-ink-3">{{ stripMarkdown(pick(a, 'body')) }}</p>
         </div>
       </button>
       </div>

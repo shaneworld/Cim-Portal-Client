@@ -2,7 +2,6 @@
 import { onMounted, ref } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useRouter } from 'vue-router'
-import { completeSso } from '@/lib/auth/sso'
 import { useAuthStore } from '@/stores/auth'
 import { useConfigStore } from '@/stores/config'
 
@@ -13,6 +12,7 @@ const status = ref<'pending' | 'error'>('pending')
 
 onMounted(async () => {
   try {
+    const { completeSso } = await import('@/lib/auth/sso')
     const token = await completeSso(config.value)
     auth.setToken(token)
     await auth.hydrateUser()

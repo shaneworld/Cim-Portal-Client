@@ -5,7 +5,6 @@ import { useRouter } from 'vue-router'
 import { ShieldCheck, Eye, EyeOff } from 'lucide-vue-next'
 import { useAuthStore } from '@/stores/auth'
 import { useConfigStore } from '@/stores/config'
-import { startSso } from '@/lib/auth/sso'
 import { ApiError } from '@/lib/api/client'
 import GlassCard from '@/lib/ui/GlassCard.vue'
 import BrandMark from '@/lib/ui/BrandMark.vue'
@@ -35,6 +34,7 @@ onMounted(async () => {
     sessionStorage.setItem('sso_attempted', '1')
     redirecting.value = true
     try {
+      const { startSso } = await import('@/lib/auth/sso')
       await startSso(config.value)
     } catch {
       redirecting.value = false
@@ -63,6 +63,7 @@ async function ssoRetry() {
   error.value = ''
   redirecting.value = true
   try {
+    const { startSso } = await import('@/lib/auth/sso')
     await startSso(config.value)
   } catch {
     redirecting.value = false
