@@ -112,7 +112,7 @@ async function save() {
 }
 
 onMounted(async () => {
-  import('@/lib/ui/markdown').then((m) => { renderFn.value = m.renderMarkdown })
+  import('@/lib/ui/markdown').then((m) => { renderFn.value = m.renderMarkdown }).catch(() => {})
   try { types.value = await listEnum('ANNOUNCEMENT_TYPE') } catch { /* ignore */ }
 })
 </script>

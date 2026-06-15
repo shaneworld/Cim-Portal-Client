@@ -16,10 +16,14 @@ const { locale, pick, t } = useLocale()
 // Lazy-load the full markdown renderer (markdown-it + DOMPurify) only when an
 // announcement is shown — keeps it off the dashboard's critical-path bundle.
 const html = ref('')
+let renderSeq = 0
 watch([() => props.announcement, locale], async ([a]) => {
+  const seq = ++renderSeq
   if (!a) { html.value = ''; return }
   const { renderMarkdown } = await import('@/lib/ui/markdown')
-  html.value = renderMarkdown(pick(a, 'body'))
+  // Guard against out-of-order resolution if the announcement/locale changes
+  // while a prior dynamic import / render is still in flight.
+  if (seq === renderSeq) html.value = renderMarkdown(pick(a, 'body'))
 }, { immediate: true })
 
 function fmt(s?: string | null) {
