@@ -62,24 +62,6 @@ export const getSecuritySettings = () => request<SecuritySettings>('GET', '/api/
 export const updateSecuritySettings = (body: SecuritySettingsInput) =>
   request<SecuritySettings>('PUT', '/api/admin/security-settings', body)
 
-export interface LarkSettings {
-  larkBaseUrl?: string | null
-  larkAppId?: string | null
-  larkReceiverId?: string | null
-  larkReceiverIdType?: string | null
-  larkAppSecretConfigured?: boolean
-}
-export interface LarkSettingsInput {
-  larkBaseUrl?: string
-  larkAppId?: string
-  larkAppSecret?: string
-  larkReceiverId?: string
-  larkReceiverIdType?: string
-}
-export const getLarkSettings = () => request<LarkSettings>('GET', '/api/admin/lark-settings')
-export const updateLarkSettings = (body: LarkSettingsInput) =>
-  request<LarkSettings>('PUT', '/api/admin/lark-settings', body)
-
 export interface DutySettings {
   dutyApiBaseUrl?: string | null
   dutyApiKeyConfigured?: boolean

@@ -16,22 +16,11 @@ import SystemCard from './SystemCard.vue'
 import GlobalSearch from './GlobalSearch.vue'
 import AnnouncementsPanel from './AnnouncementsPanel.vue'
 import DutyLinesPanel from './DutyLinesPanel.vue'
-import AccessRequestModal from './AccessRequestModal.vue'
-import { useToastStore } from '@/stores/toast'
 
 const { pick, t } = useLocale()
-const toast = useToastStore()
 const configStore = useConfigStore()
 const { config } = storeToRefs(configStore)
 
-// Access-request flow: locked card click opens the request modal when Lark is
-// enabled; otherwise it falls back to the existing no-access info toast.
-const arOpen = ref(false)
-const arLink = ref<HomeLink | null>(null)
-function onAccessRequest(l: HomeLink) {
-  if (config.value.larkEnabled) { arLink.value = l; arOpen.value = true }
-  else { toast.push({ type: 'info', message: t('dashboard.noAccessHint') }) }
-}
 const categories = ref<HomeCategory[]>([])
 const loading = ref(true); const error = ref(false); const query = ref('')
 
@@ -112,10 +101,9 @@ onMounted(load)
               />
             </div>
           </section>
-          <SystemGrid :categories="filtered" @access-request="onAccessRequest" @favorite-changed="onFavoriteChanged" />
+          <SystemGrid :categories="filtered" @favorite-changed="onFavoriteChanged" />
         </template>
       </template>
     </div>
-    <AccessRequestModal v-model:open="arOpen" :link="arLink" />
   </div>
 </template>

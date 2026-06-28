@@ -149,12 +149,17 @@ describe('SystemCard', () => {
     expect(w.find('button').classes()).not.toContain('text-amber-400')
   })
 
-  it('locked card click emits access-request with the link', async () => {
+  it('locked card click does not navigate (no href) and pushes the no-access info toast', async () => {
+    const pushSpy = vi.fn()
+    const toastMod = await import('@/stores/toast')
+    vi.spyOn(toastMod, 'useToastStore').mockReturnValue({ push: pushSpy } as unknown as ReturnType<typeof toastMod.useToastStore>)
+
     const w = mount(SystemCard, { props: { link: lockedLink }, global: { plugins: [i18n] } })
+    // locked anchor has no href (navigation hard-blocked)
+    expect(w.find('a').attributes('href')).toBeUndefined()
     await w.find('a').trigger('click')
-    const emitted = w.emitted('access-request')
-    expect(emitted).toBeTruthy()
-    expect((emitted![0][0] as { id: number }).id).toBe(4)
+
+    expect(pushSpy).toHaveBeenCalledWith({ type: 'info', message: i18n.global.t('dashboard.noAccessHint') })
   })
 
   it('env badge still renders alongside star on accessible env card (parity check)', () => {

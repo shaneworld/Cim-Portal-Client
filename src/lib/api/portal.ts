@@ -20,16 +20,9 @@ export interface PortalConfig {
   heroEnabled?: boolean
   /** Info panel (announcements + duty lines) toggle */
   infoPanelEnabled?: boolean
-  /** Lark (Feishu) integration toggle */
-  larkEnabled?: boolean
 }
 
 export const getConfig = () => request<PortalConfig>('GET', '/api/portal/config')
-
-export const requestAccess = (linkId: number, reason?: string) =>
-  request<void>('POST', '/api/portal/access-requests', { linkId, reason })
-export const sendFeedback = (message: string) =>
-  request<void>('POST', '/api/portal/feedback', { message })
 
 export const internalLogin = (employeeId: string, password: string) =>
   request<{ access_token: string; token_type: string }>('POST', '/api/auth/login', { employeeId, password })

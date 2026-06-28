@@ -2,7 +2,6 @@ import { describe, it, expect, beforeEach } from 'vitest'
 import { mount } from '@vue/test-utils'
 import { setActivePinia, createPinia } from 'pinia'
 import { i18n } from '@/lib/i18n'
-import { useConfigStore } from '@/stores/config'
 import SupportBar from './SupportBar.vue'
 
 describe('SupportBar', () => {
@@ -14,19 +13,5 @@ describe('SupportBar', () => {
     expect(w.find('footer').exists()).toBe(true)
     expect(w.find('footer').classes()).not.toContain('fixed')
     expect(w.find('.glass').exists()).toBe(false)
-  })
-
-  it('shows the feedback link when larkEnabled is true', () => {
-    const cfg = useConfigStore()
-    cfg.config = { ...cfg.config, larkEnabled: true }
-    const w = mount(SupportBar, { global: { plugins: [i18n] } })
-    expect(w.find('[data-testid="fb-link"]').exists()).toBe(true)
-  })
-
-  it('hides the feedback link when larkEnabled is false', () => {
-    const cfg = useConfigStore()
-    cfg.config = { ...cfg.config, larkEnabled: false }
-    const w = mount(SupportBar, { global: { plugins: [i18n] } })
-    expect(w.find('[data-testid="fb-link"]').exists()).toBe(false)
   })
 })
